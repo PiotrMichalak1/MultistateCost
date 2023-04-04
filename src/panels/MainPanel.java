@@ -20,12 +20,12 @@ public class MainPanel extends JPanel {
         c.gridy = 0;
         this.add(settingsPanel,c);
 
-        PlotPanel plotPanel = new PlotPanel();
+        SimulationPanel simulationPanel = new SimulationPanel();
         c.weightx = 6.0;
         c.weighty = 1.0;
         c.gridx = 1;
         c.gridy = 0;
-        this.add(plotPanel, c);
+        this.add(simulationPanel, c);
 
     }
 }
