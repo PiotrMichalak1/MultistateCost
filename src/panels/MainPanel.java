@@ -2,6 +2,7 @@ package panels;
 
 import panels.mainPanelPanels.SettingsPanel;
 import panels.mainPanelPanels.SimulationPanel;
+import settings.Parameters;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.awt.*;
 public class MainPanel extends JPanel {
     public MainPanel(){
         this.setPreferredSize(new Dimension(1200,675));
+        Parameters.getInstance();
         addWeightedPanes();
     }
 
