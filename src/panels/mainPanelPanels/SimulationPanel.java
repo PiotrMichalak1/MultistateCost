@@ -1,4 +1,4 @@
-package panels;
+package panels.mainPanelPanels;
 
 import panels.simulationSubPanels.RunSimulationPanel;
 import panels.simulationSubPanels.TabbedPlotPanel;
@@ -27,8 +27,5 @@ public class SimulationPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         this.add(runSimulationPanel, c);
-
-
-
     }
 }
