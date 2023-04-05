@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SettingsPanel extends JPanel {
+    RepairCostPanel repairCostPanel;
     public SettingsPanel() {
         addWeightedPanes();
     }
@@ -13,7 +14,7 @@ public class SettingsPanel extends JPanel {
     private void addWeightedPanes(){
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        RepairCostPanel repairCostPanel = new RepairCostPanel();
+        repairCostPanel = new RepairCostPanel();
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;

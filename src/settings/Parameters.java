@@ -3,9 +3,9 @@ package settings;
 public class Parameters {
 
     private static Parameters instance =null;
-    private final int NUM_OF_STATES = 4;
-    private final int  REPAIR_COST_STEP = 10;
-    private final int REPAIR_DURATION_STEP = 1;
+    public final int NUM_OF_STATES = 4;
+    public final int  REPAIR_COST_STEP = 10;
+    public final int REPAIR_DURATION_STEP = 1;
     private int[][] repairCostMatrix;
     private int[][] repairDurationMatrix;
 

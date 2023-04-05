@@ -8,16 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainPanel extends JPanel {
+    SettingsPanel settingsPanel;
+    SimulationPanel simulationPanel;
+
     public MainPanel() {
         this.setPreferredSize(new Dimension(1200, 675));
-        Parameters parameters = Parameters.getInstance();
         addWeightedPanes();
     }
 
     private void addWeightedPanes() {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        SettingsPanel settingsPanel = new SettingsPanel();
+        settingsPanel = new SettingsPanel();
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 3.1;
         c.weighty = 1.0;
@@ -25,7 +27,7 @@ public class MainPanel extends JPanel {
         c.gridy = 0;
         this.add(settingsPanel, c);
 
-        SimulationPanel simulationPanel = new SimulationPanel();
+        simulationPanel = new SimulationPanel();
         c.weightx = 6.0;
         c.weighty = 1.0;
         c.gridx = 1;
