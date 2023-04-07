@@ -14,6 +14,7 @@ public class RepairDurationPanel extends JPanel {
         parameters = Parameters.getInstance();
         bagLabel = new GridBagLabel();
         initializeRepairDurationLabels();
+        initializeRepairDurationSpinners();
     }
 
     private void initializeRepairDurationLabels() {
@@ -35,5 +36,8 @@ public class RepairDurationPanel extends JPanel {
             bagLabel.putInGrid(this,"to "+i,0,i+1);
         }
 
+    }
+
+    private void initializeRepairDurationSpinners() {
     }
 }

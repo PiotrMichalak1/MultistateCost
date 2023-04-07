@@ -4,8 +4,6 @@ import settings.Parameters;
 import tools.interfaces.GridBagElement;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -17,8 +15,8 @@ public class GridBagSpinner implements GridBagElement {
     Parameters parameters = Parameters.getInstance();
     JSpinner spinner;
 
-    public GridBagSpinner(int fromState, int toState) {
-        spinner = new JSpinner(new SpinnerNumberModel(parameters.getRepairCost(fromState, toState),
+    public GridBagSpinner(String type, int fromState, int toState) {
+        spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, fromState, toState),
                 0,
                 1000,
                 1));

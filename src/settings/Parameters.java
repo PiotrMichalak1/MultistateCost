@@ -55,4 +55,20 @@ public class Parameters {
         return repairDurationMatrix[toState-1][fromState-2];
     }
 
+    public int getValueFromSettings(String type,int fromState, int toState){
+        int value;
+        switch (type) {
+            case "REPAIR_COST":
+                value = getRepairCost(fromState,toState);
+                break;
+            case "REPAIR_DURATION":
+                value = getRepairDuration(fromState,toState);
+                break;
+            default:
+                value = 0;
+        }
+        return value;
+
+    }
+
 }
