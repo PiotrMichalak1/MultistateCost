@@ -6,11 +6,15 @@ import tools.interfaces.GridBagElement;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.text.ParseException;
+
 
 public class GridBagSpinner implements GridBagElement {
     Parameters parameters = Parameters.getInstance();
-    SpinnerModel model;
     JSpinner spinner;
 
     public GridBagSpinner(int fromState, int toState) {
@@ -18,12 +22,37 @@ public class GridBagSpinner implements GridBagElement {
                 0,
                 1000,
                 1));
+        spinner.setToolTipText("Value Must be an integer between 0 and 1000");
 
-        spinner.addChangeListener(new ChangeListener() {
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
+        JFormattedTextField tf = editor.getTextField();
+        NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
+        formatter.setValueClass(Integer.class);
+        formatter.setAllowsInvalid(false);
+        formatter.setMinimum(0);
+        formatter.setMaximum(1000);
+        formatter.setCommitsOnValidEdit(true);
+
+        tf.addFocusListener(new FocusListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
-                parameters.setRepairCost(fromState, toState, (int) spinner.getValue());
+            public void focusGained(FocusEvent e) {
+                // Do nothing
             }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                try {
+                    spinner.commitEdit();
+                } catch (ParseException ex) {
+                    // Invalid value, do nothing
+                }
+            }
+        });
+
+
+        spinner.addChangeListener(e -> {
+            parameters.setRepairCost(fromState, toState, (int) spinner.getValue());
+            System.out.println(spinner.getValue());
         });
     }
 
