@@ -47,6 +47,10 @@ public class Parameters {
         return repairCostMatrix[toState-1][fromState-2];
     }
 
+    public void setRepairCost(int fromState, int toState,int value) {
+        repairCostMatrix[toState-1][fromState-2]=value;
+    }
+
     public int getRepairDuration(int fromState, int toState) {
         return repairDurationMatrix[toState-1][fromState-2];
     }
