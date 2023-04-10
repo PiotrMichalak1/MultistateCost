@@ -94,15 +94,7 @@ public class Parameters {
     private void initializeWeibullShapeVector() {
         weibullShapeVector = new double[NUM_OF_STATES - 1];
         for (int state = 1; state < NUM_OF_STATES; state++) {
-            if (state == 1) {
                 weibullShapeVector[state - 1] = 5.0;
-            } else if (state == 2) {
-                weibullShapeVector[state - 1] = 5.0;
-            } else if (state == 3) {
-                weibullShapeVector[state - 1] = 5.0;
-            } else {
-                weibullShapeVector[state - 1] = 5.0;
-            }
         }
     }
 

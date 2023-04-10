@@ -37,29 +37,54 @@ public class GridBagSpinner implements GridBagElement {
     }
 
     public GridBagSpinner(int type, int state) {
-        spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, state),
-                0,
-                1000,
-                1));
-        spinner.setToolTipText("Value Must be an integer between 0 and 1000");
+
+        if (type == parameters.WEIBULL_SHAPE) {
+            spinner = new JSpinner(new SpinnerNumberModel(parameters.getWeibullShape(state),
+                    1.0,
+                    5.0,
+                    0.1));
+            spinner.setToolTipText("Value Must be a double value between 1 and 5");
+        } else {
+            spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, state),
+                    0,
+                    1000,
+                    1));
+            spinner.setToolTipText("Value Must be an integer between 0 and 1000");
+        }
+
 
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
         JFormattedTextField tf = editor.getTextField();
         NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
-        formatter.setValueClass(Integer.class);
+        if (type == parameters.WEIBULL_SHAPE) {
+            formatter.setValueClass(Double.class);
+        } else {
+            formatter.setValueClass(Integer.class);
+        }
+
         formatter.setAllowsInvalid(false);
         formatter.setCommitsOnValidEdit(true);
 
 
-        spinner.addChangeListener(e -> {
-            parameters.setValueInSettings(type,state, (int) spinner.getValue());
-            System.out.println(spinner.getValue());
-        });
+        if (type == parameters.WEIBULL_SHAPE) {
+            spinner.addChangeListener(e -> {
+                parameters.setWeibullShape(state,(double) spinner.getValue());
+                System.out.println(spinner.getValue());
+            });
+        } else {
+            spinner.addChangeListener(e -> {
+                parameters.setValueInSettings(type,state, (int) spinner.getValue());
+                System.out.println(spinner.getValue());
+            });
+        }
+
     }
 
     @Override
     public void putInGrid(JComponent parent, String text, int bagX, int bagY) {
         GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5,5,5,5);
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = bagX;

@@ -16,6 +16,8 @@ public class OtherPropertiesPanel extends JPanel {
         initializeOtherPropertiesLabels();
         initializeStaticCostSpinners();
         initializeWeibullScaleSpinners();
+        initializeWeibullShapeSpinners();
+        initializeInspectionCostSpinner();
     }
     private void initializeOtherPropertiesLabels() {
         this.setLayout(new GridBagLayout());
@@ -46,8 +48,21 @@ public class OtherPropertiesPanel extends JPanel {
     }
 
     private void initializeWeibullScaleSpinners() {
-
+        for (int state = 1; state < parameters.NUM_OF_STATES; state++) {
+            GridBagSpinner spinner = new GridBagSpinner(parameters.WEIBULL_SCALE,state);
+            spinner.putInGrid(this,"",state,3);
+        }
+    }
+    private void initializeWeibullShapeSpinners(){
+        for (int state = 1; state < parameters.NUM_OF_STATES; state++) {
+            GridBagSpinner spinner = new GridBagSpinner(parameters.WEIBULL_SHAPE,state);
+            spinner.putInGrid(this,"",state,4);
+        }
     }
 
+    private void initializeInspectionCostSpinner(){
+        GridBagSpinner spinner = new GridBagSpinner(parameters.INSPECTION_COST,parameters.INSPECTION_COST);
+        spinner.putInGrid(this,"",1,5);
+    }
 
 }
