@@ -15,7 +15,7 @@ public class GridBagSpinner implements GridBagElement {
     Parameters parameters = Parameters.getInstance();
     JSpinner spinner;
 
-    public GridBagSpinner(String type, int fromState, int toState) {
+    public GridBagSpinner(int type, int fromState, int toState) {
         spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, fromState, toState),
                 0,
                 1000,
@@ -27,8 +27,6 @@ public class GridBagSpinner implements GridBagElement {
         NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
         formatter.setValueClass(Integer.class);
         formatter.setAllowsInvalid(false);
-        formatter.setMinimum(0);
-        formatter.setMaximum(1000);
         formatter.setCommitsOnValidEdit(true);
 
 
@@ -50,8 +48,6 @@ public class GridBagSpinner implements GridBagElement {
         NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
         formatter.setValueClass(Integer.class);
         formatter.setAllowsInvalid(false);
-        formatter.setMinimum(0);
-        formatter.setMaximum(1000);
         formatter.setCommitsOnValidEdit(true);
 
 

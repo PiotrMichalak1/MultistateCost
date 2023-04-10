@@ -15,6 +15,7 @@ public class OtherPropertiesPanel extends JPanel {
         bagLabel = new GridBagLabel();
         initializeOtherPropertiesLabels();
         initializeStaticCostSpinners();
+        initializeWeibullScaleSpinners();
     }
     private void initializeOtherPropertiesLabels() {
         this.setLayout(new GridBagLayout());
@@ -42,6 +43,10 @@ public class OtherPropertiesPanel extends JPanel {
             GridBagSpinner spinner = new GridBagSpinner(parameters.STATIC_COST,state);
             spinner.putInGrid(this,"",state,2);
         }
+    }
+
+    private void initializeWeibullScaleSpinners() {
+
     }
 
 

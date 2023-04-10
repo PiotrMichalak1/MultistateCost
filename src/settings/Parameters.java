@@ -11,13 +11,25 @@ public class Parameters {
     private int[][] repairDurationMatrix;
 
     private int[] staticCostVector;
+    private int[] weibullScaleVector;
+    private double[] weibullShapeVector;
+    private int inspectionCost = 5;
 
+
+    public final int REPAIR_COST = 1;
+    public final int REPAIR_DURATION = 2;
     public final int STATIC_COST = 3;
+    public final int WEIBULL_SCALE = 4;
+    public final int WEIBULL_SHAPE = 5;
+    public final int INSPECTION_COST = 6;
+
 
     private Parameters() {
         initializeRepairCosts();
         initializeRepairDuration();
         initializeStaticCostVector();
+        initializeWeibullScaleVector();
+        initializeWeibullShapeVector();
     }
 
     public static Parameters getInstance() {
@@ -64,6 +76,36 @@ public class Parameters {
         }
     }
 
+    private void initializeWeibullScaleVector() {
+        weibullScaleVector = new int[NUM_OF_STATES - 1];
+        for (int state = 1; state < NUM_OF_STATES; state++) {
+            if (state == 1) {
+                weibullScaleVector[state - 1] = 50;
+            } else if (state == 2) {
+                weibullScaleVector[state - 1] = 30;
+            } else if (state == 3) {
+                weibullScaleVector[state - 1] = 40;
+            } else {
+                weibullScaleVector[state - 1] = 50;
+            }
+        }
+    }
+
+    private void initializeWeibullShapeVector() {
+        weibullShapeVector = new double[NUM_OF_STATES - 1];
+        for (int state = 1; state < NUM_OF_STATES; state++) {
+            if (state == 1) {
+                weibullShapeVector[state - 1] = 5.0;
+            } else if (state == 2) {
+                weibullShapeVector[state - 1] = 5.0;
+            } else if (state == 3) {
+                weibullShapeVector[state - 1] = 5.0;
+            } else {
+                weibullShapeVector[state - 1] = 5.0;
+            }
+        }
+    }
+
     public int getRepairCost(int fromState, int toState) {
         return repairCostMatrix[toState - 1][fromState - 2];
     }
@@ -76,6 +118,10 @@ public class Parameters {
         return repairDurationMatrix[toState - 1][fromState - 2];
     }
 
+    public void setRepairDuration(int fromState, int toState, int value) {
+        repairDurationMatrix[toState - 1][fromState - 2] = value;
+    }
+
     public int getStaticCost(int state) {
         return staticCostVector[state - 1];
     }
@@ -84,17 +130,37 @@ public class Parameters {
         staticCostVector[state - 1] = value;
     }
 
-    public void setRepairDuration(int fromState, int toState, int value) {
-        repairDurationMatrix[toState - 1][fromState - 2] = value;
+    public int getWeibullScale(int state) {
+        return weibullScaleVector[state - 1];
     }
 
-    public int getValueFromSettings(String type, int fromState, int toState) {
+    public void setWeibullScale(int state, int scale) {
+        this.weibullScaleVector[state - 1] = scale;
+    }
+
+    public double getWeibullShape(int state) {
+        return weibullShapeVector[state - 1];
+    }
+
+    public void setWeibullShape(int state, double shape) {
+        this.weibullShapeVector[state - 1] = shape;
+    }
+
+    public int getInspectionCost() {
+        return inspectionCost;
+    }
+
+    public void setInspectionCost(int cost) {
+        this.inspectionCost = cost;
+    }
+
+    public int getValueFromSettings(int type, int fromState, int toState) {
         int value;
         switch (type) {
-            case "REPAIR_COST":
+            case REPAIR_COST:
                 value = getRepairCost(fromState, toState);
                 break;
-            case "REPAIR_DURATION":
+            case REPAIR_DURATION:
                 value = getRepairDuration(fromState, toState);
                 break;
             default:
@@ -105,25 +171,13 @@ public class Parameters {
     }
 
 
-    public int getValueFromSettings(int type, int state) {
-        int value;
-        switch (type) {
-            case STATIC_COST:
-                value = getStaticCost(state);
-                break;
-            default:
-                value = 0;
-        }
-        return value;
-    }
-
-    public void setValueInSettings(String type, int fromState, int toState, int value) {
+    public void setValueInSettings(int type, int fromState, int toState, int value) {
 
         switch (type) {
-            case "REPAIR_COST":
+            case REPAIR_COST:
                 setRepairCost(fromState, toState, value);
                 break;
-            case "REPAIR_DURATION":
+            case REPAIR_DURATION:
                 setRepairDuration(fromState, toState, value);
                 break;
             default:
@@ -132,14 +186,38 @@ public class Parameters {
         }
     }
 
+    public int getValueFromSettings(int type, int state) {
+        int value;
+        switch (type) {
+            case STATIC_COST:
+                value = getStaticCost(state);
+                break;
+            case WEIBULL_SCALE:
+                value = getWeibullScale(state);
+                break;
+            case INSPECTION_COST:
+                value = getInspectionCost();
+                break;
+            default:
+                value = 0;
+        }
+        return value;
+    }
+
     public void setValueInSettings(int type, int state, int value) {
         switch (type) {
             case STATIC_COST:
                 setStaticCost(state, value);
                 break;
+            case WEIBULL_SCALE:
+                setWeibullScale(state,value);
+                break;
+            case INSPECTION_COST:
+                setInspectionCost(value);
+                break;
             default:
                 throw new IllegalStateException(
-                        "Dariusz");
+                        "Data type not matching any parameter");
         }
     }
 

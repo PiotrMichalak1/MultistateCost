@@ -42,7 +42,7 @@ public class RepairDurationPanel extends JPanel {
     private void initializeRepairDurationSpinners() {
         for (int toState = 1; toState < parameters.NUM_OF_STATES; toState++) {
             for (int fromState = toState+1;fromState<=parameters.NUM_OF_STATES;fromState++) {
-                GridBagSpinner spinner = new GridBagSpinner("REPAIR_DURATION",fromState,toState);
+                GridBagSpinner spinner = new GridBagSpinner(parameters.REPAIR_DURATION,fromState,toState);
                 spinner.putInGrid(this,"",fromState-1,toState+1);
             }
         }
