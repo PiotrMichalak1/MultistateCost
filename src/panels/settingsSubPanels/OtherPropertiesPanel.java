@@ -2,6 +2,7 @@ package panels.settingsSubPanels;
 
 import settings.Parameters;
 import tools.GridBagLabel;
+import tools.GridBagSpinner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ public class OtherPropertiesPanel extends JPanel {
         parameters = Parameters.getInstance();
         bagLabel = new GridBagLabel();
         initializeOtherPropertiesLabels();
+        initializeStaticCostSpinners();
     }
     private void initializeOtherPropertiesLabels() {
         this.setLayout(new GridBagLayout());
@@ -36,8 +38,9 @@ public class OtherPropertiesPanel extends JPanel {
 
     }
     private void initializeStaticCostSpinners(){
-        for (int state = 0; state < parameters.NUM_OF_STATES; state++) {
-
+        for (int state = 1; state <= parameters.NUM_OF_STATES; state++) {
+            GridBagSpinner spinner = new GridBagSpinner(parameters.STATIC_COST,state);
+            spinner.putInGrid(this,"",state,2);
         }
     }
 

@@ -3,7 +3,7 @@ package settings;
 public class Parameters {
 
     private static Parameters instance = null;
-    public final int NUM_OF_STATES = 12;
+    public final int NUM_OF_STATES = 4;
     public final int DEFAULT_REPAIR_COST_STEP = 10;
     public final int DEFAULT_REPAIR_DURATION_STEP = 1;
 
@@ -11,6 +11,8 @@ public class Parameters {
     private int[][] repairDurationMatrix;
 
     private int[] staticCostVector;
+
+    public final int STATIC_COST = 3;
 
     private Parameters() {
         initializeRepairCosts();
@@ -102,11 +104,13 @@ public class Parameters {
         return value;
     }
 
-    public int getValueFromSettings(String type, int fromState) {
+
+    public int getValueFromSettings(int type, int state) {
         int value;
         switch (type) {
-            case "STATIC_COST":
-                value = getStaticCost(fromState);
+            case STATIC_COST:
+                value = getStaticCost(state);
+                break;
             default:
                 value = 0;
         }
@@ -128,13 +132,14 @@ public class Parameters {
         }
     }
 
-    public void setValueInSettings(String type, int state, int value) {
+    public void setValueInSettings(int type, int state, int value) {
         switch (type) {
-            case "STATIC_COST":
+            case STATIC_COST:
                 setStaticCost(state, value);
+                break;
             default:
                 throw new IllegalStateException(
-                        "Type of data to set mismatch");
+                        "Dariusz");
         }
     }
 

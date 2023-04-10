@@ -38,7 +38,7 @@ public class GridBagSpinner implements GridBagElement {
         });
     }
 
-    public GridBagSpinner(String type, int state) {
+    public GridBagSpinner(int type, int state) {
         spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, state),
                 0,
                 1000,
