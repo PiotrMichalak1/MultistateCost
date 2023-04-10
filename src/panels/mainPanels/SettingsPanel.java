@@ -1,4 +1,4 @@
-package panels.mainPanelPanels;
+package panels.mainPanels;
 
 import panels.settingsSubPanels.*;
 

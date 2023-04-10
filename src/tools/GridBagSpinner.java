@@ -49,7 +49,46 @@ public class GridBagSpinner implements GridBagElement {
 
 
         spinner.addChangeListener(e -> {
-            parameters.setRepairCost(fromState, toState, (int) spinner.getValue());
+            parameters.setValueInSettings(type,fromState, toState, (int) spinner.getValue());
+            System.out.println(spinner.getValue());
+        });
+    }
+
+    public GridBagSpinner(String type, int state) {
+        spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, state),
+                0,
+                1000,
+                1));
+        spinner.setToolTipText("Value Must be an integer between 0 and 1000");
+
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
+        JFormattedTextField tf = editor.getTextField();
+        NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
+        formatter.setValueClass(Integer.class);
+        formatter.setAllowsInvalid(false);
+        formatter.setMinimum(0);
+        formatter.setMaximum(1000);
+        formatter.setCommitsOnValidEdit(true);
+
+        tf.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Do nothing
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                try {
+                    spinner.commitEdit();
+                } catch (ParseException ex) {
+                    // Invalid value, do nothing
+                }
+            }
+        });
+
+
+        spinner.addChangeListener(e -> {
+            parameters.setValueInSettings(type,state, (int) spinner.getValue());
             System.out.println(spinner.getValue());
         });
     }

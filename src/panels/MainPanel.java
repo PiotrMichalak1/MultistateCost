@@ -1,8 +1,7 @@
 package panels;
 
-import panels.mainPanelPanels.SettingsPanel;
-import panels.mainPanelPanels.SimulationPanel;
-import settings.Parameters;
+import panels.mainPanels.SettingsPanel;
+import panels.mainPanels.SimulationPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,14 +20,14 @@ public class MainPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         settingsPanel = new SettingsPanel();
         c.fill = GridBagConstraints.BOTH;
-        c.weightx = 3.1;
+        c.weightx = 0.1;
         c.weighty = 1.0;
         c.gridx = 0;
         c.gridy = 0;
         this.add(settingsPanel, c);
 
         simulationPanel = new SimulationPanel();
-        c.weightx = 6.0;
+        c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = 1;
         c.gridy = 0;

@@ -1,4 +1,4 @@
-package panels.mainPanelPanels;
+package panels.mainPanels;
 
 import panels.simulationSubPanels.RunSimulationPanel;
 import panels.simulationSubPanels.TabbedPlotPanel;
