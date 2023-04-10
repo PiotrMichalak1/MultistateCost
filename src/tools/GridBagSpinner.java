@@ -31,22 +31,6 @@ public class GridBagSpinner implements GridBagElement {
         formatter.setMaximum(1000);
         formatter.setCommitsOnValidEdit(true);
 
-        tf.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Do nothing
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                try {
-                    spinner.commitEdit();
-                } catch (ParseException ex) {
-                    // Invalid value, do nothing
-                }
-            }
-        });
-
 
         spinner.addChangeListener(e -> {
             parameters.setValueInSettings(type,fromState, toState, (int) spinner.getValue());
@@ -69,22 +53,6 @@ public class GridBagSpinner implements GridBagElement {
         formatter.setMinimum(0);
         formatter.setMaximum(1000);
         formatter.setCommitsOnValidEdit(true);
-
-        tf.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Do nothing
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                try {
-                    spinner.commitEdit();
-                } catch (ParseException ex) {
-                    // Invalid value, do nothing
-                }
-            }
-        });
 
 
         spinner.addChangeListener(e -> {

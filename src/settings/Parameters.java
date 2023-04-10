@@ -3,7 +3,7 @@ package settings;
 public class Parameters {
 
     private static Parameters instance = null;
-    public final int NUM_OF_STATES = 4;
+    public final int NUM_OF_STATES = 12;
     public final int DEFAULT_REPAIR_COST_STEP = 10;
     public final int DEFAULT_REPAIR_DURATION_STEP = 1;
 

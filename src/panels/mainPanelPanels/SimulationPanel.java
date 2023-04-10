@@ -1,7 +1,8 @@
-package panels.mainPanels;
+package panels.mainPanelPanels;
 
-import panels.simulationSubPanels.RunSimulationPanel;
-import panels.simulationSubPanels.TabbedPlotPanel;
+import panels.simulationSubPanels.*;
+
+
 
 import javax.swing.*;
 import java.awt.*;

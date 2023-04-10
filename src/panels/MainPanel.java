@@ -1,7 +1,8 @@
 package panels;
 
-import panels.mainPanels.SettingsPanel;
-import panels.mainPanels.SimulationPanel;
+import panels.mainPanelPanels.SettingsPanel;
+import panels.mainPanelPanels.SimulationPanel;
+import settings.Parameters;
 
 import javax.swing.*;
 import java.awt.*;
