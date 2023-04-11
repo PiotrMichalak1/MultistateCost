@@ -5,9 +5,8 @@ import java.util.Arrays;
 public class Parameters {
 
     private static Parameters instance = null;
-    public static final int NUM_OF_STATES = 4;
-    public final int DEFAULT_REPAIR_COST_STEP = 10;
-    public final int DEFAULT_REPAIR_DURATION_STEP = 1;
+
+    private boolean emergencyRepair = InitialSettings.DEFAULT_EMERGENCY_REPAIR_CHK;
 
     private int[][] repairCostMatrix;
     private int[][] repairDurationMatrix;
@@ -19,15 +18,10 @@ public class Parameters {
 
     private int[] inspectionObjectives;
 
-
-    public static final int REPAIR_COST = 1;
-    public static final int REPAIR_DURATION = 2;
-    public static final int OTHER_PROPERTIES = 3;
-    public static final int STATIC_COST = 4;
-    public static final int WEIBULL_SCALE = 5;
-    public static final int WEIBULL_SHAPE = 6;
-    public static final int INSPECTION_COST = 7;
-    public static final int INSPECTION_OBJECTIVES = 8;
+    private int emStateDropsTo;
+    private int emNextInspectionIn;
+    private int emEmergencyCost;
+    private int emDelay;
 
 
     private Parameters() {
@@ -37,6 +31,7 @@ public class Parameters {
         initializeWeibullScaleVector();
         initializeWeibullShapeVector();
         initializeInspectionObjectives();
+        initializeEmergencyRepairParameters();
     }
 
     public static Parameters getInstance() {
@@ -47,30 +42,30 @@ public class Parameters {
     }
 
     private void initializeRepairCosts() {
-        repairCostMatrix = new int[NUM_OF_STATES - 1][NUM_OF_STATES - 1];
+        repairCostMatrix = new int[InitialSettings.DEFAULT_NUM_OF_STATES - 1][InitialSettings.DEFAULT_NUM_OF_STATES - 1];
         for (int i = 0; i < repairCostMatrix.length; i++) {
-            int repairCost = DEFAULT_REPAIR_COST_STEP;
+            int repairCost = InitialSettings.DEFAULT_REPAIR_COST_STEP;
             for (int j = i; j < repairCostMatrix[i].length; j++) {
                 repairCostMatrix[i][j] = repairCost;
-                repairCost += DEFAULT_REPAIR_COST_STEP;
+                repairCost += InitialSettings.DEFAULT_REPAIR_COST_STEP;
             }
         }
     }
 
     private void initializeRepairDuration() {
-        repairDurationMatrix = new int[NUM_OF_STATES - 1][NUM_OF_STATES - 1];
+        repairDurationMatrix = new int[InitialSettings.DEFAULT_NUM_OF_STATES - 1][InitialSettings.DEFAULT_NUM_OF_STATES - 1];
         for (int i = 0; i < repairDurationMatrix.length; i++) {
-            int repairDuration = DEFAULT_REPAIR_DURATION_STEP;
+            int repairDuration = InitialSettings.DEFAULT_REPAIR_DURATION_STEP;
             for (int j = i; j < repairDurationMatrix[i].length; j++) {
                 repairDurationMatrix[i][j] = repairDuration;
-                repairDuration += DEFAULT_REPAIR_DURATION_STEP;
+                repairDuration += InitialSettings.DEFAULT_REPAIR_DURATION_STEP;
             }
         }
     }
 
     private void initializeStaticCostVector() {
-        staticCostVector = new int[NUM_OF_STATES];
-        for (int state = 0; state < NUM_OF_STATES; state++) {
+        staticCostVector = new int[InitialSettings.DEFAULT_NUM_OF_STATES];
+        for (int state = 0; state < InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
             if (state == 0) {
                 staticCostVector[state] = 0;
             } else if (state == 1) {
@@ -84,8 +79,8 @@ public class Parameters {
     }
 
     private void initializeWeibullScaleVector() {
-        weibullScaleVector = new int[NUM_OF_STATES - 1];
-        for (int state = 1; state < NUM_OF_STATES; state++) {
+        weibullScaleVector = new int[InitialSettings.DEFAULT_NUM_OF_STATES - 1];
+        for (int state = 1; state < InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
             if (state == 1) {
                 weibullScaleVector[state - 1] = 50;
             } else if (state == 2) {
@@ -99,15 +94,22 @@ public class Parameters {
     }
 
     private void initializeWeibullShapeVector() {
-        weibullShapeVector = new double[NUM_OF_STATES - 1];
-        for (int state = 1; state < NUM_OF_STATES; state++) {
+        weibullShapeVector = new double[InitialSettings.DEFAULT_NUM_OF_STATES - 1];
+        for (int state = 1; state < InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
             weibullShapeVector[state - 1] = 5.0;
         }
     }
 
     private void initializeInspectionObjectives() {
-        inspectionObjectives = new int[NUM_OF_STATES - 1];
+        inspectionObjectives = new int[InitialSettings.DEFAULT_NUM_OF_STATES - 1];
         Arrays.fill(inspectionObjectives, 1);
+    }
+
+    private void initializeEmergencyRepairParameters(){
+        this.emStateDropsTo = InitialSettings.DEFAULT_STATE_DROPS_TO;
+        this.emNextInspectionIn = InitialSettings.DEFAULT_NEXT_INSPECTION_IN;
+        this.emEmergencyCost = InitialSettings.DEFAULT_EMERGENCY_COST;
+        this.emDelay = InitialSettings.DEFAULT_EMERGENCY_DELAY;
     }
 
     public int getRepairCost(int fromState, int toState) {
@@ -161,10 +163,51 @@ public class Parameters {
     public int getInspectionObjectives(int state){return inspectionObjectives[state-2];}
 
     public void setInspectionObjectives(int state, int repairToState){this.inspectionObjectives[state-2] = repairToState;}
+
+    public int getEmStateDropsTo() {
+        return emStateDropsTo;
+    }
+
+    public void setEmStateDropsTo(int emStateDropsTo) {
+        this.emStateDropsTo = emStateDropsTo;
+    }
+
+    public int getEmNextInspectionIn() {
+        return emNextInspectionIn;
+    }
+
+    public void setEmNextInspectionIn(int emNextInspectionIn) {
+        this.emNextInspectionIn = emNextInspectionIn;
+    }
+
+    public int getEmEmergencyCost() {
+        return emEmergencyCost;
+    }
+
+    public void setEmEmergencyCost(int emEmergencyCost) {
+        this.emEmergencyCost = emEmergencyCost;
+    }
+
+    public int getEmDelay() {
+        return emDelay;
+    }
+
+    public void setEmDelay(int emDelay) {
+        this.emDelay = emDelay;
+    }
+
+    public boolean isEmergencyRepair() {
+        return emergencyRepair;
+    }
+
+    public void setEmergencyRepair(boolean emergencyRepair) {
+        this.emergencyRepair = emergencyRepair;
+    }
+
     public int getValueFromSettings(int type, int fromState, int toState) {
         return switch (type) {
-            case REPAIR_COST -> getRepairCost(fromState, toState);
-            case REPAIR_DURATION -> getRepairDuration(fromState, toState);
+            case InitialSettings.REPAIR_COST -> getRepairCost(fromState, toState);
+            case InitialSettings.REPAIR_DURATION -> getRepairDuration(fromState, toState);
             default -> throw new IllegalStateException(
                     "Type of data to retrieve mismatch");
         };
@@ -174,8 +217,8 @@ public class Parameters {
     public void setValueInSettings(int type, int fromState, int toState, int value) {
 
         switch (type) {
-            case REPAIR_COST -> setRepairCost(fromState, toState, value);
-            case REPAIR_DURATION -> setRepairDuration(fromState, toState, value);
+            case InitialSettings.REPAIR_COST -> setRepairCost(fromState, toState, value);
+            case InitialSettings.REPAIR_DURATION -> setRepairDuration(fromState, toState, value);
             default -> throw new IllegalStateException(
                     "Type of data to set mismatch");
         }
@@ -183,23 +226,44 @@ public class Parameters {
 
     public int getValueFromSettings(int type, int state) {
         return switch (type) {
-            case STATIC_COST -> getStaticCost(state);
-            case WEIBULL_SCALE -> getWeibullScale(state);
-            case INSPECTION_COST -> getInspectionCost();
-            case INSPECTION_OBJECTIVES -> getInspectionObjectives(state);
+            case InitialSettings.STATIC_COST -> getStaticCost(state);
+            case InitialSettings.WEIBULL_SCALE -> getWeibullScale(state);
+            case InitialSettings.INSPECTION_COST -> getInspectionCost();
+            case InitialSettings.INSPECTION_OBJECTIVES -> getInspectionObjectives(state);
             default -> throw new IllegalStateException("Data to retrieve mismatch");
         };
     }
 
     public void setValueInSettings(int type, int state, int value) {
         switch (type) {
-            case STATIC_COST -> setStaticCost(state, value);
-            case WEIBULL_SCALE -> setWeibullScale(state, value);
-            case INSPECTION_COST -> setInspectionCost(value);
-            case INSPECTION_OBJECTIVES -> setInspectionObjectives(state, value);
+            case InitialSettings.STATIC_COST -> setStaticCost(state, value);
+            case InitialSettings.WEIBULL_SCALE -> setWeibullScale(state, value);
+            case InitialSettings.INSPECTION_COST -> setInspectionCost(value);
+            case InitialSettings.INSPECTION_OBJECTIVES -> setInspectionObjectives(state, value);
             default -> throw new IllegalStateException(
                     "Data type mismatch");
         }
+    }
+
+    public void setValueInSettings(int type, int value){
+        switch (type){
+            case InitialSettings.STATE_DROPS_TO -> setEmStateDropsTo(value);
+            case InitialSettings.NEXT_INSPECTION_IN -> setEmNextInspectionIn(value);
+            case InitialSettings.EMERGENCY_COST -> setEmEmergencyCost(value);
+            case InitialSettings.EMERGENCY_DELAY -> setEmDelay(value);
+            default -> throw new IllegalStateException(
+                    "Data type mismatch");
+        }
+    }
+    public int getValueFromSettings(int type){
+        return switch (type){
+            case InitialSettings.STATE_DROPS_TO -> getEmStateDropsTo();
+            case InitialSettings.NEXT_INSPECTION_IN -> getEmNextInspectionIn();
+            case InitialSettings.EMERGENCY_COST -> getEmEmergencyCost();
+            case InitialSettings.EMERGENCY_DELAY -> getEmDelay();
+            default -> throw new IllegalStateException(
+                    "Data type mismatch");
+        };
     }
 
 }

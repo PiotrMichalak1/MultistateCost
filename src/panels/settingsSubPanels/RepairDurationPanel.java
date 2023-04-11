@@ -1,5 +1,6 @@
 package panels.settingsSubPanels;
 
+import settings.InitialSettings;
 import settings.Parameters;
 import tools.GridBagLabel;
 import tools.GridBagSpinner;
@@ -22,9 +23,9 @@ public class RepairDurationPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        bagLabel.putInGrid(this,"Repair Duration",0,0,Parameters.REPAIR_DURATION);
+        bagLabel.putInGrid(this,"Repair Duration",0,0, InitialSettings.REPAIR_DURATION);
 
-        for (int i = 1; i <= parameters.NUM_OF_STATES; i++) {
+        for (int i = 1; i <= InitialSettings.DEFAULT_NUM_OF_STATES; i++) {
             if(i==1){
                 bagLabel.putInGrid(this,"State",0,1);
             }else {
@@ -33,16 +34,16 @@ public class RepairDurationPanel extends JPanel {
 
         }
 
-        for (int i = 1; i < parameters.NUM_OF_STATES; i++) {
+        for (int i = 1; i < InitialSettings.DEFAULT_NUM_OF_STATES; i++) {
             bagLabel.putInGrid(this,"to "+i,0,i+1);
         }
 
     }
 
     private void initializeRepairDurationSpinners() {
-        for (int toState = 1; toState < parameters.NUM_OF_STATES; toState++) {
-            for (int fromState = toState+1;fromState<=parameters.NUM_OF_STATES;fromState++) {
-                GridBagSpinner spinner = new GridBagSpinner(parameters.REPAIR_DURATION,fromState,toState);
+        for (int toState = 1; toState < InitialSettings.DEFAULT_NUM_OF_STATES; toState++) {
+            for (int fromState = toState+1; fromState<= InitialSettings.DEFAULT_NUM_OF_STATES; fromState++) {
+                GridBagSpinner spinner = new GridBagSpinner(InitialSettings.REPAIR_DURATION,fromState,toState);
                 spinner.putInGrid(this,"",fromState-1,toState+1);
             }
         }

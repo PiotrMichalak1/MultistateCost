@@ -1,6 +1,6 @@
 package tools;
 
-import settings.Parameters;
+import settings.InitialSettings;
 import tools.interfaces.GridBagElement;
 
 import javax.swing.*;
@@ -23,9 +23,9 @@ public class GridBagLabel extends JLabel implements GridBagElement {
         GridBagConstraints c = new GridBagConstraints();
         JLabel label = new JLabel();
         label.setText(text);
-        if (headerType == Parameters.OTHER_PROPERTIES) {
-            c.gridwidth = Parameters.NUM_OF_STATES+1;
-        }else c.gridwidth = Parameters.NUM_OF_STATES;
+        if (headerType == InitialSettings.OTHER_PROPERTIES) {
+            c.gridwidth = InitialSettings.DEFAULT_NUM_OF_STATES +1;
+        }else c.gridwidth = InitialSettings.DEFAULT_NUM_OF_STATES;
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = bagX;

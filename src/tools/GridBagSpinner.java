@@ -1,5 +1,6 @@
 package tools;
 
+import settings.InitialSettings;
 import settings.Parameters;
 import tools.interfaces.GridBagElement;
 
@@ -35,13 +36,13 @@ public class GridBagSpinner implements GridBagElement {
 
     public GridBagSpinner(int type, int state) {
 
-        if (type == Parameters.WEIBULL_SHAPE) {
+        if (type == InitialSettings.WEIBULL_SHAPE) {
             spinner = new JSpinner(new SpinnerNumberModel(parameters.getWeibullShape(state),
                     1.0,
                     5.0,
                     0.1));
             spinner.setToolTipText("Value Must be a double value between 1 and 5");
-        } else if (type == Parameters.INSPECTION_OBJECTIVES) {
+        } else if (type == InitialSettings.INSPECTION_OBJECTIVES) {
             spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type,state),
                     1,
                     state,
@@ -59,7 +60,7 @@ public class GridBagSpinner implements GridBagElement {
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
         JFormattedTextField tf = editor.getTextField();
         NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
-        if (type == Parameters.WEIBULL_SHAPE) {
+        if (type == InitialSettings.WEIBULL_SHAPE) {
             formatter.setValueClass(Double.class);
         } else {
             formatter.setValueClass(Integer.class);
@@ -69,7 +70,7 @@ public class GridBagSpinner implements GridBagElement {
         formatter.setCommitsOnValidEdit(true);
 
 
-        if (type == Parameters.WEIBULL_SHAPE) {
+        if (type == InitialSettings.WEIBULL_SHAPE) {
             spinner.addChangeListener(e -> {
                 parameters.setWeibullShape(state,(double) spinner.getValue());
                 System.out.println(spinner.getValue());
@@ -80,6 +81,50 @@ public class GridBagSpinner implements GridBagElement {
                 System.out.println(spinner.getValue());
             });
         }
+
+    }
+
+    public GridBagSpinner(int type){
+        switch (type){
+            case InitialSettings.STATE_DROPS_TO -> {
+                    spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type),
+                            1,
+                            InitialSettings.DEFAULT_NUM_OF_STATES,
+                            1));
+                    spinner.setToolTipText("Value Must be a double value between 1 and "+InitialSettings.DEFAULT_NUM_OF_STATES);
+                    spinner.addChangeListener(e -> {
+                        parameters.setValueInSettings(type,(int) spinner.getValue());
+                    });
+            }
+            case InitialSettings.NEXT_INSPECTION_IN -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type),
+                        1,
+                        1000,
+                        1));
+                spinner.setToolTipText("Value Must be a double value between 1 and 1000");
+                spinner.addChangeListener(e -> {
+                    parameters.setValueInSettings(type,(int) spinner.getValue());
+                });
+            }
+            case InitialSettings.EMERGENCY_COST, InitialSettings.EMERGENCY_DELAY -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type),
+                        0,
+                        1000,
+                        1));
+                spinner.setToolTipText("Value Must be a double value between 0 and 1000");
+                spinner.addChangeListener(e -> {
+                    parameters.setValueInSettings(type,(int) spinner.getValue());
+                });
+            }
+            default -> throw new IllegalStateException(
+                    "GridBagSpinner type mismatch");
+        }
+
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
+        JFormattedTextField tf = editor.getTextField();
+        NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
+        formatter.setValueClass(Integer.class);
+
 
     }
 
