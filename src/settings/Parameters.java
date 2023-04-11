@@ -6,7 +6,10 @@ public class Parameters {
 
     private static Parameters instance = null;
 
-    private boolean emergencyRepair = InitialSettings.DEFAULT_EMERGENCY_REPAIR_CHK;
+    private boolean emergencyRepair;
+    private boolean holdTheData;
+    private boolean runMultipleTimes;
+    private int runMultipleTimesNum;
 
     private int[][] repairCostMatrix;
     private int[][] repairDurationMatrix;
@@ -23,6 +26,11 @@ public class Parameters {
     private int emEmergencyCost;
     private int emDelay;
 
+    private int prodCycles;
+    private int minInterval;
+    private int maxInterval;
+    private int step;
+
 
     private Parameters() {
         initializeRepairCosts();
@@ -32,6 +40,7 @@ public class Parameters {
         initializeWeibullShapeVector();
         initializeInspectionObjectives();
         initializeEmergencyRepairParameters();
+        initializeSimulationPanelParameters();
     }
 
     public static Parameters getInstance() {
@@ -110,6 +119,17 @@ public class Parameters {
         this.emNextInspectionIn = InitialSettings.DEFAULT_NEXT_INSPECTION_IN;
         this.emEmergencyCost = InitialSettings.DEFAULT_EMERGENCY_COST;
         this.emDelay = InitialSettings.DEFAULT_EMERGENCY_DELAY;
+        this.emergencyRepair = InitialSettings.DEFAULT_EMERGENCY_REPAIR_CHK;
+    }
+
+    private void initializeSimulationPanelParameters() {
+        this.prodCycles = InitialSettings.DEFAULT_PROD_CYCLES_NUM;
+        this.minInterval = InitialSettings.DEFAULT_MIN_INTERVAL;
+        this.maxInterval = InitialSettings.DEFAULT_MAX_INTERVAL;
+        this.step = InitialSettings.DEFAULT_STEP;
+        this.holdTheData = InitialSettings.DEFAULT_HOLD_THE_DATA;
+        this.runMultipleTimes = InitialSettings.DEFAULT_RUN_MULTIPLE_TIMES;
+        this.runMultipleTimesNum = InitialSettings.DEFAULT_RUN_MULTIPLE_TIMES_NUM;
     }
 
     public int getRepairCost(int fromState, int toState) {
@@ -204,7 +224,63 @@ public class Parameters {
         this.emergencyRepair = emergencyRepair;
     }
 
-    public int getValueFromSettings(int type, int fromState, int toState) {
+    public int getProdCycles() {
+        return prodCycles;
+    }
+
+    public void setProdCycles(int prodCycles) {
+        this.prodCycles = prodCycles;
+    }
+
+    public int getMinInterval() {
+        return minInterval;
+    }
+
+    public void setMinInterval(int minInterval) {
+        this.minInterval = minInterval;
+    }
+
+    public int getMaxInterval() {
+        return maxInterval;
+    }
+
+    public void setMaxInterval(int maxInterval) {
+        this.maxInterval = maxInterval;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public boolean isHoldTheData() {
+        return holdTheData;
+    }
+
+    public void setHoldTheData(boolean holdTheData) {
+        this.holdTheData = holdTheData;
+    }
+
+    public boolean isRunMultipleTimes() {
+        return runMultipleTimes;
+    }
+
+    public void setRunMultipleTimes(boolean runMultipleTimes) {
+        this.runMultipleTimes = runMultipleTimes;
+    }
+
+    public int getRunMultipleTimesNum() {
+        return runMultipleTimesNum;
+    }
+
+    public void setRunMultipleTimesNum(int runMultipleTimesNum) {
+        this.runMultipleTimesNum = runMultipleTimesNum;
+    }
+
+    public int getValueFromParameters(int type, int fromState, int toState) {
         return switch (type) {
             case InitialSettings.REPAIR_COST -> getRepairCost(fromState, toState);
             case InitialSettings.REPAIR_DURATION -> getRepairDuration(fromState, toState);
@@ -214,7 +290,7 @@ public class Parameters {
     }
 
 
-    public void setValueInSettings(int type, int fromState, int toState, int value) {
+    public void setValueInParameters(int type, int fromState, int toState, int value) {
 
         switch (type) {
             case InitialSettings.REPAIR_COST -> setRepairCost(fromState, toState, value);
@@ -224,7 +300,7 @@ public class Parameters {
         }
     }
 
-    public int getValueFromSettings(int type, int state) {
+    public int getValueFromParameters(int type, int state) {
         return switch (type) {
             case InitialSettings.STATIC_COST -> getStaticCost(state);
             case InitialSettings.WEIBULL_SCALE -> getWeibullScale(state);
@@ -234,7 +310,7 @@ public class Parameters {
         };
     }
 
-    public void setValueInSettings(int type, int state, int value) {
+    public void setValueInParameters(int type, int state, int value) {
         switch (type) {
             case InitialSettings.STATIC_COST -> setStaticCost(state, value);
             case InitialSettings.WEIBULL_SCALE -> setWeibullScale(state, value);
@@ -245,22 +321,31 @@ public class Parameters {
         }
     }
 
-    public void setValueInSettings(int type, int value){
+    public void setValueInParameters(int type, int value){
         switch (type){
             case InitialSettings.STATE_DROPS_TO -> setEmStateDropsTo(value);
             case InitialSettings.NEXT_INSPECTION_IN -> setEmNextInspectionIn(value);
             case InitialSettings.EMERGENCY_COST -> setEmEmergencyCost(value);
             case InitialSettings.EMERGENCY_DELAY -> setEmDelay(value);
+            case InitialSettings.PRODUCTION_CYCLES -> setProdCycles(value);
+            case InitialSettings.MIN_INTERVAL -> setMinInterval(value);
+            case InitialSettings.MAX_INTERVAL -> setMaxInterval(value);
+            case InitialSettings.STEP -> setStep(value);
             default -> throw new IllegalStateException(
                     "Data type mismatch");
         }
     }
-    public int getValueFromSettings(int type){
+    public int getValueFromParameters(int type){
         return switch (type){
             case InitialSettings.STATE_DROPS_TO -> getEmStateDropsTo();
             case InitialSettings.NEXT_INSPECTION_IN -> getEmNextInspectionIn();
             case InitialSettings.EMERGENCY_COST -> getEmEmergencyCost();
             case InitialSettings.EMERGENCY_DELAY -> getEmDelay();
+            case InitialSettings.PRODUCTION_CYCLES -> getProdCycles();
+            case InitialSettings.MIN_INTERVAL -> getMinInterval();
+            case InitialSettings.MAX_INTERVAL -> getMaxInterval();
+            case InitialSettings.STEP -> getStep();
+            case InitialSettings.RUN_MULTIPLE_TIMES -> getRunMultipleTimesNum();
             default -> throw new IllegalStateException(
                     "Data type mismatch");
         };

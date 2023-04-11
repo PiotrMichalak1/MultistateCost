@@ -14,7 +14,7 @@ public class GridBagSpinner implements GridBagElement {
     JSpinner spinner;
 
     public GridBagSpinner(int type, int fromState, int toState) {
-        spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, fromState, toState),
+        spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type, fromState, toState),
                 0,
                 1000,
                 1));
@@ -29,7 +29,7 @@ public class GridBagSpinner implements GridBagElement {
 
 
         spinner.addChangeListener(e -> {
-            parameters.setValueInSettings(type,fromState, toState, (int) spinner.getValue());
+            parameters.setValueInParameters(type,fromState, toState, (int) spinner.getValue());
             System.out.println(spinner.getValue());
         });
     }
@@ -43,13 +43,13 @@ public class GridBagSpinner implements GridBagElement {
                     0.1));
             spinner.setToolTipText("Value Must be a double value between 1 and 5");
         } else if (type == InitialSettings.INSPECTION_OBJECTIVES) {
-            spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type,state),
+            spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type,state),
                     1,
                     state,
                     1));
             spinner.setToolTipText("Value Must be a double value between 1 and 5");
         } else {
-            spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, state),
+            spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type, state),
                     0,
                     1000,
                     1));
@@ -77,7 +77,7 @@ public class GridBagSpinner implements GridBagElement {
             });
         } else {
             spinner.addChangeListener(e -> {
-                parameters.setValueInSettings(type,state, (int) spinner.getValue());
+                parameters.setValueInParameters(type,state, (int) spinner.getValue());
                 System.out.println(spinner.getValue());
             });
         }
@@ -87,35 +87,90 @@ public class GridBagSpinner implements GridBagElement {
     public GridBagSpinner(int type){
         switch (type){
             case InitialSettings.STATE_DROPS_TO -> {
-                    spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type),
+                    spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
                             1,
                             InitialSettings.DEFAULT_NUM_OF_STATES,
                             1));
                     spinner.setToolTipText("Value Must be a double value between 1 and "+InitialSettings.DEFAULT_NUM_OF_STATES);
                     spinner.addChangeListener(e -> {
-                        parameters.setValueInSettings(type,(int) spinner.getValue());
+                        parameters.setValueInParameters(type,(int) spinner.getValue());
                         System.out.println(spinner.getValue());
                     });
             }
             case InitialSettings.NEXT_INSPECTION_IN -> {
-                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type),
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
                         1,
                         1000,
                         1));
                 spinner.setToolTipText("Value Must be a double value between 1 and 1000");
                 spinner.addChangeListener(e -> {
-                    parameters.setValueInSettings(type,(int) spinner.getValue());
+                    parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
                 });
             }
             case InitialSettings.EMERGENCY_COST, InitialSettings.EMERGENCY_DELAY -> {
-                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type),
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
                         0,
                         1000,
                         1));
                 spinner.setToolTipText("Value Must be a double value between 0 and 1000");
                 spinner.addChangeListener(e -> {
-                    parameters.setValueInSettings(type,(int) spinner.getValue());
+                    parameters.setValueInParameters(type,(int) spinner.getValue());
+                    System.out.println(spinner.getValue());
+                });
+            }
+            case InitialSettings.PRODUCTION_CYCLES -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
+                        100,
+                        10000,
+                        1));
+                spinner.setToolTipText("Value Must be a double value between 0 and 10000");
+                spinner.addChangeListener(e -> {
+                    parameters.setValueInParameters(type,(int) spinner.getValue());
+                    System.out.println(spinner.getValue());
+                });
+            }
+            case InitialSettings.MIN_INTERVAL -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
+                        1,
+                        40,
+                        1));
+                spinner.setToolTipText("Value Must be a double value between 1 and 40");
+                spinner.addChangeListener(e -> {
+                    parameters.setValueInParameters(type,(int) spinner.getValue());
+                    System.out.println(spinner.getValue());
+                });
+            }
+            case InitialSettings.MAX_INTERVAL -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
+                        60,
+                        500,
+                        1));
+                spinner.setToolTipText("Value Must be a double value between 60 and 500");
+                spinner.addChangeListener(e -> {
+                    parameters.setValueInParameters(type,(int) spinner.getValue());
+                    System.out.println(spinner.getValue());
+                });
+            }
+            case InitialSettings.STEP -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
+                        1,
+                        20,
+                        1));
+                spinner.setToolTipText("Value Must be a double value between 1 and 20");
+                spinner.addChangeListener(e -> {
+                    parameters.setValueInParameters(type,(int) spinner.getValue());
+                    System.out.println(spinner.getValue());
+                });
+            }
+            case InitialSettings.RUN_MULTIPLE_TIMES-> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
+                        1,
+                        100,
+                        1));
+                spinner.setToolTipText("Value Must be a double value between 1 and 100");
+                spinner.addChangeListener(e -> {
+                    parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
                 });
             }

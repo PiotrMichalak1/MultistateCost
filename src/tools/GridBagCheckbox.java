@@ -23,6 +23,20 @@ public class GridBagCheckbox implements GridBagElement {
                 });
                 checkBox.setSelected(InitialSettings.DEFAULT_EMERGENCY_REPAIR_CHK);
             }
+            case InitialSettings.HOLD_THE_DATA -> {
+                checkBox.addActionListener(e -> {
+                    parameters.setHoldTheData(checkBox.isSelected());
+                    System.out.println(checkBox.isSelected());
+                });
+                checkBox.setSelected(InitialSettings.DEFAULT_HOLD_THE_DATA);
+            }
+            case InitialSettings.RUN_MULTIPLE_TIMES -> {
+                checkBox.addActionListener(e -> {
+                    parameters.setRunMultipleTimes(checkBox.isSelected());
+                    System.out.println(checkBox.isSelected());
+                });
+                checkBox.setSelected(InitialSettings.DEFAULT_RUN_MULTIPLE_TIMES);
+            }
             default -> throw new IllegalStateException(
                     "Type of checkbox mismatch");
         }
@@ -39,6 +53,7 @@ public class GridBagCheckbox implements GridBagElement {
 
         c.insets = new Insets(5, 5, 5, 5);
         c.fill = GridBagConstraints.HORIZONTAL;
+
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = bagX;
