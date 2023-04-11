@@ -21,7 +21,7 @@ public class RepairCostPanel extends JPanel {
     private void initializeRepairCostLabels() {
         this.setLayout(new GridBagLayout());
 
-        bagLabel.putInGrid(this,"Repair Cost",0,0,true);
+        bagLabel.putInGrid(this,"Repair Cost",0,0,Parameters.REPAIR_COST);
 
         for (int i = 1; i <= parameters.NUM_OF_STATES; i++) {
             if(i==1){

@@ -3,7 +3,7 @@ package settings;
 public class Parameters {
 
     private static Parameters instance = null;
-    public final int NUM_OF_STATES = 4;
+    public static final int NUM_OF_STATES = 4;
     public final int DEFAULT_REPAIR_COST_STEP = 10;
     public final int DEFAULT_REPAIR_DURATION_STEP = 1;
 
@@ -16,12 +16,13 @@ public class Parameters {
     private int inspectionCost = 5;
 
 
-    public final int REPAIR_COST = 1;
-    public final int REPAIR_DURATION = 2;
-    public final int STATIC_COST = 3;
-    public final int WEIBULL_SCALE = 4;
-    public final int WEIBULL_SHAPE = 5;
-    public final int INSPECTION_COST = 6;
+    public static final int REPAIR_COST = 1;
+    public static final int REPAIR_DURATION = 2;
+    public static final int OTHER_PROPERTIES =3;
+    public static final int STATIC_COST = 4;
+    public static final int WEIBULL_SCALE = 5;
+    public static final int WEIBULL_SHAPE = 6;
+    public static final int INSPECTION_COST = 67;
 
 
     private Parameters() {
@@ -94,7 +95,7 @@ public class Parameters {
     private void initializeWeibullShapeVector() {
         weibullShapeVector = new double[NUM_OF_STATES - 1];
         for (int state = 1; state < NUM_OF_STATES; state++) {
-                weibullShapeVector[state - 1] = 5.0;
+            weibullShapeVector[state - 1] = 5.0;
         }
     }
 
@@ -202,7 +203,7 @@ public class Parameters {
                 setStaticCost(state, value);
                 break;
             case WEIBULL_SCALE:
-                setWeibullScale(state,value);
+                setWeibullScale(state, value);
                 break;
             case INSPECTION_COST:
                 setInspectionCost(value);

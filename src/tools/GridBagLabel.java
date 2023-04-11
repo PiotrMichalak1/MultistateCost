@@ -19,13 +19,13 @@ public class GridBagLabel extends JLabel implements GridBagElement {
         parent.add(label, c);
     }
 
-    public void putInGrid(JComponent parent, String text, int bagX, int bagY, boolean header) {
+    public void putInGrid(JComponent parent, String text, int bagX, int bagY, int headerType) {
         GridBagConstraints c = new GridBagConstraints();
         JLabel label = new JLabel();
         label.setText(text);
-        if (header) {
-            c.gridwidth = Parameters.getInstance().NUM_OF_STATES;
-        }
+        if (headerType == Parameters.OTHER_PROPERTIES) {
+            c.gridwidth = Parameters.NUM_OF_STATES+1;
+        }else c.gridwidth = Parameters.NUM_OF_STATES;
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = bagX;

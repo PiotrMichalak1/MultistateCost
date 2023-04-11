@@ -22,7 +22,7 @@ public class RepairDurationPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        bagLabel.putInGrid(this,"Repair Duration",0,0,true);
+        bagLabel.putInGrid(this,"Repair Duration",0,0,Parameters.REPAIR_DURATION);
 
         for (int i = 1; i <= parameters.NUM_OF_STATES; i++) {
             if(i==1){

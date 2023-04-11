@@ -22,7 +22,7 @@ public class OtherPropertiesPanel extends JPanel {
     private void initializeOtherPropertiesLabels() {
         this.setLayout(new GridBagLayout());
 
-        bagLabel.putInGrid(this,"Other Properties",0,0,true);
+        bagLabel.putInGrid(this,"Other Properties",0,0,Parameters.OTHER_PROPERTIES);
 
         for (int i = 1; i <= parameters.NUM_OF_STATES; i++) {
             if(i==1){
