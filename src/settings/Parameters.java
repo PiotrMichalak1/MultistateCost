@@ -1,5 +1,7 @@
 package settings;
 
+import java.util.Arrays;
+
 public class Parameters {
 
     private static Parameters instance = null;
@@ -15,14 +17,17 @@ public class Parameters {
     private double[] weibullShapeVector;
     private int inspectionCost = 5;
 
+    private int[] inspectionObjectives;
+
 
     public static final int REPAIR_COST = 1;
     public static final int REPAIR_DURATION = 2;
-    public static final int OTHER_PROPERTIES =3;
+    public static final int OTHER_PROPERTIES = 3;
     public static final int STATIC_COST = 4;
     public static final int WEIBULL_SCALE = 5;
     public static final int WEIBULL_SHAPE = 6;
-    public static final int INSPECTION_COST = 67;
+    public static final int INSPECTION_COST = 7;
+    public static final int INSPECTION_OBJECTIVES = 8;
 
 
     private Parameters() {
@@ -31,6 +36,7 @@ public class Parameters {
         initializeStaticCostVector();
         initializeWeibullScaleVector();
         initializeWeibullShapeVector();
+        initializeInspectionObjectives();
     }
 
     public static Parameters getInstance() {
@@ -99,6 +105,11 @@ public class Parameters {
         }
     }
 
+    private void initializeInspectionObjectives() {
+        inspectionObjectives = new int[NUM_OF_STATES - 1];
+        Arrays.fill(inspectionObjectives, 1);
+    }
+
     public int getRepairCost(int fromState, int toState) {
         return repairCostMatrix[toState - 1][fromState - 2];
     }
@@ -147,70 +158,47 @@ public class Parameters {
         this.inspectionCost = cost;
     }
 
+    public int getInspectionObjectives(int state){return inspectionObjectives[state-2];}
+
+    public void setInspectionObjectives(int state, int repairToState){this.inspectionObjectives[state-2] = repairToState;}
     public int getValueFromSettings(int type, int fromState, int toState) {
-        int value;
-        switch (type) {
-            case REPAIR_COST:
-                value = getRepairCost(fromState, toState);
-                break;
-            case REPAIR_DURATION:
-                value = getRepairDuration(fromState, toState);
-                break;
-            default:
-                throw new IllegalStateException(
-                        "Type of data to retrieve mismatch");
-        }
-        return value;
+        return switch (type) {
+            case REPAIR_COST -> getRepairCost(fromState, toState);
+            case REPAIR_DURATION -> getRepairDuration(fromState, toState);
+            default -> throw new IllegalStateException(
+                    "Type of data to retrieve mismatch");
+        };
     }
 
 
     public void setValueInSettings(int type, int fromState, int toState, int value) {
 
         switch (type) {
-            case REPAIR_COST:
-                setRepairCost(fromState, toState, value);
-                break;
-            case REPAIR_DURATION:
-                setRepairDuration(fromState, toState, value);
-                break;
-            default:
-                throw new IllegalStateException(
-                        "Type of data to set mismatch");
+            case REPAIR_COST -> setRepairCost(fromState, toState, value);
+            case REPAIR_DURATION -> setRepairDuration(fromState, toState, value);
+            default -> throw new IllegalStateException(
+                    "Type of data to set mismatch");
         }
     }
 
     public int getValueFromSettings(int type, int state) {
-        int value;
-        switch (type) {
-            case STATIC_COST:
-                value = getStaticCost(state);
-                break;
-            case WEIBULL_SCALE:
-                value = getWeibullScale(state);
-                break;
-            case INSPECTION_COST:
-                value = getInspectionCost();
-                break;
-            default:
-                value = 0;
-        }
-        return value;
+        return switch (type) {
+            case STATIC_COST -> getStaticCost(state);
+            case WEIBULL_SCALE -> getWeibullScale(state);
+            case INSPECTION_COST -> getInspectionCost();
+            case INSPECTION_OBJECTIVES -> getInspectionObjectives(state);
+            default -> throw new IllegalStateException("Data to retrieve mismatch");
+        };
     }
 
     public void setValueInSettings(int type, int state, int value) {
         switch (type) {
-            case STATIC_COST:
-                setStaticCost(state, value);
-                break;
-            case WEIBULL_SCALE:
-                setWeibullScale(state, value);
-                break;
-            case INSPECTION_COST:
-                setInspectionCost(value);
-                break;
-            default:
-                throw new IllegalStateException(
-                        "Data type not matching any parameter");
+            case STATIC_COST -> setStaticCost(state, value);
+            case WEIBULL_SCALE -> setWeibullScale(state, value);
+            case INSPECTION_COST -> setInspectionCost(value);
+            case INSPECTION_OBJECTIVES -> setInspectionObjectives(state, value);
+            default -> throw new IllegalStateException(
+                    "Data type mismatch");
         }
     }
 

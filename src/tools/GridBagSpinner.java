@@ -6,9 +6,6 @@ import tools.interfaces.GridBagElement;
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.text.ParseException;
 
 
 public class GridBagSpinner implements GridBagElement {
@@ -38,11 +35,17 @@ public class GridBagSpinner implements GridBagElement {
 
     public GridBagSpinner(int type, int state) {
 
-        if (type == parameters.WEIBULL_SHAPE) {
+        if (type == Parameters.WEIBULL_SHAPE) {
             spinner = new JSpinner(new SpinnerNumberModel(parameters.getWeibullShape(state),
                     1.0,
                     5.0,
                     0.1));
+            spinner.setToolTipText("Value Must be a double value between 1 and 5");
+        } else if (type == Parameters.INSPECTION_OBJECTIVES) {
+            spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type,state),
+                    1,
+                    state,
+                    1));
             spinner.setToolTipText("Value Must be a double value between 1 and 5");
         } else {
             spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromSettings(type, state),
@@ -56,7 +59,7 @@ public class GridBagSpinner implements GridBagElement {
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
         JFormattedTextField tf = editor.getTextField();
         NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
-        if (type == parameters.WEIBULL_SHAPE) {
+        if (type == Parameters.WEIBULL_SHAPE) {
             formatter.setValueClass(Double.class);
         } else {
             formatter.setValueClass(Integer.class);
@@ -66,7 +69,7 @@ public class GridBagSpinner implements GridBagElement {
         formatter.setCommitsOnValidEdit(true);
 
 
-        if (type == parameters.WEIBULL_SHAPE) {
+        if (type == Parameters.WEIBULL_SHAPE) {
             spinner.addChangeListener(e -> {
                 parameters.setWeibullShape(state,(double) spinner.getValue());
                 System.out.println(spinner.getValue());
