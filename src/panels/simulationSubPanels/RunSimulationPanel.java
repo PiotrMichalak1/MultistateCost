@@ -29,7 +29,6 @@ public class RunSimulationPanel extends JPanel {
         bagLabel.putInGrid(this,"Min Interval",0,1);
         bagLabel.putInGrid(this,"Max Interval",0,2);
         bagLabel.putInGrid(this,"Step",0,3);
-        bagLabel.putInGrid(this,"Times",5,3);
     }
 
     private void initializeRunSimulationSpinnersAndButtons() {
@@ -42,14 +41,11 @@ public class RunSimulationPanel extends JPanel {
         spinner = new GridBagSpinner(InitialSettings.STEP);
         spinner.putInGrid(this,"",1,3);
 
-        bagButton.putInGrid(this,"Simulate",4,2);
-        bagLabel.putEmptyInGrid(this,2,0);
-        GridBagCheckbox checkbox = new GridBagCheckbox(InitialSettings.HOLD_THE_DATA);
-        checkbox.putInGrid(this,"Hold the data",3,2);
-        checkbox = new GridBagCheckbox(InitialSettings.RUN_MULTIPLE_TIMES);
-        checkbox.putInGrid(this,"Run", 3,3);
+        bagButton.putInGrid(this,"Simulate",3,2);
 
-        spinner = new GridBagSpinner(InitialSettings.RUN_MULTIPLE_TIMES);
-        spinner.putInGrid(this,"",4,3);
+        GridBagCheckbox checkbox = new GridBagCheckbox(InitialSettings.HOLD_THE_DATA);
+        checkbox.putInGrid(this,"Hold the data",2,2);
+        RunMultipleTimesPanel runMultipleTimesPanel = new RunMultipleTimesPanel();
+        runMultipleTimesPanel.putInGrid(this,2,3);
     }
 }

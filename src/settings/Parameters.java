@@ -331,6 +331,7 @@ public class Parameters {
             case InitialSettings.MIN_INTERVAL -> setMinInterval(value);
             case InitialSettings.MAX_INTERVAL -> setMaxInterval(value);
             case InitialSettings.STEP -> setStep(value);
+            case InitialSettings.RUN_MULTIPLE_TIMES -> setRunMultipleTimesNum(value);
             default -> throw new IllegalStateException(
                     "Data type mismatch");
         }
