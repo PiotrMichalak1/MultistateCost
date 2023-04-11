@@ -94,6 +94,7 @@ public class GridBagSpinner implements GridBagElement {
                     spinner.setToolTipText("Value Must be a double value between 1 and "+InitialSettings.DEFAULT_NUM_OF_STATES);
                     spinner.addChangeListener(e -> {
                         parameters.setValueInSettings(type,(int) spinner.getValue());
+                        System.out.println(spinner.getValue());
                     });
             }
             case InitialSettings.NEXT_INSPECTION_IN -> {
@@ -104,6 +105,7 @@ public class GridBagSpinner implements GridBagElement {
                 spinner.setToolTipText("Value Must be a double value between 1 and 1000");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInSettings(type,(int) spinner.getValue());
+                    System.out.println(spinner.getValue());
                 });
             }
             case InitialSettings.EMERGENCY_COST, InitialSettings.EMERGENCY_DELAY -> {
@@ -114,6 +116,7 @@ public class GridBagSpinner implements GridBagElement {
                 spinner.setToolTipText("Value Must be a double value between 0 and 1000");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInSettings(type,(int) spinner.getValue());
+                    System.out.println(spinner.getValue());
                 });
             }
             default -> throw new IllegalStateException(

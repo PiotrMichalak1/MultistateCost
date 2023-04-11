@@ -24,13 +24,14 @@ public class EmergencyRepairPanel extends JPanel {
         this.setLayout(new GridBagLayout());
 
         GridBagCheckbox emergencyRepairCheckBox = new GridBagCheckbox(InitialSettings.EMERGENCY_REPAIR_CHK);
-        emergencyRepairCheckBox.putInGrid(this, "Emergency Repair", 0, 0);
+        emergencyRepairCheckBox.putInGrid(this, "Emergency Repair", 1, 0);
 
         bagLabel.putInGrid(this, "State drops to", 0, 1);
         bagLabel.putInGrid(this, "Next inspection in", 0, 2);
         bagLabel.putInGrid(this, "Emergency cost", 0, 3);
         bagLabel.putInGrid(this, "Delay", 0, 4);
 
+        bagLabel.putInGrid(this,"or below",2,1);
     }
 
     private void initializeEmergencyRepairSpinners() {
