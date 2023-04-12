@@ -1,9 +1,11 @@
-package tools.interfaces;
+package tools.gridbagelements;
+
+import tools.interfaces.GridBagElement;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GridBagButton implements GridBagElement{
+public class GridBagButton implements GridBagElement {
     @Override
     public void putInGrid(JComponent parent, String text, int bagX, int bagY) {
         GridBagConstraints c = new GridBagConstraints();

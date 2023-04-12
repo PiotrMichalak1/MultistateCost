@@ -1,10 +1,10 @@
-package panels.settingsSubPanels;
+package panels.settingssubpanels;
 
 import settings.InitialSettings;
 import settings.Parameters;
-import tools.GridBagCheckbox;
-import tools.GridBagLabel;
-import tools.GridBagSpinner;
+import tools.gridbagelements.GridBagCheckbox;
+import tools.gridbagelements.GridBagLabel;
+import tools.gridbagelements.GridBagSpinner;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package tools;
+package tools.gridbagelements;
 
 import settings.InitialSettings;
 import settings.Parameters;

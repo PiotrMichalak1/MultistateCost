@@ -1,6 +1,6 @@
-package panels.mainPanelPanels;
+package panels.mainpanels;
 
-import panels.simulationSubPanels.*;
+import panels.simulationsubpanels.*;
 
 
 

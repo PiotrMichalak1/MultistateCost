@@ -1,6 +1,6 @@
-package panels.mainPanelPanels;
+package panels.mainpanels;
 
-import panels.settingsSubPanels.*;
+import panels.settingssubpanels.*;
 
 import javax.swing.*;
 import java.awt.*;

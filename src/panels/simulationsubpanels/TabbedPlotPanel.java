@@ -1,6 +1,6 @@
-package panels.simulationSubPanels;
+package panels.simulationsubpanels;
 
-import panels.simulationSubPanels.tabbedPanels.*;
+import panels.simulationsubpanels.tabbedPanels.*;
 
 import javax.swing.*;
 

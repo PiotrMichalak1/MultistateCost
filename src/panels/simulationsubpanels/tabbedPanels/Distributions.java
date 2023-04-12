@@ -1,4 +1,4 @@
-package panels.simulationSubPanels.tabbedPanels;
+package panels.simulationsubpanels.tabbedPanels;
 
 import javax.swing.*;
 import java.awt.*;
