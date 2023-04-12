@@ -14,10 +14,16 @@ public class RunSimulationPanel extends JPanel {
     Parameters parameters;
     GridBagLabel bagLabel;
     GridBagButton bagButton;
+
+    GridBagSpinner minInterval;
+    GridBagSpinner maxInterval;
     public RunSimulationPanel() {
         parameters = Parameters.getInstance();
         bagLabel = new GridBagLabel();
         bagButton = new GridBagButton();
+
+        minInterval = new GridBagSpinner(InitialSettings.MIN_INTERVAL);
+        maxInterval = new GridBagSpinner(InitialSettings.MAX_INTERVAL);
 
         initializeRunSimulationLabels();
         initializeRunSimulationSpinnersAndButtons();

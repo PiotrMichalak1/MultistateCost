@@ -91,7 +91,7 @@ public class GridBagSpinner implements GridBagElement {
                             1,
                             InitialSettings.DEFAULT_NUM_OF_STATES,
                             1));
-                    spinner.setToolTipText("Value Must be a double value between 1 and "+InitialSettings.DEFAULT_NUM_OF_STATES);
+                    spinner.setToolTipText("Value Must be an integer value between 1 and "+InitialSettings.DEFAULT_NUM_OF_STATES);
                     spinner.addChangeListener(e -> {
                         parameters.setValueInParameters(type,(int) spinner.getValue());
                         System.out.println(spinner.getValue());
@@ -99,32 +99,36 @@ public class GridBagSpinner implements GridBagElement {
             }
             case InitialSettings.NEXT_INSPECTION_IN -> {
                 spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
-                        1,
+                        parameters.getValueFromParameters(InitialSettings.EMERGENCY_DELAY),
                         1000,
                         1));
-                spinner.setToolTipText("Value Must be a double value between 1 and 1000");
-                spinner.addChangeListener(e -> {
-                    parameters.setValueInParameters(type,(int) spinner.getValue());
-                    System.out.println(spinner.getValue());
-                });
+                spinner.setToolTipText("Value Must be an integer value between "+ parameters.getEmDelay() +"and 1000");
             }
-            case InitialSettings.EMERGENCY_COST, InitialSettings.EMERGENCY_DELAY -> {
+            case InitialSettings.EMERGENCY_COST -> {
                 spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
                         0,
                         1000,
                         1));
-                spinner.setToolTipText("Value Must be a double value between 0 and 1000");
+                spinner.setToolTipText("Value Must be an integer value between 0 and 1000");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
                 });
+
+            }
+            case InitialSettings.EMERGENCY_DELAY -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
+                        0,
+                        parameters.getValueFromParameters(InitialSettings.NEXT_INSPECTION_IN),
+                        1));
+                spinner.setToolTipText("Value Must be an integer value between 0 and "+ parameters.getEmNextInspectionIn());
             }
             case InitialSettings.PRODUCTION_CYCLES -> {
                 spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
                         100,
                         10000,
                         1));
-                spinner.setToolTipText("Value Must be a double value between 0 and 10000");
+                spinner.setToolTipText("Value Must be an integer value between 0 and 10000");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
@@ -133,9 +137,9 @@ public class GridBagSpinner implements GridBagElement {
             case InitialSettings.MIN_INTERVAL -> {
                 spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
                         1,
-                        40,
+                        parameters.getMaxInterval(),
                         1));
-                spinner.setToolTipText("Value Must be a double value between 1 and 40");
+                spinner.setToolTipText("Value Must be an integer value between 1 and 40");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
@@ -146,7 +150,7 @@ public class GridBagSpinner implements GridBagElement {
                         60,
                         500,
                         1));
-                spinner.setToolTipText("Value Must be a double value between 60 and 500");
+                spinner.setToolTipText("Value Must be an integer value between 60 and 500");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
@@ -157,7 +161,7 @@ public class GridBagSpinner implements GridBagElement {
                         1,
                         20,
                         1));
-                spinner.setToolTipText("Value Must be a double value between 1 and 20");
+                spinner.setToolTipText("Value Must be an integer value between 1 and 20");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
@@ -168,7 +172,7 @@ public class GridBagSpinner implements GridBagElement {
                         1,
                         100,
                         1));
-                spinner.setToolTipText("Value Must be a double value between 1 and 100");
+                spinner.setToolTipText("Value Must be an integer value between 1 and 100");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInParameters(type,(int) spinner.getValue());
                     System.out.println(spinner.getValue());
@@ -183,6 +187,8 @@ public class GridBagSpinner implements GridBagElement {
         NumberFormatter formatter = (NumberFormatter) tf.getFormatter();
         formatter.setValueClass(Integer.class);
 
+        formatter.setAllowsInvalid(false);
+        formatter.setCommitsOnValidEdit(true);
 
     }
 
@@ -196,6 +202,17 @@ public class GridBagSpinner implements GridBagElement {
         c.gridx = bagX;
         c.gridy = bagY;
         parent.add(spinner, c);
+    }
+
+    public JSpinner getInstanceOfSpinner(){
+        return spinner;
+    }
+
+    public void setModel(int start, int min, int max, int step){
+        spinner.setModel(new SpinnerNumberModel(start,min,max,step));
+    }
+    public void setToolTipText(String text){
+        spinner.setToolTipText(text);
     }
 
 }
