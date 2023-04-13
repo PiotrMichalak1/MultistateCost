@@ -90,14 +90,10 @@ public class Parameters {
     private void initializeWeibullScaleVector() {
         weibullScaleVector = new int[InitialSettings.DEFAULT_NUM_OF_STATES - 1];
         for (int state = 1; state < InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
-            if (state == 1) {
-                weibullScaleVector[state - 1] = 50;
-            } else if (state == 2) {
-                weibullScaleVector[state - 1] = 30;
-            } else if (state == 3) {
-                weibullScaleVector[state - 1] = 40;
-            } else {
-                weibullScaleVector[state - 1] = 50;
+            switch (state){
+                case 2-> weibullScaleVector[state - 1] = 30;
+                case 3-> weibullScaleVector[state - 1] = 40;
+                default -> weibullScaleVector[state - 1] = 50;
             }
         }
     }

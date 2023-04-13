@@ -27,8 +27,13 @@ public class InitialSettings {
 
     public static final int DEFAULT_RUN_MULTIPLE_TIMES_NUM = 5;
 
+    //Plot Defaults
+    public static final int DEFAULT_PLOT_MARGIN = 25;
 
+    public static final int[] DEFAULT_X_AXIS_RANGE = {0,100};
+    public static final int[] DEFAULT_Y_AXIS_RANGE = {0,10};
 
+    public static final int SMALL_GRID_SPACING = 14;
 
 
     //Types
