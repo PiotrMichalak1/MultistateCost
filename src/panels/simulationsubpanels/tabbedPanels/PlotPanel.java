@@ -4,20 +4,19 @@ import tools.plotting.Plotter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 
-public class PlotPanel extends JPanel {
-    private Plotter plotter;
+public class PlotPanel extends JPanel implements MouseWheelListener{
+    private final Plotter plotter;
     private Point previousMousePosition;
-    private Point currentMousePosition;
+
     public PlotPanel() {
         plotter = new Plotter();
         ClickListener clickListener = new ClickListener();
         DragListener dragListener = new DragListener();
         this.addMouseListener(clickListener);
         this.addMouseMotionListener(dragListener);
+        this.addMouseWheelListener(this);
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -27,6 +26,12 @@ public class PlotPanel extends JPanel {
 
         plotter.newOrigin(height);
         plotter.drawCoordinateSystem(g,width,height);
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        plotter.changeSmallGridSpacing(e.getWheelRotation());
+        repaint();
     }
 
     private class ClickListener extends MouseAdapter {
@@ -39,7 +44,7 @@ public class PlotPanel extends JPanel {
     private class DragListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent event) {
-            currentMousePosition = event.getPoint();
+            Point currentMousePosition = event.getPoint();
             plotter.changeOffsetBy(
                     (int)(currentMousePosition.getX()-previousMousePosition.getX()),
                     (int)(currentMousePosition.getY()-previousMousePosition.getY())

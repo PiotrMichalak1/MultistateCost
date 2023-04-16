@@ -33,7 +33,9 @@ public class InitialSettings {
     public static final int[] DEFAULT_X_AXIS_RANGE = {0,100};
     public static final int[] DEFAULT_Y_AXIS_RANGE = {0,10};
 
-    public static final int SMALL_GRID_SPACING = 14;
+    public static final int DEFAULT_SMALL_GRID_SPACING = 14;
+    public static final int DEFAULT_SCALE_UNIT_X = 1;
+    public static final int DEFAULT_SCALE_UNIT_Y = 1;
 
 
     //Types

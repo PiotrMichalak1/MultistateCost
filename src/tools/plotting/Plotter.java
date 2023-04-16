@@ -10,9 +10,11 @@ public class Plotter {
     private int[] xAxisRange;
     private int[] yAxisRange;
 
-    private Point originOffset;
+    private final Point originOffset;
+    private final int scaleUnitX;
+    private final int scaleUnitY;
 
-    private final int smallGridSpacing;
+    private int smallGridSpacing;
 
     private int originX;
     private int originY;
@@ -21,9 +23,11 @@ public class Plotter {
         this.margin = InitialSettings.DEFAULT_PLOT_MARGIN;
         this.originX = margin;
         this.originOffset = new Point(0, 0);
+        this.scaleUnitX = InitialSettings.DEFAULT_SCALE_UNIT_X;
+        this.scaleUnitY = InitialSettings.DEFAULT_SCALE_UNIT_Y;
         this.xAxisRange = InitialSettings.DEFAULT_X_AXIS_RANGE;
         this.yAxisRange = InitialSettings.DEFAULT_Y_AXIS_RANGE;
-        this.smallGridSpacing = InitialSettings.SMALL_GRID_SPACING;
+        this.smallGridSpacing = InitialSettings.DEFAULT_SMALL_GRID_SPACING;
     }
 
     public void drawCoordinateSystem(Graphics g, int panelWidth, int panelHeight) {
@@ -55,18 +59,20 @@ public class Plotter {
     private void drawLabels(Graphics g, int panelWidth, int panelHeight) {
         g.setColor(new Color(150, 145, 145));
         int xLabelXCoord = margin + Math.floorMod((int) originOffset.getX(), 5 * smallGridSpacing);
-        int labelNum = 0;
+        int labelNum = -(int)Math.floor(originOffset.getX()/(5 * smallGridSpacing));
         while (xLabelXCoord <= panelWidth - margin) {
-            g.drawLine(xLabelXCoord, margin, xLabelXCoord, panelHeight - margin);
-            String label = String.valueOf(-(int) originOffset.getX() / (5 * smallGridSpacing)+labelNum);
+            String label = String.valueOf(labelNum);
             g.drawString(label, xLabelXCoord, panelHeight - margin + 20);
             xLabelXCoord += 5 * smallGridSpacing;
-            labelNum++;
+            labelNum += scaleUnitX;
         }
-        int bigGridY = panelHeight - margin - Math.floorMod((int) originOffset.getY(), 5 * smallGridSpacing);
-        while (bigGridY >= margin) {
-            g.drawLine(margin, bigGridY, panelWidth - margin, bigGridY);
-            bigGridY -= 5 * smallGridSpacing;
+        int yLabelYCoord = panelHeight - margin - Math.floorMod((int) originOffset.getY(), 5 * smallGridSpacing);
+        labelNum = -(int)Math.floor(originOffset.getY()/(5 * smallGridSpacing));
+        while (yLabelYCoord >= margin) {
+            String label = String.valueOf(labelNum);
+            g.drawString(label, margin - 20, yLabelYCoord);
+            yLabelYCoord -= 5 * smallGridSpacing;
+            labelNum += scaleUnitX;
         }
     }
 
@@ -105,5 +111,8 @@ public class Plotter {
 
     public void changeOffsetBy(int dx, int dy) {
         this.originOffset.setLocation(originOffset.getX() + dx, originOffset.getY() - dy);
+    }
+    public void changeSmallGridSpacing(int ds) {
+        this.smallGridSpacing -= ds;
     }
 }
