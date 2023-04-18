@@ -23,15 +23,23 @@ public class PlotPanel extends JPanel implements MouseWheelListener{
         super.paintComponent(g);
         int width = getWidth();
         int height = getHeight();
-
-        plotter.newOrigin(height);
         plotter.drawCoordinateSystem(g,width,height);
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        plotter.changeSmallGridSpacing(e.getWheelRotation());
-        repaint();
+        if (isMouseOnPlot(e.getPoint())) {
+            plotter.incrementNumOfMouseScrolls(e.getWheelRotation());
+            plotter.updateSmallGridSpacing();
+            repaint();
+        }
+    }
+    private boolean isMouseOnPlot(Point mousePosition){
+        int margin = plotter.getMargin();
+        boolean horizontally = mousePosition.getX() >= margin && mousePosition.getX() <= getWidth() -margin;
+        boolean vertically = mousePosition.getY() >= margin && mousePosition.getY()<= getHeight()-margin;
+        return horizontally && vertically;
+
     }
 
     private class ClickListener extends MouseAdapter {
