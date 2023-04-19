@@ -68,7 +68,7 @@ public class Plotter {
             labelNum = 0.0;
         }
         String label;
-        String format = "%." + decimalPlacesNeeded(numOfGridZoomInScaling) + "f";
+        String format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling) + "f";
         while (xLabelXCoord <= panelWidth - margin) {
 
             if (numOfMouseScrolls < InitialSettings.DEFAULT_SMALL_GRID_SPACING) {
@@ -89,10 +89,10 @@ public class Plotter {
             labelNum = 0.0;
         }
         while (yLabelYCoord >= margin) {
-            if (numOfMouseScrolls <= InitialSettings.DEFAULT_SMALL_GRID_SPACING) {
+            if (numOfMouseScrolls < InitialSettings.DEFAULT_SMALL_GRID_SPACING) {
                 label = String.valueOf((int) labelNum);
             } else {
-                label = String.format("%.2f", labelNum);
+                label = String.format(format, labelNum);
             }
             g.drawString(label, margin - 20, yLabelYCoord);
             yLabelYCoord -= 5 * smallGridSpacing;
@@ -166,11 +166,22 @@ public class Plotter {
         this.originOffset.setLocation(originOffset.getX() + dx, originOffset.getY() - dy);
     }
 
-    public void incrementNumOfMouseScrolls(int ds) {
+    public void onMouseScroll(Point mousePosition, int ds, int width, int height) {
         this.numOfMouseScrolls -= ds;
+        int pixelsOfFirstVisibleGrid = Math.floorMod((int) originOffset.getX(), smallGridSpacing);
+        double offsetDx;
+        if (pixelsOfFirstVisibleGrid > 0) {
+            offsetDx = (1 + Math.ceil((mousePosition.getX() - margin - pixelsOfFirstVisibleGrid) / smallGridSpacing)) * ds;
+        } else {
+            offsetDx = Math.ceil((mousePosition.getX() - margin) / smallGridSpacing) * ds;
+        }
+        originOffset.setLocation(originOffset.getX() + offsetDx, originOffset.getY());
+
+        System.out.println("offsetDx: " +offsetDx);
+        System.out.println("Origin Offset: "+originOffset);
     }
 
-    private int decimalPlacesNeeded(int numOfGridZoomInScaling) {
+    private int decimalPlacesNeededInLabels(int numOfGridZoomInScaling) {
         return (int) Math.ceil(numOfGridZoomInScaling / 3.0);
     }
 

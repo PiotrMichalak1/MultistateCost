@@ -1,17 +1,17 @@
 package panels.simulationsubpanels.tabbedPanels;
 
-import tools.plotting.Plotter;
+import tools.plotting.AlternativePlotter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class PlotPanel extends JPanel implements MouseWheelListener{
-    private final Plotter plotter;
+    private final AlternativePlotter plotter;
     private Point previousMousePosition;
 
     public PlotPanel() {
-        plotter = new Plotter();
+        plotter = new AlternativePlotter();
         ClickListener clickListener = new ClickListener();
         DragListener dragListener = new DragListener();
         this.addMouseListener(clickListener);
@@ -21,16 +21,17 @@ public class PlotPanel extends JPanel implements MouseWheelListener{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int width = getWidth();
-        int height = getHeight();
-        plotter.drawCoordinateSystem(g,width,height);
+        int width = getWidth()- plotter.getMargin()*2;
+        int height = getHeight()- plotter.getMargin()*2;
+        if(width > 0 && height> 0){
+            plotter.drawCoordinateSystem(g,width,height);
+        }
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (isMouseOnPlot(e.getPoint())) {
-            plotter.incrementNumOfMouseScrolls(e.getWheelRotation());
-            plotter.updateSmallGridSpacing();
+            plotter.onMouseScroll(e.getPoint(),e.getWheelRotation(),getWidth()-2* plotter.getMargin(),getHeight()-2* plotter.getMargin());
             repaint();
         }
     }
@@ -39,7 +40,6 @@ public class PlotPanel extends JPanel implements MouseWheelListener{
         boolean horizontally = mousePosition.getX() >= margin && mousePosition.getX() <= getWidth() -margin;
         boolean vertically = mousePosition.getY() >= margin && mousePosition.getY()<= getHeight()-margin;
         return horizontally && vertically;
-
     }
 
     private class ClickListener extends MouseAdapter {
@@ -53,7 +53,7 @@ public class PlotPanel extends JPanel implements MouseWheelListener{
         @Override
         public void mouseDragged(MouseEvent event) {
             Point currentMousePosition = event.getPoint();
-            plotter.changeOffsetBy(
+            plotter.dragPlot(
                     (int)(currentMousePosition.getX()-previousMousePosition.getX()),
                     (int)(currentMousePosition.getY()-previousMousePosition.getY())
             );
