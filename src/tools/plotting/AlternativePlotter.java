@@ -40,8 +40,9 @@ public class AlternativePlotter {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         updateRanges(width, height);
+        drawLabelsAndBigGrid(g2, width, height);
+        drawGrid(g2, width, height);
         drawAxes(g2, width, height);
-        drawLabels(g2,width,height);
     }
 
     private void drawAxes(Graphics2D g2, int width, int height) {
@@ -58,7 +59,7 @@ public class AlternativePlotter {
         g2.fillPolygon(XArrowXVertices, XArrowYVertices, 3);
     }
 
-    private void drawLabels(Graphics2D g2, int width, int height) {
+    private void drawLabelsAndBigGrid(Graphics2D g2, int width, int height) {
         g2.setColor(new Color(150, 145, 145));
         double labelNum = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier);
         int xLabelXCoord = (int) ((labelNum - xRange[0]) / (xRange[1] - xRange[0]) * width);
@@ -72,7 +73,8 @@ public class AlternativePlotter {
                 label = String.format(format, labelNum);
             }
 
-            g2.drawString(label, xLabelXCoord+margin, height + margin + 20);
+            g2.drawLine(xLabelXCoord + margin, height + margin, xLabelXCoord + margin, margin);
+            g2.drawString(label, xLabelXCoord + margin, height + margin + 20);
             xLabelXCoord += bigGridSpacing;
             labelNum += scaleUnitX * scaleMultiplier;
         }
@@ -87,7 +89,8 @@ public class AlternativePlotter {
                 label = String.format(format, labelNum);
             }
 
-            g2.drawString(label, margin-20, margin+height-yLabelYCoord);
+            g2.drawLine(margin, margin + height - yLabelYCoord, margin + width, margin + height - yLabelYCoord);
+            g2.drawString(label, margin - 20, margin + height - yLabelYCoord);
             yLabelYCoord += bigGridSpacing;
             labelNum += scaleUnitY * scaleMultiplier;
         }
@@ -95,20 +98,48 @@ public class AlternativePlotter {
 
     }
 
-    public void updateRanges(int width, int height) {
-        xRange[1] = xRange[0] + (width) / (5.0 * smallGridSpacing) * scaleMultiplier;
-        yRange[1] = yRange[0] + (height) / (5.0 * smallGridSpacing) * scaleMultiplier;
+    private void drawSmallGrid(Graphics2D g2, int width, int height) {
+        g2.setColor(new Color(216, 209, 209));
+
+        double smallGridNum = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier / 5);
+        int smallGridCoord = (int) ((smallGridNum - xRange[0]) / (xRange[1] - xRange[0]) * width);
+
+        while (smallGridCoord <= width) {
+
+            g2.drawLine(smallGridCoord + margin, height + margin, smallGridCoord + margin, margin);
+            smallGridCoord += smallGridSpacing;
+
+        }
+
+
+        smallGridNum = Mathematics.roundUpToTheNearestMultiple(yRange[0], scaleUnitY * scaleMultiplier / 5);
+        smallGridCoord = (int) ((smallGridNum - yRange[0]) / (yRange[1] - yRange[0]) * height);
+
+        while (smallGridCoord <= height) {
+
+            g2.drawLine(margin, margin + height - smallGridCoord, margin + width, margin + height - smallGridCoord);
+            smallGridCoord += smallGridSpacing;
+
+        }
+
     }
 
-    public int getMargin() {
-        return margin;
+    private void drawGrid(Graphics2D g2, int width, int height) {
+        drawSmallGrid(g2, width, height);
+        drawLabelsAndBigGrid(g2, width, height);
     }
+
 
     public void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height) {
         numOfMouseScrolls -= wheelRotation;
         updateScale(numOfMouseScrolls);
         updateGridSpacing();
         scaleRanges(mousePosition, width, height);
+    }
+
+    public void updateRanges(int width, int height) {
+        xRange[1] = xRange[0] + (width) / (5.0 * smallGridSpacing) * scaleMultiplier;
+        yRange[1] = yRange[0] + (height) / (5.0 * smallGridSpacing) * scaleMultiplier;
     }
 
     private void updateScale(int numOfMouseScrolls) {
@@ -158,8 +189,6 @@ public class AlternativePlotter {
         double scalingPivotY = yRange[0] + (yRange[1] - yRange[0]) * (mouseY / height);
         yRange[0] = scalingPivotY - mouseY * valueOfYPixel;
         yRange[1] = scalingPivotY + (height - mouseY) * valueOfYPixel;
-        System.out.println("Y range is from " +yRange[0] +"to "+ yRange[1]);
-        System.out.println(scalingPivotY);
     }
 
     public void dragPlot(int dx, int dy) {
@@ -176,5 +205,9 @@ public class AlternativePlotter {
 
     private int decimalPlacesNeededInLabels(int numOfGridZoomInScaling) {
         return (int) Math.ceil(numOfGridZoomInScaling / 3.0);
+    }
+
+    public int getMargin() {
+        return margin;
     }
 }
