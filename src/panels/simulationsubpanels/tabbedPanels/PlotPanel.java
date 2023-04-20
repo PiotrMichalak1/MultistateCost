@@ -24,7 +24,8 @@ public class PlotPanel extends JPanel implements MouseWheelListener{
         int width = getWidth()- plotter.getMargin()*2;
         int height = getHeight()- plotter.getMargin()*2;
         if(width > 0 && height> 0){
-            plotter.drawCoordinateSystem(g,width,height);
+            Graphics2D g2 = (Graphics2D) g;
+            plotter.drawCoordinateSystem(g2,width,height);
         }
     }
 

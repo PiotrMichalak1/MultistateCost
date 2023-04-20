@@ -13,8 +13,8 @@ public class Plotter {
         this.coordinateSystem = new CoordinateSystem();
     }
 
-    public void drawCoordinateSystem(Graphics g,int width,int height){
-        coordinateSystem.drawCoordinateSystem(g,width,height);
+    public void drawCoordinateSystem(Graphics2D g2,int width,int height){
+        coordinateSystem.drawCoordinateSystem(g2,width,height);
     }
 
     public void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height){
@@ -44,8 +44,6 @@ public class Plotter {
         private final double[] xRange;
         private final double[] yRange;
 
-        private FontMetrics fontMetrics;
-
         public CoordinateSystem() {
             this.margin = InitialSettings.DEFAULT_PLOT_MARGIN;
 
@@ -61,8 +59,8 @@ public class Plotter {
             this.xRange = new double[2];
             this.yRange = new double[2];
         }
-        public void drawCoordinateSystem(Graphics g, int width, int height) {
-            Graphics2D g2 = (Graphics2D) g;
+        public void drawCoordinateSystem(Graphics2D g2, int width, int height) {
+
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             updateRanges(width, height);
@@ -85,9 +83,14 @@ public class Plotter {
             g2.fillPolygon(XArrowXVertices, XArrowYVertices, 3);
         }
 
+        private void drawGrid(Graphics2D g2, int width, int height) {
+            drawSmallGrid(g2, width, height);
+            drawLabelsAndBigGrid(g2, width, height);
+        }
+
         private void drawLabelsAndBigGrid(Graphics2D g2, int width, int height) {
             g2.setColor(new Color(150, 145, 145));
-            fontMetrics = g2.getFontMetrics(g2.getFont());
+            FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
             double labelNum = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier);
             int xLabelXCoord = (int) ((labelNum - xRange[0]) / (xRange[1] - xRange[0]) * width);
             String label;
@@ -149,11 +152,6 @@ public class Plotter {
 
             }
 
-        }
-
-        private void drawGrid(Graphics2D g2, int width, int height) {
-            drawSmallGrid(g2, width, height);
-            drawLabelsAndBigGrid(g2, width, height);
         }
 
 
