@@ -1,32 +1,50 @@
 package tools.plotting;
 
+import settings.GraphicSettings;
 import settings.InitialSettings;
 import tools.Mathematics;
+import tools.TestingValues;
 
 import java.awt.*;
 
 
+
 public class Plotter {
     public CoordinateSystem coordinateSystem;
+    public Plot plot;
 
     public Plotter() {
         this.coordinateSystem = new CoordinateSystem();
+        this.plot = new Plot();
+
     }
 
-    public void drawCoordinateSystem(Graphics2D g2,int width,int height){
-        coordinateSystem.drawCoordinateSystem(g2,width,height);
+    public void drawMainPlot(Graphics2D g2, int width, int height) {
+        coordinateSystem.updateRanges(width, height);
+
+        coordinateSystem.drawGrid(g2, width, height);
+        plot.drawFunction(g2,width,height);
+        coordinateSystem.drawMargins(g2,width,height);
+        coordinateSystem.drawAxes(g2,width,height);
+        coordinateSystem.drawLabels(g2,width,height);
+
     }
 
-    public void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height){
-        coordinateSystem.onMouseScroll(mousePosition,wheelRotation,width,height);
+
+    public void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height) {
+        coordinateSystem.onMouseScroll(mousePosition, wheelRotation, width, height);
     }
 
-    public void dragPlot(int dx, int dy){
-        coordinateSystem.dragPlot(dx,dy);
+    public void dragPlot(int dx, int dy) {
+        coordinateSystem.dragPlot(dx, dy);
     }
 
-    public int getMargin(){
+    public int getMargin() {
         return coordinateSystem.getMargin();
+    }
+
+    public void setFunctionData(double[] domain, double[] codomain) {
+        plot.setFunctionData(domain, codomain);
     }
 
 
@@ -59,14 +77,14 @@ public class Plotter {
             this.xRange = new double[2];
             this.yRange = new double[2];
         }
-        public void drawCoordinateSystem(Graphics2D g2, int width, int height) {
 
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            updateRanges(width, height);
-            drawLabelsAndBigGrid(g2, width, height);
-            drawGrid(g2, width, height);
-            drawAxes(g2, width, height);
+        private void drawMargins(Graphics2D g2, int width, int height) {
+            g2.setColor(GraphicSettings.MARGIN_COLOR);
+            g2.fillRect(0,0,2*margin+width,margin);
+            g2.fillRect(0,0,margin,2*margin+height);
+            g2.fillRect(0,margin+height,2*margin+width,margin);
+            g2.fillRect(margin+width,0,margin,2*margin+height);
+
         }
 
         private void drawAxes(Graphics2D g2, int width, int height) {
@@ -85,10 +103,10 @@ public class Plotter {
 
         private void drawGrid(Graphics2D g2, int width, int height) {
             drawSmallGrid(g2, width, height);
-            drawLabelsAndBigGrid(g2, width, height);
+            drawBigGrid(g2, width, height);
         }
 
-        private void drawLabelsAndBigGrid(Graphics2D g2, int width, int height) {
+        private void drawLabels(Graphics2D g2, int width, int height) {
             g2.setColor(new Color(150, 145, 145));
             FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
             double labelNum = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier);
@@ -103,7 +121,7 @@ public class Plotter {
                     label = String.format(format, labelNum);
                 }
 
-                g2.drawLine(xLabelXCoord + margin, height + margin, xLabelXCoord + margin, margin);
+
                 g2.drawString(label, xLabelXCoord + margin - fontMetrics.stringWidth(label) / 2, height + margin + 20);
                 xLabelXCoord += bigGridSpacing;
                 labelNum += scaleUnitX * scaleMultiplier;
@@ -119,13 +137,32 @@ public class Plotter {
                     label = String.format(format, labelNum);
                 }
 
-                g2.drawLine(margin, margin + height - yLabelYCoord, margin + width, margin + height - yLabelYCoord);
-                g2.drawString(label, margin - 5 - fontMetrics.stringWidth(label), margin + height - yLabelYCoord + (int) fontMetrics.getStringBounds(label, g2).getHeight() / 2-2);
+
+                g2.drawString(label, margin - 5 - fontMetrics.stringWidth(label), margin + height - yLabelYCoord + (int) fontMetrics.getStringBounds(label, g2).getHeight() / 2 - 2);
                 yLabelYCoord += bigGridSpacing;
                 labelNum += scaleUnitY * scaleMultiplier;
             }
 
 
+        }
+
+        private void drawBigGrid(Graphics2D g2, int width, int height) {
+            g2.setColor(new Color(181, 177, 177));
+            double bigGridX = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier);
+            int bigGridXPx = (int) ((bigGridX - xRange[0]) / (xRange[1] - xRange[0]) * width);
+            while (bigGridXPx <= width) {
+
+
+                g2.drawLine(bigGridXPx + margin, height + margin, bigGridXPx + margin, margin);
+                bigGridXPx += bigGridSpacing;
+            }
+
+            double bigGridY = Mathematics.roundUpToTheNearestMultiple(yRange[0], scaleUnitY * scaleMultiplier);
+            int bigGridYPx = (int) ((bigGridY - yRange[0]) / (yRange[1] - yRange[0]) * height);
+            while (bigGridYPx <= height) {
+                g2.drawLine(margin, margin + height - bigGridYPx, margin + width, margin + height - bigGridYPx);
+                bigGridYPx += bigGridSpacing;
+            }
         }
 
         private void drawSmallGrid(Graphics2D g2, int width, int height) {
@@ -238,9 +275,83 @@ public class Plotter {
 
     }
 
-    class Plot{
+    class Plot {
+
+        private double[] functionDomain;
+        private double[] functionCodomain;
+        private final int margin;
+
+        TestingValues test = new TestingValues();
+
+        Plot() {
+            this.margin = coordinateSystem.getMargin();
+            setFunctionData(test.testDomain, test.testCodomain);
+        }
+
+        public void setFunctionData(double[] domain, double[] codomain) {
+            functionDomain = domain;
+            functionCodomain = codomain;
+        }
+
+        public void drawFunction(Graphics2D g2, int width, int height) {
+            if (functionDomain != null && functionCodomain != null) {
+                if (functionDomain.length == functionCodomain.length) {
+                    Point pointPx;
+                    DoublePoint point;
+                    if (functionDomain.length == 1) {
+                        point = new DoublePoint(functionDomain[0], functionCodomain[0]);
+                        if (isPointInVisibleRange(point)) {
+                            pointPx = pointToPixels(point, width, height);
+                            g2.setColor(GraphicSettings.POINT_COLOR);
+                            g2.fillOval((int) pointPx.getX() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                                    (int) pointPx.getY() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                                    GraphicSettings.PLOT_POINT_THICKNESS,
+                                    GraphicSettings.PLOT_POINT_THICKNESS);
+                        }
+                    } else {
+                        g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
+                        for (int i = 0; i < functionDomain.length - 1; i++) {
+                            DoublePoint prevPoint = new DoublePoint(functionDomain[i],functionCodomain[i]);
+                            DoublePoint nextPoint = new DoublePoint(functionDomain[i+1],functionCodomain[i+1]);
+
+                            g2.drawLine((int) pointToPixels(prevPoint, width, height).getX(),
+                                    (int) pointToPixels(prevPoint, width, height).getY(),
+                                    (int) pointToPixels(nextPoint, width, height).getX(),
+                                    (int) pointToPixels(nextPoint, width, height).getY()
+                            );
+
+                        }
+                    }
+
+                } else {
+                    throw new IllegalArgumentException("Domain and codomain are not the same length");
+                }
+
+            } else {
+                throw new IllegalArgumentException((functionDomain == null) ? "Domain of function is null" :
+                        "Codomain of function is null");
+            }
+        }
+
+        private boolean isPointInVisibleRange(DoublePoint point) {
+            boolean isInXRange = (coordinateSystem.xRange[0] < point.getX() &&
+                    coordinateSystem.xRange[1] > point.getX());
+            boolean isInYRange = (coordinateSystem.yRange[0] < point.getY() &&
+                    coordinateSystem.yRange[1] > point.getY() );
+
+            return isInXRange && isInYRange;
+        }
+
+        private Point pointToPixels(DoublePoint point, int width, int height) {
+            int xPx = margin + (int) (width * (point.getX() - coordinateSystem.xRange[0]) / (coordinateSystem.xRange[1] - coordinateSystem.xRange[0]));
+            int yPx = margin + height - (int) (height * (point.getY()  - coordinateSystem.yRange[0]) / (coordinateSystem.yRange[1] - coordinateSystem.yRange[0]));
+            return new Point(xPx, yPx);
+        }
+
 
     }
 
-
 }
+
+
+
