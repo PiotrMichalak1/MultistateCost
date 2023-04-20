@@ -1,17 +1,17 @@
 package panels.simulationsubpanels.tabbedPanels;
 
-import tools.plotting.AlternativePlotter;
+import tools.plotting.Plotter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class PlotPanel extends JPanel implements MouseWheelListener{
-    private final AlternativePlotter plotter;
+    private final Plotter plotter;
     private Point previousMousePosition;
 
     public PlotPanel() {
-        plotter = new AlternativePlotter();
+        plotter = new Plotter();
         ClickListener clickListener = new ClickListener();
         DragListener dragListener = new DragListener();
         this.addMouseListener(clickListener);
