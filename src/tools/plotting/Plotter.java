@@ -6,7 +6,7 @@ import tools.Mathematics;
 import tools.TestingValues;
 
 import java.awt.*;
-
+import java.util.ArrayList;
 
 
 public class Plotter {
@@ -23,7 +23,7 @@ public class Plotter {
         coordinateSystem.updateRanges(width, height);
 
         coordinateSystem.drawGrid(g2, width, height);
-        plot.drawFunction(g2,width,height);
+        plot.drawAllFunctions(g2,width,height);
         coordinateSystem.drawMargins(g2,width,height);
         coordinateSystem.drawAxes(g2,width,height);
         coordinateSystem.drawLabels(g2,width,height);
@@ -43,8 +43,8 @@ public class Plotter {
         return coordinateSystem.getMargin();
     }
 
-    public void setFunctionData(double[] domain, double[] codomain) {
-        plot.setFunctionData(domain, codomain);
+    public void addFunctionData(double[] domain, double[] codomain) {
+        plot.addFunctionData(domain, codomain);
     }
 
 
@@ -277,23 +277,25 @@ public class Plotter {
 
     class Plot {
 
-        private double[] functionDomain;
-        private double[] functionCodomain;
+        ArrayList<double[]> functionsDomains = new ArrayList<>();
+        ArrayList<double[]>functionsCodomains = new ArrayList<>();
+
         private final int margin;
 
         TestingValues test = new TestingValues();
 
         Plot() {
             this.margin = coordinateSystem.getMargin();
-            setFunctionData(test.testDomain, test.testCodomain);
+            addFunctionData(test.testDomain, test.testCodomain);
+            addFunctionData(test.testDomain2, test.testCodomain2);
         }
 
-        public void setFunctionData(double[] domain, double[] codomain) {
-            functionDomain = domain;
-            functionCodomain = codomain;
+        public void addFunctionData(double[] domain, double[] codomain) {
+            functionsDomains.add(domain);
+            functionsCodomains.add(codomain);
         }
 
-        public void drawFunction(Graphics2D g2, int width, int height) {
+        public void drawFunction(Graphics2D g2, int width, int height,double[] functionDomain, double[] functionCodomain) {
             if (functionDomain != null && functionCodomain != null) {
                 if (functionDomain.length == functionCodomain.length) {
                     Point pointPx;
@@ -333,6 +335,12 @@ public class Plotter {
             }
         }
 
+        public void drawAllFunctions(Graphics2D g2, int width, int height){
+            for (int i = 0; i < functionsDomains.size(); i++) {
+                drawFunction(g2,width,height,functionsDomains.get(i),functionsCodomains.get(i));
+            }
+        }
+
         private boolean isPointInVisibleRange(DoublePoint point) {
             boolean isInXRange = (coordinateSystem.xRange[0] < point.getX() &&
                     coordinateSystem.xRange[1] > point.getX());
@@ -343,8 +351,8 @@ public class Plotter {
         }
 
         private Point pointToPixels(DoublePoint point, int width, int height) {
-            int xPx = margin + (int) (width * (point.getX() - coordinateSystem.xRange[0]) / (coordinateSystem.xRange[1] - coordinateSystem.xRange[0]));
-            int yPx = margin + height - (int) (height * (point.getY()  - coordinateSystem.yRange[0]) / (coordinateSystem.yRange[1] - coordinateSystem.yRange[0]));
+            int xPx = margin + (int )Math.round(width * (point.getX() - coordinateSystem.xRange[0]) / (coordinateSystem.xRange[1] - coordinateSystem.xRange[0]));
+            int yPx = margin + height - (int) Math.round(height * (point.getY()  - coordinateSystem.yRange[0]) / (coordinateSystem.yRange[1] - coordinateSystem.yRange[0]));
             return new Point(xPx, yPx);
         }
 
