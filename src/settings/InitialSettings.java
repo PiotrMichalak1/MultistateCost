@@ -30,13 +30,8 @@ public class InitialSettings {
     //Plot Defaults
     public static final int DEFAULT_PLOT_MARGIN = 40;
 
-    public static final int[] DEFAULT_X_AXIS_RANGE = {0,100};
-    public static final int[] DEFAULT_Y_AXIS_RANGE = {0,10};
-
     public static final int DEFAULT_SMALL_GRID_SPACING = 14;
-    public static final double DEFAULT_SCALE_UNIT_X = 1.0;
-    public static final double DEFAULT_SCALE_UNIT_Y = 1.0;
-    public static final double DEFAULT_SCALE_MULTIPLIER = 1.0;
+
 
 
     //Types

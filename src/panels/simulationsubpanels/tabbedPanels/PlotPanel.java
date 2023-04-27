@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class PlotPanel extends JPanel implements MouseWheelListener{
+public class PlotPanel extends JPanel{
     private final Plotter plotter;
     private Point previousMousePosition;
 
@@ -14,9 +14,10 @@ public class PlotPanel extends JPanel implements MouseWheelListener{
         plotter = new Plotter();
         ClickListener clickListener = new ClickListener();
         DragListener dragListener = new DragListener();
+        WheelListener wheelListener = new WheelListener();
         this.addMouseListener(clickListener);
         this.addMouseMotionListener(dragListener);
-        this.addMouseWheelListener(this);
+        this.addMouseWheelListener(wheelListener);
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -32,18 +33,20 @@ public class PlotPanel extends JPanel implements MouseWheelListener{
         }
     }
 
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        if (isMouseOnPlot(e.getPoint())) {
-            plotter.onMouseScroll(e.getPoint(),e.getWheelRotation(),getWidth()-2* plotter.getMargin(),getHeight()-2* plotter.getMargin());
-            repaint();
-        }
-    }
     private boolean isMouseOnPlot(Point mousePosition){
         int margin = plotter.getMargin();
         boolean horizontally = mousePosition.getX() >= margin && mousePosition.getX() <= getWidth() -margin;
         boolean vertically = mousePosition.getY() >= margin && mousePosition.getY()<= getHeight()-margin;
         return horizontally && vertically;
+    }
+    private class WheelListener implements MouseWheelListener {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            if (isMouseOnPlot(e.getPoint())) {
+                plotter.onMouseScroll(e.getPoint(),e.getWheelRotation(),getWidth()-2* plotter.getMargin(),getHeight()-2* plotter.getMargin());
+                repaint();
+            }
+        }
     }
 
     private class ClickListener extends MouseAdapter {

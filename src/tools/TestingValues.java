@@ -21,7 +21,7 @@ public class TestingValues {
             double x = testDomain[j];
             //testCodomain[j] = Math.pow(x, 3) + 2 * Math.pow(x, 2)+ 7 * x - 1;
             //testCodomain[j] = Math.pow(-1,j);
-            testCodomain[j] = x*1.2;
+            testCodomain[j] = x*1.0;
 
         }
 

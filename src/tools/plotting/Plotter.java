@@ -23,16 +23,20 @@ public class Plotter {
         coordinateSystem.updateRanges(width, height);
 
         coordinateSystem.drawGrid(g2, width, height);
-        plot.drawAllFunctions(g2,width,height);
-        coordinateSystem.drawMargins(g2,width,height);
-        coordinateSystem.drawAxes(g2,width,height);
-        coordinateSystem.drawLabels(g2,width,height);
+        plot.drawAllFunctions(g2, width, height);
+        coordinateSystem.drawMargins(g2, width, height);
+        coordinateSystem.drawAxes(g2, width, height);
+        coordinateSystem.drawLabels(g2, width, height);
 
     }
 
 
     public void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height) {
         coordinateSystem.onMouseScroll(mousePosition, wheelRotation, width, height);
+    }
+
+    public void onMouseMovement(Point mousePosition, int width, int height) {
+
     }
 
     public void dragPlot(int dx, int dy) {
@@ -48,7 +52,7 @@ public class Plotter {
     }
 
 
-    static class CoordinateSystem {
+    private static class CoordinateSystem {
         private final int margin;
 
         private double scaleMultiplier;
@@ -65,9 +69,9 @@ public class Plotter {
         public CoordinateSystem() {
             this.margin = InitialSettings.DEFAULT_PLOT_MARGIN;
 
-            this.scaleUnitX = InitialSettings.DEFAULT_SCALE_UNIT_X;
-            this.scaleUnitY = InitialSettings.DEFAULT_SCALE_UNIT_Y;
-            this.scaleMultiplier = InitialSettings.DEFAULT_SCALE_MULTIPLIER;
+            this.scaleUnitX = GraphicSettings.DEFAULT_SCALE_UNIT_X;
+            this.scaleUnitY = GraphicSettings.DEFAULT_SCALE_UNIT_Y;
+            this.scaleMultiplier = GraphicSettings.DEFAULT_SCALE_MULTIPLIER;
             this.numOfMouseScrolls = 0;
 
 
@@ -80,10 +84,10 @@ public class Plotter {
 
         private void drawMargins(Graphics2D g2, int width, int height) {
             g2.setColor(GraphicSettings.MARGIN_COLOR);
-            g2.fillRect(0,0,2*margin+width,margin);
-            g2.fillRect(0,0,margin,2*margin+height);
-            g2.fillRect(0,margin+height,2*margin+width,margin);
-            g2.fillRect(margin+width,0,margin,2*margin+height);
+            g2.fillRect(0, 0, 2 * margin + width, margin);
+            g2.fillRect(0, 0, margin, 2 * margin + height);
+            g2.fillRect(0, margin + height, 2 * margin + width, margin);
+            g2.fillRect(margin + width, 0, margin, 2 * margin + height);
 
         }
 
@@ -200,8 +204,8 @@ public class Plotter {
         }
 
         public void updateRanges(int width, int height) {
-            xRange[1] = xRange[0] + (width) / (5.0 * smallGridSpacing) * scaleMultiplier;
-            yRange[1] = yRange[0] + (height) / (5.0 * smallGridSpacing) * scaleMultiplier;
+            xRange[1] = xRange[0] + (width) / (5.0 * smallGridSpacing) * scaleMultiplier * scaleUnitX;
+            yRange[1] = yRange[0] + (height) / (5.0 * smallGridSpacing) * scaleMultiplier * scaleUnitY;
         }
 
         private void updateScale(int numOfMouseScrolls) {
@@ -254,8 +258,8 @@ public class Plotter {
         }
 
         public void dragPlot(int dx, int dy) {
-            double translationX = -dx * (scaleMultiplier * scaleUnitX / bigGridSpacing);
-            double translationY = dy * (scaleMultiplier * scaleUnitY / bigGridSpacing);
+            double translationX = -dx * (scaleMultiplier / bigGridSpacing) * scaleUnitX;
+            double translationY = dy * (scaleMultiplier / bigGridSpacing) * scaleUnitY;
 
             xRange[0] = xRange[0] + translationX;
             xRange[1] = xRange[1] + translationX;
@@ -275,10 +279,10 @@ public class Plotter {
 
     }
 
-    class Plot {
+    private class Plot {
 
         ArrayList<double[]> functionsDomains = new ArrayList<>();
-        ArrayList<double[]>functionsCodomains = new ArrayList<>();
+        ArrayList<double[]> functionsCodomains = new ArrayList<>();
 
         private final int margin;
 
@@ -295,7 +299,7 @@ public class Plotter {
             functionsCodomains.add(codomain);
         }
 
-        public void drawFunction(Graphics2D g2, int width, int height,double[] functionDomain, double[] functionCodomain) {
+        public void drawFunction(Graphics2D g2, int width, int height, double[] functionDomain, double[] functionCodomain) {
             if (functionDomain != null && functionCodomain != null) {
                 if (functionDomain.length == functionCodomain.length) {
                     Point pointPx;
@@ -313,8 +317,8 @@ public class Plotter {
                     } else {
                         g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
                         for (int i = 0; i < functionDomain.length - 1; i++) {
-                            DoublePoint prevPoint = new DoublePoint(functionDomain[i],functionCodomain[i]);
-                            DoublePoint nextPoint = new DoublePoint(functionDomain[i+1],functionCodomain[i+1]);
+                            DoublePoint prevPoint = new DoublePoint(functionDomain[i], functionCodomain[i]);
+                            DoublePoint nextPoint = new DoublePoint(functionDomain[i + 1], functionCodomain[i + 1]);
 
                             g2.drawLine((int) pointToPixels(prevPoint, width, height).getX(),
                                     (int) pointToPixels(prevPoint, width, height).getY(),
@@ -335,9 +339,9 @@ public class Plotter {
             }
         }
 
-        public void drawAllFunctions(Graphics2D g2, int width, int height){
+        public void drawAllFunctions(Graphics2D g2, int width, int height) {
             for (int i = 0; i < functionsDomains.size(); i++) {
-                drawFunction(g2,width,height,functionsDomains.get(i),functionsCodomains.get(i));
+                drawFunction(g2, width, height, functionsDomains.get(i), functionsCodomains.get(i));
             }
         }
 
@@ -345,14 +349,14 @@ public class Plotter {
             boolean isInXRange = (coordinateSystem.xRange[0] < point.getX() &&
                     coordinateSystem.xRange[1] > point.getX());
             boolean isInYRange = (coordinateSystem.yRange[0] < point.getY() &&
-                    coordinateSystem.yRange[1] > point.getY() );
+                    coordinateSystem.yRange[1] > point.getY());
 
             return isInXRange && isInYRange;
         }
 
         private Point pointToPixels(DoublePoint point, int width, int height) {
-            int xPx = margin + (int )Math.round(width * (point.getX() - coordinateSystem.xRange[0]) / (coordinateSystem.xRange[1] - coordinateSystem.xRange[0]));
-            int yPx = margin + height - (int) Math.round(height * (point.getY()  - coordinateSystem.yRange[0]) / (coordinateSystem.yRange[1] - coordinateSystem.yRange[0]));
+            int xPx = margin + (int) Math.round(width * (point.getX() - coordinateSystem.xRange[0]) / (coordinateSystem.xRange[1] - coordinateSystem.xRange[0]));
+            int yPx = margin + height - (int) Math.round(height * (point.getY() - coordinateSystem.yRange[0]) / (coordinateSystem.yRange[1] - coordinateSystem.yRange[0]));
             return new Point(xPx, yPx);
         }
 

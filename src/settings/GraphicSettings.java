@@ -8,4 +8,8 @@ public class GraphicSettings {
     public static final Color MAIN_GRAPH_COLOR = new Color(35, 140, 167);
 
     public static final Color MARGIN_COLOR = new Color(236, 236, 237);
+
+    public static final double DEFAULT_SCALE_UNIT_X = 2.0;
+    public static final double DEFAULT_SCALE_UNIT_Y = 1.0;
+    public static final double DEFAULT_SCALE_MULTIPLIER = 1.0;
 }
