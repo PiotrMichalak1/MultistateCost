@@ -1,4 +1,4 @@
-package panels.simulationsubpanels.tabbedPanels;
+package panels.simulationsubpanels.tabbedPanels.costplot;
 
 import tools.plotting.Plotter;
 

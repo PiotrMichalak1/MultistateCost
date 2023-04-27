@@ -1,14 +1,14 @@
 package panels;
 
 import panels.mainpanels.SettingsPanel;
-import panels.mainpanels.SimulationPanel;
+import panels.mainpanels.TabbedPlotPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainPanel extends JPanel {
     SettingsPanel settingsPanel;
-    SimulationPanel simulationPanel;
+    TabbedPlotPanel tabbedPlotPanel;
 
     public MainPanel() {
         this.setPreferredSize(new Dimension(1200, 675));
@@ -27,12 +27,12 @@ public class MainPanel extends JPanel {
         this.add(settingsPanel, c);
 
         c.fill = GridBagConstraints.BOTH;
-        simulationPanel = new SimulationPanel();
+        tabbedPlotPanel = new TabbedPlotPanel();
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = 1;
         c.gridy = 0;
-        this.add(simulationPanel, c);
+        this.add(tabbedPlotPanel, c);
 
     }
 }

@@ -1,4 +1,4 @@
-package panels.simulationsubpanels;
+package panels.simulationsubpanels.tabbedPanels.costplot;
 
 import settings.InitialSettings;
 import settings.Parameters;

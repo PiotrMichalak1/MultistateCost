@@ -3,8 +3,8 @@ package panels.simulationsubpanels.tabbedPanels;
 import javax.swing.*;
 import java.awt.*;
 
-public class Distributions extends JTabbedPane {
-    public Distributions() {
+public class DistributionsTab extends JTabbedPane {
+    public DistributionsTab() {
         this.setBackground(Color.BLACK);
     }
 }
