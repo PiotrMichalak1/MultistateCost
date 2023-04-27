@@ -22,7 +22,7 @@ public class Plotter {
     }
 
     public void drawMainPlot(Graphics2D g2) {
-        coordinateSystem.updateRangesOnWindowRescaling(width, height);
+        coordinateSystem.updateRanges(width, height);
 
         coordinateSystem.drawGrid(g2, width, height);
         plot.drawAllFunctions(g2, width, height);
@@ -53,7 +53,7 @@ public class Plotter {
         plot.addFunctionData(domain, codomain);
     }
 
-    public void clearFunctionData(){
+    public void clearFunctionData() {
         plot.clearFunctionData();
     }
 
@@ -212,17 +212,17 @@ public class Plotter {
 
         public void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height) {
             numOfMouseScrolls -= wheelRotation;
-            updateScaleOnMouseScroll(numOfMouseScrolls);
+            updateScaleOnMouseScroll();
             updateGridSpacing();
             scaleRanges(mousePosition, width, height);
         }
 
-        public void updateRangesOnWindowRescaling(int width, int height) {
+        public void updateRanges(int width, int height) {
             xRange[1] = xRange[0] + (width) / (5.0 * smallGridSpacing) * scaleMultiplier * scaleUnitX;
             yRange[1] = yRange[0] + (height) / (5.0 * smallGridSpacing) * scaleMultiplier * scaleUnitY;
         }
 
-        private void updateScaleOnMouseScroll(int numOfMouseScrolls) {
+        private void updateScaleOnMouseScroll() {
             if (numOfMouseScrolls < 0) {
                 int numOfGridZoomOutScaling = -numOfMouseScrolls / (InitialSettings.DEFAULT_SMALL_GRID_SPACING / 2);
                 int moduloMultiplier = 0;
@@ -302,7 +302,6 @@ public class Plotter {
         private final int margin;
 
 
-
         Plot() {
             this.margin = coordinateSystem.getMargin();
 
@@ -311,9 +310,10 @@ public class Plotter {
         public void addFunctionData(double[] domain, double[] codomain) {
             functionsDomains.add(domain);
             functionsCodomains.add(codomain);
+            adjustCameraToPlot(domain, codomain);
         }
 
-        public void clearFunctionData(){
+        public void clearFunctionData() {
             functionsDomains.removeAll(functionsDomains);
             functionsCodomains.removeAll(functionsCodomains);
         }
@@ -364,7 +364,36 @@ public class Plotter {
             }
         }
 
-        private void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain){
+        private void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain) {
+            if (functionDomain.length > 1) {
+                double smallestValue = functionCodomain[0];
+                for (int i = 1; i < functionCodomain.length; i++) {
+                    if (functionCodomain[i] < smallestValue) {
+                        smallestValue = functionCodomain[i];
+                    }
+                }
+
+                coordinateSystem.xRange[0] = functionDomain[0];
+                coordinateSystem.yRange[0] = smallestValue;
+
+                double range = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
+                double domainWidth = functionDomain[functionCodomain.length - 1] - functionDomain[0];
+                if (range < domainWidth) {
+                    while (range < domainWidth) {
+                        coordinateSystem.numOfMouseScrolls -= 1;
+                        coordinateSystem.updateScaleOnMouseScroll();
+                        coordinateSystem.updateRanges(width, height);
+                        range = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
+                        System.out.println(coordinateSystem.numOfMouseScrolls);
+                    }
+
+                } else {
+                    System.out.println("You have to zoom in");
+                }
+
+
+            }
+            coordinateSystem.updateGridSpacing();
 
         }
 
