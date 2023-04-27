@@ -2,56 +2,56 @@ package panels.simulationsubpanels.tabbedPanels.costplot;
 
 import settings.InitialSettings;
 import settings.Parameters;
+import tools.gridbagelements.GridBagButton;
 import tools.gridbagelements.GridBagCheckbox;
 import tools.gridbagelements.GridBagLabel;
 import tools.gridbagelements.GridBagSpinner;
-import tools.gridbagelements.GridBagButton;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class RunSimulationPanel extends JPanel {
-    Parameters parameters;
-    GridBagLabel bagLabel;
-    GridBagButton bagButton;
+    private Parameters parameters;
+    private GridBagLabel bagLabel;
+    private GridBagButton bagButton;
 
-    GridBagSpinner minInterval;
-    GridBagSpinner maxInterval;
-    public RunSimulationPanel() {
+    private CostPlotTab parentTab;
+
+    public RunSimulationPanel(PlotPanel parentTab) {
         parameters = Parameters.getInstance();
-        bagLabel = new GridBagLabel();
-        bagButton = new GridBagButton();
 
-        minInterval = new GridBagSpinner(InitialSettings.MIN_INTERVAL);
-        maxInterval = new GridBagSpinner(InitialSettings.MAX_INTERVAL);
+
+        bagLabel = new GridBagLabel();
+        bagButton = new GridBagButton(InitialSettings.SIMULATE_BUTTON,parentTab);
+
 
         initializeRunSimulationLabels();
         initializeRunSimulationSpinnersAndButtons();
     }
 
-    private void initializeRunSimulationLabels(){
+    private void initializeRunSimulationLabels() {
         this.setLayout(new GridBagLayout());
-        bagLabel.putInGrid(this,"Production Cycles",0,0);
-        bagLabel.putInGrid(this,"Min Interval",0,1);
-        bagLabel.putInGrid(this,"Max Interval",0,2);
-        bagLabel.putInGrid(this,"Step",0,3);
+        bagLabel.putInGrid(this, "Production Cycles", 0, 0);
+        bagLabel.putInGrid(this, "Min Interval", 0, 1);
+        bagLabel.putInGrid(this, "Max Interval", 0, 2);
+        bagLabel.putInGrid(this, "Step", 0, 3);
     }
 
     private void initializeRunSimulationSpinnersAndButtons() {
         GridBagSpinner spinner = new GridBagSpinner(InitialSettings.PRODUCTION_CYCLES);
-        spinner.putInGrid(this,"",1,0);
+        spinner.putInGrid(this, "", 1, 0);
         spinner = new GridBagSpinner(InitialSettings.MIN_INTERVAL);
-        spinner.putInGrid(this,"",1,1);
+        spinner.putInGrid(this, "", 1, 1);
         spinner = new GridBagSpinner(InitialSettings.MAX_INTERVAL);
-        spinner.putInGrid(this,"",1,2);
+        spinner.putInGrid(this, "", 1, 2);
         spinner = new GridBagSpinner(InitialSettings.STEP);
-        spinner.putInGrid(this,"",1,3);
+        spinner.putInGrid(this, "", 1, 3);
 
-        bagButton.putInGrid(this,"Simulate",3,2);
+        bagButton.putInGrid(this, "Simulate", 3, 2);
 
         GridBagCheckbox checkbox = new GridBagCheckbox(InitialSettings.HOLD_THE_DATA);
-        checkbox.putInGrid(this,"Hold the data",2,2);
+        checkbox.putInGrid(this, "Hold the data", 2, 2);
         RunMultipleTimesPanel runMultipleTimesPanel = new RunMultipleTimesPanel();
-        runMultipleTimesPanel.putInGrid(this,2,3);
+        runMultipleTimesPanel.putInGrid(this, 2, 3);
     }
 }

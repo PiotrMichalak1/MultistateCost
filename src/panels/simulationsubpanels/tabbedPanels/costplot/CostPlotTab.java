@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CostPlotTab extends JPanel {
-    PlotPanel plotPanel;
+    public PlotPanel plotPanel;
     RunSimulationPanel runSimulationPanel;
     public CostPlotTab() {
         this.plotPanel = new PlotPanel();
-        this.runSimulationPanel = new RunSimulationPanel();
+        this.runSimulationPanel = new RunSimulationPanel(plotPanel);
         addWeightedPanes();
     }
 

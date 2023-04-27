@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class PlotPanel extends JPanel{
-    private final Plotter plotter;
+    public Plotter plotter;
     private Point previousMousePosition;
 
     public PlotPanel() {
@@ -24,14 +24,18 @@ public class PlotPanel extends JPanel{
         super.paintComponent(g);
         int width = getWidth()- plotter.getMargin()*2;
         int height = getHeight()- plotter.getMargin()*2;
+        plotter.setWidth(width);
+        plotter.setHeight(height);
         if(width > 0 && height> 0){
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
-            plotter.drawMainPlot(g2,width,height);
+            plotter.drawMainPlot(g2);
         }
     }
+
+
 
     private boolean isMouseOnPlot(Point mousePosition){
         int margin = plotter.getMargin();
@@ -68,4 +72,5 @@ public class PlotPanel extends JPanel{
             repaint();
         }
     }
+
 }

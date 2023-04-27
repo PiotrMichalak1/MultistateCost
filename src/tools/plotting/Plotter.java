@@ -3,7 +3,6 @@ package tools.plotting;
 import settings.GraphicSettings;
 import settings.InitialSettings;
 import tools.Mathematics;
-import tools.TestingValues;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,14 +12,17 @@ public class Plotter {
     public CoordinateSystem coordinateSystem;
     public Plot plot;
 
+    private int width;
+    private int height;
+
     public Plotter() {
         this.coordinateSystem = new CoordinateSystem();
         this.plot = new Plot();
 
     }
 
-    public void drawMainPlot(Graphics2D g2, int width, int height) {
-        coordinateSystem.updateRanges(width, height);
+    public void drawMainPlot(Graphics2D g2) {
+        coordinateSystem.updateRangesOnWindowRescaling(width, height);
 
         coordinateSystem.drawGrid(g2, width, height);
         plot.drawAllFunctions(g2, width, height);
@@ -51,8 +53,20 @@ public class Plotter {
         plot.addFunctionData(domain, codomain);
     }
 
+    public void clearFunctionData(){
+        plot.clearFunctionData();
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     private static class CoordinateSystem {
+
         private final int margin;
 
         private double scaleMultiplier;
@@ -198,17 +212,17 @@ public class Plotter {
 
         public void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height) {
             numOfMouseScrolls -= wheelRotation;
-            updateScale(numOfMouseScrolls);
+            updateScaleOnMouseScroll(numOfMouseScrolls);
             updateGridSpacing();
             scaleRanges(mousePosition, width, height);
         }
 
-        public void updateRanges(int width, int height) {
+        public void updateRangesOnWindowRescaling(int width, int height) {
             xRange[1] = xRange[0] + (width) / (5.0 * smallGridSpacing) * scaleMultiplier * scaleUnitX;
             yRange[1] = yRange[0] + (height) / (5.0 * smallGridSpacing) * scaleMultiplier * scaleUnitY;
         }
 
-        private void updateScale(int numOfMouseScrolls) {
+        private void updateScaleOnMouseScroll(int numOfMouseScrolls) {
             if (numOfMouseScrolls < 0) {
                 int numOfGridZoomOutScaling = -numOfMouseScrolls / (InitialSettings.DEFAULT_SMALL_GRID_SPACING / 2);
                 int moduloMultiplier = 0;
@@ -277,6 +291,7 @@ public class Plotter {
             return margin;
         }
 
+
     }
 
     private class Plot {
@@ -286,17 +301,21 @@ public class Plotter {
 
         private final int margin;
 
-        TestingValues test = new TestingValues();
+
 
         Plot() {
             this.margin = coordinateSystem.getMargin();
-            addFunctionData(test.testDomain, test.testCodomain);
-            addFunctionData(test.testDomain2, test.testCodomain2);
+
         }
 
         public void addFunctionData(double[] domain, double[] codomain) {
             functionsDomains.add(domain);
             functionsCodomains.add(codomain);
+        }
+
+        public void clearFunctionData(){
+            functionsDomains.removeAll(functionsDomains);
+            functionsCodomains.removeAll(functionsCodomains);
         }
 
         public void drawFunction(Graphics2D g2, int width, int height, double[] functionDomain, double[] functionCodomain) {
@@ -343,6 +362,10 @@ public class Plotter {
             for (int i = 0; i < functionsDomains.size(); i++) {
                 drawFunction(g2, width, height, functionsDomains.get(i), functionsCodomains.get(i));
             }
+        }
+
+        private void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain){
+
         }
 
         private boolean isPointInVisibleRange(DoublePoint point) {

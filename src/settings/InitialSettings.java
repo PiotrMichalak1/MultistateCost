@@ -55,6 +55,8 @@ public class InitialSettings {
     public static final int HOLD_THE_DATA = 18;
     public static final int RUN_MULTIPLE_TIMES = 19;
 
+    public static final int SIMULATE_BUTTON =20;
+
 
 
 

@@ -1,5 +1,7 @@
 package tools;
 
+import settings.Parameters;
+
 public class TestingValues {
     public double[] testDomain;
     public double[] testCodomain;
@@ -7,34 +9,32 @@ public class TestingValues {
     public double[] testDomain2;
     public double[] testCodomain2;
 
+    Parameters parameters;
+
     public TestingValues() {
+        parameters = Parameters.getInstance();
         initializeTestFunction();
     }
 
-    private void initializeTestFunction() {
-        this.testDomain = new double[100];
-        this.testCodomain = new double[100];
-        for (int i = 0; i < 100; i++) {
-            testDomain[i] = -50.0 + i ;
+    public void initializeTestFunction() {
+        this.testDomain = new double[parameters.getMaxInterval() - parameters.getMinInterval() + 1];
+        this.testCodomain = new double[testDomain.length];
+        for (int i = 0; i < testDomain.length; i++) {
+            testDomain[i] = parameters.getMinInterval() + i;
+            testCodomain[i] = testDomain[i]*0.1;
         }
-        for (int j = 0; j < testDomain.length; j++) {
-            double x = testDomain[j];
-            //testCodomain[j] = Math.pow(x, 3) + 2 * Math.pow(x, 2)+ 7 * x - 1;
-            //testCodomain[j] = Math.pow(-1,j);
-            testCodomain[j] = x*1.0;
 
-        }
 
         this.testDomain2 = new double[100];
         this.testCodomain2 = new double[100];
         for (int i = 0; i < 100; i++) {
-            testDomain2[i] = -50.0 + i ;
+            testDomain2[i] = -50.0 + i;
         }
         for (int j = 0; j < testDomain2.length; j++) {
             double x = testDomain2[j];
             //testCodomain[j] = Math.pow(x, 3) + 2 * Math.pow(x, 2)+ 7 * x - 1;
             //testCodomain[j] = Math.pow(-1,j);
-            testCodomain2[j] = x*(-0.5);
+            testCodomain2[j] = x * (-0.5);
 
         }
 

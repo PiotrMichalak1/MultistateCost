@@ -1,21 +1,40 @@
 package tools.gridbagelements;
 
+import panels.simulationsubpanels.tabbedPanels.costplot.PlotPanel;
+import tools.TestingValues;
 import tools.interfaces.GridBagElement;
-
 import javax.swing.*;
 import java.awt.*;
 
+import settings.InitialSettings;
 public class GridBagButton implements GridBagElement {
+    JButton button;
+
+    TestingValues test = new TestingValues();
+
+
+    public GridBagButton(int type, PlotPanel parentTab) {
+        button = new JButton();
+
+        switch (type) {
+            case InitialSettings.SIMULATE_BUTTON ->{
+                button.addActionListener(e -> {
+                    test.initializeTestFunction();
+                    parentTab.plotter.clearFunctionData();
+                    parentTab.plotter.addFunctionData(test.testDomain, test.testCodomain);
+                    parentTab.repaint();
+
+                });
+            }
+        }
+    }
+
     @Override
     public void putInGrid(JComponent parent, String text, int bagX, int bagY) {
         GridBagConstraints c = new GridBagConstraints();
-        JButton button = new JButton();
         button.setFocusable(false);
         button.setText(text);
 
-        button.addActionListener(e -> {
-
-        });
 
         c.weightx = 1.0;
         c.weighty = 1.0;
