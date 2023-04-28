@@ -70,13 +70,13 @@ public class Plotter {
         private final int margin;
 
         private double scaleMultiplier;
-        private int numOfMouseScrolls;
+        public int numOfMouseScrolls;
         int numOfGridZoomInScaling;
 
         private int smallGridSpacing;
         private int bigGridSpacing;
         private final double scaleUnitX;
-        private final double scaleUnitY;
+        private double scaleUnitY;
         private final double[] xRange;
         private final double[] yRange;
 
@@ -102,7 +102,6 @@ public class Plotter {
             g2.fillRect(0, 0, margin, 2 * margin + height);
             g2.fillRect(0, margin + height, 2 * margin + width, margin);
             g2.fillRect(margin + width, 0, margin, 2 * margin + height);
-
         }
 
         private void drawAxes(Graphics2D g2, int width, int height) {
@@ -367,33 +366,73 @@ public class Plotter {
         private void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain) {
             if (functionDomain.length > 1) {
                 double smallestValue = functionCodomain[0];
+                double biggestValue = functionCodomain[0];
                 for (int i = 1; i < functionCodomain.length; i++) {
                     if (functionCodomain[i] < smallestValue) {
                         smallestValue = functionCodomain[i];
                     }
+                    if (functionCodomain[i]>biggestValue){
+                        biggestValue = functionCodomain[i];
+                    }
                 }
+
+                double rangeOfValues = biggestValue - smallestValue;
 
                 coordinateSystem.xRange[0] = functionDomain[0];
                 coordinateSystem.yRange[0] = smallestValue;
 
-                double range = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
+                coordinateSystem.updateRanges(width,height);
+
+                double visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
                 double domainWidth = functionDomain[functionCodomain.length - 1] - functionDomain[0];
-                if (range < domainWidth) {
-                    while (range < domainWidth) {
+
+                if (visibleXWidth < domainWidth) {
+
+                    while (visibleXWidth < domainWidth) {
+
                         coordinateSystem.numOfMouseScrolls -= 1;
+                        coordinateSystem.updateGridSpacing();
                         coordinateSystem.updateScaleOnMouseScroll();
                         coordinateSystem.updateRanges(width, height);
-                        range = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
-                        System.out.println(coordinateSystem.numOfMouseScrolls);
+                        visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
+                        System.out.println(1);
                     }
+                    System.out.println(2);
+                    coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth- domainWidth)/2;
+                    coordinateSystem.updateRanges(width, height);
 
-                } else {
-                    System.out.println("You have to zoom in");
+                } else if (visibleXWidth>domainWidth){
+                    while (visibleXWidth > domainWidth) {
+
+                        coordinateSystem.numOfMouseScrolls += 1;
+                        coordinateSystem.updateGridSpacing();
+                        coordinateSystem.updateScaleOnMouseScroll();
+                        coordinateSystem.updateRanges(width, height);
+                        visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
+                        System.out.println(3);
+                    }
+                    coordinateSystem.numOfMouseScrolls -= 1;
+                    coordinateSystem.updateGridSpacing();
+                    coordinateSystem.updateScaleOnMouseScroll();
+                    coordinateSystem.updateRanges(width, height);
+                    visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
+                    coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth- domainWidth)/2;
+                    coordinateSystem.updateRanges(width, height);
+                    System.out.println(4);
                 }
+                System.out.println("Visible XWidts is: " + visibleXWidth);
+                System.out.println("Function domain is: " + domainWidth);
+                /*if (rangeOfValues != 0) {
+                    coordinateSystem.scaleUnitY = (rangeOfValues * 5.0 * coordinateSystem.smallGridSpacing) / (coordinateSystem.scaleMultiplier * height);
+                    coordinateSystem.updateRanges(width, height);
+                    System.out.println(coordinateSystem.scaleUnitY);
+                } else {
+                    System.out.println("rangeOfValues is equal to 0");
+                }*/
 
 
             }
-            coordinateSystem.updateGridSpacing();
+
 
         }
 
