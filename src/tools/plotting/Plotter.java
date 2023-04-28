@@ -81,7 +81,7 @@ public class Plotter {
         private final double[] yRange;
 
         public CoordinateSystem() {
-            this.margin = InitialSettings.DEFAULT_PLOT_MARGIN;
+            this.margin = GraphicSettings.DEFAULT_PLOT_MARGIN;
 
             this.scaleUnitX = GraphicSettings.DEFAULT_SCALE_UNIT_X;
             this.scaleUnitY = GraphicSettings.DEFAULT_SCALE_UNIT_Y;
@@ -148,12 +148,8 @@ public class Plotter {
             int yLabelYCoord = (int) ((labelNum - yRange[0]) / (yRange[1] - yRange[0]) * height);
             while (yLabelYCoord <= height) {
 
-                if (numOfMouseScrolls < InitialSettings.DEFAULT_SMALL_GRID_SPACING) {
-                    label = String.valueOf((int) labelNum);
-                } else {
+                format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling) + "f";
                     label = String.format(format, labelNum);
-                }
-
 
                 g2.drawString(label, margin - 5 - fontMetrics.stringWidth(label), margin + height - yLabelYCoord + (int) fontMetrics.getStringBounds(label, g2).getHeight() / 2 - 2);
                 yLabelYCoord += bigGridSpacing;
@@ -395,9 +391,9 @@ public class Plotter {
                         coordinateSystem.updateScaleOnMouseScroll();
                         coordinateSystem.updateRanges(width, height);
                         visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
-                        System.out.println(1);
+
                     }
-                    System.out.println(2);
+
                     coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth- domainWidth)/2;
                     coordinateSystem.updateRanges(width, height);
 
@@ -409,7 +405,7 @@ public class Plotter {
                         coordinateSystem.updateScaleOnMouseScroll();
                         coordinateSystem.updateRanges(width, height);
                         visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
-                        System.out.println(3);
+
                     }
                     coordinateSystem.numOfMouseScrolls -= 1;
                     coordinateSystem.updateGridSpacing();
@@ -418,17 +414,19 @@ public class Plotter {
                     visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
                     coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth- domainWidth)/2;
                     coordinateSystem.updateRanges(width, height);
-                    System.out.println(4);
+
                 }
-                System.out.println("Visible XWidts is: " + visibleXWidth);
-                System.out.println("Function domain is: " + domainWidth);
-                /*if (rangeOfValues != 0) {
-                    coordinateSystem.scaleUnitY = (rangeOfValues * 5.0 * coordinateSystem.smallGridSpacing) / (coordinateSystem.scaleMultiplier * height);
+
+                if (rangeOfValues != 0) {
+                    double exactValue = (rangeOfValues * 5.0 * coordinateSystem.smallGridSpacing) / (coordinateSystem.scaleMultiplier * height);
+                    coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue,2);
                     coordinateSystem.updateRanges(width, height);
-                    System.out.println(coordinateSystem.scaleUnitY);
-                } else {
-                    System.out.println("rangeOfValues is equal to 0");
-                }*/
+
+                    double visibleYHeight = coordinateSystem.yRange[1] - coordinateSystem.yRange[0];
+                    coordinateSystem.yRange[0] = smallestValue - (visibleYHeight - rangeOfValues)/2;
+                    coordinateSystem.updateRanges(width, height);
+                }
+
 
 
             }

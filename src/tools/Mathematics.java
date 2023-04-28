@@ -31,5 +31,13 @@ public class Mathematics {
         return roundedNumber;
     }
 
+    public static double roundUpToTheNearestPowerOf(double number, double poweredNumber) {
+            double power = Math.ceil(log(number, poweredNumber));
+            return Math.pow(poweredNumber, power);
+    }
+
+    public static double log(double argument, double base) {
+        return Math.log(argument) / Math.log(base);
+    }
 
 }
