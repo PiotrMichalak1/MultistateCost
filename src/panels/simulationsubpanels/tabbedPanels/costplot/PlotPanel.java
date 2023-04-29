@@ -71,6 +71,16 @@ public class PlotPanel extends JPanel{
             previousMousePosition = currentMousePosition;
             repaint();
         }
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            if (isMouseOnPlot(e.getPoint())){
+                plotter.onMouseMovement(e.getPoint());
+                repaint();
+            }
+
+        }
     }
+
 
 }

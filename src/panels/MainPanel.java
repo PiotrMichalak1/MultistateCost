@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         addWeightedPanes();
     }
 
-    private void addWeightedPanes() {
+    private void addWeightedPanes(){
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         settingsPanel = new SettingsPanel();

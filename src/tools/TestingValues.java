@@ -21,7 +21,7 @@ public class TestingValues {
         this.testCodomain = new double[testDomain.length];
         for (int i = 0; i < testDomain.length; i++) {
             testDomain[i] = parameters.getMinInterval() + i;
-            testCodomain[i] = testDomain[i]*1024;
+            testCodomain[i] = testDomain[i];
         }
 
 

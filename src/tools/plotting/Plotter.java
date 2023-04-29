@@ -37,8 +37,8 @@ public class Plotter {
         coordinateSystem.onMouseScroll(mousePosition, wheelRotation, width, height);
     }
 
-    public void onMouseMovement(Point mousePosition, int width, int height) {
-
+    public void onMouseMovement(Point mousePosition) {
+        plot.onMouseMovement(mousePosition);
     }
 
     public void dragPlot(int dx, int dy) {
@@ -149,7 +149,7 @@ public class Plotter {
             while (yLabelYCoord <= height) {
 
                 format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling) + "f";
-                    label = String.format(format, labelNum);
+                label = String.format(format, labelNum);
 
                 g2.drawString(label, margin - 5 - fontMetrics.stringWidth(label), margin + height - yLabelYCoord + (int) fontMetrics.getStringBounds(label, g2).getHeight() / 2 - 2);
                 yLabelYCoord += bigGridSpacing;
@@ -295,11 +295,20 @@ public class Plotter {
         ArrayList<double[]> functionsCodomains = new ArrayList<>();
 
         private final int margin;
+        private PlotPointOfInterest plotPOI;
 
 
         Plot() {
             this.margin = coordinateSystem.getMargin();
+            this.plotPOI = new PlotPointOfInterest();
+        }
 
+        public void onMouseMovement(Point mousePosition) {
+            plotPOI.setArgument(2137);
+            plotPOI.setFunctionValue(2137);
+            plotPOI.setxPxCoordinate(mousePosition.x);
+            plotPOI.setyPxCoordinate(mousePosition.y);
+            plotPOI.setVisible(true);
         }
 
         public void addFunctionData(double[] domain, double[] codomain) {
@@ -321,7 +330,7 @@ public class Plotter {
                     if (functionDomain.length == 1) {
                         point = new DoublePoint(functionDomain[0], functionCodomain[0]);
                         if (isPointInVisibleRange(point)) {
-                            pointPx = pointToPixels(point, width, height);
+                            pointPx = pointToPixels(point);
                             g2.setColor(GraphicSettings.POINT_COLOR);
                             g2.fillOval((int) pointPx.getX() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                     (int) pointPx.getY() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
@@ -334,10 +343,10 @@ public class Plotter {
                             DoublePoint prevPoint = new DoublePoint(functionDomain[i], functionCodomain[i]);
                             DoublePoint nextPoint = new DoublePoint(functionDomain[i + 1], functionCodomain[i + 1]);
 
-                            g2.drawLine((int) pointToPixels(prevPoint, width, height).getX(),
-                                    (int) pointToPixels(prevPoint, width, height).getY(),
-                                    (int) pointToPixels(nextPoint, width, height).getX(),
-                                    (int) pointToPixels(nextPoint, width, height).getY()
+                            g2.drawLine((int) pointToPixels(prevPoint).getX(),
+                                    (int) pointToPixels(prevPoint).getY(),
+                                    (int) pointToPixels(nextPoint).getX(),
+                                    (int) pointToPixels(nextPoint).getY()
                             );
 
                         }
@@ -357,6 +366,7 @@ public class Plotter {
             for (int i = 0; i < functionsDomains.size(); i++) {
                 drawFunction(g2, width, height, functionsDomains.get(i), functionsCodomains.get(i));
             }
+            plotPOI.drawPointOfInterest(g2);
         }
 
         private void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain) {
@@ -367,7 +377,7 @@ public class Plotter {
                     if (functionCodomain[i] < smallestValue) {
                         smallestValue = functionCodomain[i];
                     }
-                    if (functionCodomain[i]>biggestValue){
+                    if (functionCodomain[i] > biggestValue) {
                         biggestValue = functionCodomain[i];
                     }
                 }
@@ -377,7 +387,7 @@ public class Plotter {
                 coordinateSystem.xRange[0] = functionDomain[0];
                 coordinateSystem.yRange[0] = smallestValue;
 
-                coordinateSystem.updateRanges(width,height);
+                coordinateSystem.updateRanges(width, height);
 
                 double visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
                 double domainWidth = functionDomain[functionCodomain.length - 1] - functionDomain[0];
@@ -394,10 +404,10 @@ public class Plotter {
 
                     }
 
-                    coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth- domainWidth)/2;
+                    coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
                     coordinateSystem.updateRanges(width, height);
 
-                } else if (visibleXWidth>domainWidth){
+                } else if (visibleXWidth > domainWidth) {
                     while (visibleXWidth > domainWidth) {
 
                         coordinateSystem.numOfMouseScrolls += 1;
@@ -412,21 +422,20 @@ public class Plotter {
                     coordinateSystem.updateScaleOnMouseScroll();
                     coordinateSystem.updateRanges(width, height);
                     visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
-                    coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth- domainWidth)/2;
+                    coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
                     coordinateSystem.updateRanges(width, height);
 
                 }
 
                 if (rangeOfValues != 0) {
                     double exactValue = (rangeOfValues * 5.0 * coordinateSystem.smallGridSpacing) / (coordinateSystem.scaleMultiplier * height);
-                    coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue,2);
+                    coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue, 2);
                     coordinateSystem.updateRanges(width, height);
 
                     double visibleYHeight = coordinateSystem.yRange[1] - coordinateSystem.yRange[0];
-                    coordinateSystem.yRange[0] = smallestValue - (visibleYHeight - rangeOfValues)/2;
+                    coordinateSystem.yRange[0] = smallestValue - (visibleYHeight - rangeOfValues) / 2;
                     coordinateSystem.updateRanges(width, height);
                 }
-
 
 
             }
@@ -443,10 +452,25 @@ public class Plotter {
             return isInXRange && isInYRange;
         }
 
-        private Point pointToPixels(DoublePoint point, int width, int height) {
+
+        private Point pointToPixels(DoublePoint point) {
             int xPx = margin + (int) Math.round(width * (point.getX() - coordinateSystem.xRange[0]) / (coordinateSystem.xRange[1] - coordinateSystem.xRange[0]));
             int yPx = margin + height - (int) Math.round(height * (point.getY() - coordinateSystem.yRange[0]) / (coordinateSystem.yRange[1] - coordinateSystem.yRange[0]));
             return new Point(xPx, yPx);
+        }
+
+        private DoublePoint pixelsToPoint(Point mousePosition) {
+            double mouseX = mousePosition.getX() - margin;
+            double mouseY = margin + height - mousePosition.getY();
+
+            double RangeX = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];
+            double RangeY = coordinateSystem.yRange[1] - coordinateSystem.yRange[0];
+
+            double argument = coordinateSystem.xRange[0] + (mouseX / width) * RangeX;
+            double value = coordinateSystem.yRange[0] + (mouseY / height) * RangeY;
+
+            return new DoublePoint(argument, value);
+
         }
 
 

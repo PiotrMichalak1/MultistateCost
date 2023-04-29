@@ -14,4 +14,11 @@ public class GraphicSettings {
     public static final double DEFAULT_SCALE_MULTIPLIER = 1.0;
     //Plot Defaults
     public static final int DEFAULT_PLOT_MARGIN = 50;
+
+    public static final int POINT_OF_INTEREST_MARGIN_X = 15;
+    public static final int POINT_OF_INTEREST_MARGIN_Y = 5;
+
+    public static final int POINT_OF_INTEREST_STRING_SPACING = 15;
+    public static final Point POINT_OF_INTEREST_OFFSET = new Point(10,19);
+
 }
