@@ -6,6 +6,7 @@ import tools.Mathematics;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Plotter {
@@ -294,8 +295,10 @@ public class Plotter {
         ArrayList<double[]> functionsDomains = new ArrayList<>();
         ArrayList<double[]> functionsCodomains = new ArrayList<>();
 
+        HashMap<Point, DoublePoint> POIs = new HashMap<>();
+
         private final int margin;
-        private PlotPointOfInterest plotPOI;
+        private final PlotPointOfInterest plotPOI;
 
 
         Plot() {
@@ -304,8 +307,6 @@ public class Plotter {
         }
 
         public void onMouseMovement(Point mousePosition) {
-            plotPOI.setArgument(2137);
-            plotPOI.setFunctionValue(2137);
             plotPOI.setxPxCoordinate(mousePosition.x);
             plotPOI.setyPxCoordinate(mousePosition.y);
             plotPOI.setVisible(true);
@@ -331,6 +332,9 @@ public class Plotter {
                         point = new DoublePoint(functionDomain[0], functionCodomain[0]);
                         if (isPointInVisibleRange(point)) {
                             pointPx = pointToPixels(point);
+
+                            POIs.put(pointPx, point);
+
                             g2.setColor(GraphicSettings.POINT_COLOR);
                             g2.fillOval((int) pointPx.getX() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                     (int) pointPx.getY() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
@@ -339,17 +343,28 @@ public class Plotter {
                         }
                     } else {
                         g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
-                        for (int i = 0; i < functionDomain.length - 1; i++) {
-                            DoublePoint prevPoint = new DoublePoint(functionDomain[i], functionCodomain[i]);
-                            DoublePoint nextPoint = new DoublePoint(functionDomain[i + 1], functionCodomain[i + 1]);
 
-                            g2.drawLine((int) pointToPixels(prevPoint).getX(),
-                                    (int) pointToPixels(prevPoint).getY(),
-                                    (int) pointToPixels(nextPoint).getX(),
-                                    (int) pointToPixels(nextPoint).getY()
+                        DoublePoint prevPoint;
+                        DoublePoint nextPoint = new DoublePoint(0.0, 0.0);
+                        Point prevPointPx;
+                        Point nextPointPx = new Point();
+                        for (int i = 0; i < functionDomain.length - 1; i++) {
+                            prevPoint = new DoublePoint(functionDomain[i], functionCodomain[i]);
+                            nextPoint = new DoublePoint(functionDomain[i + 1], functionCodomain[i + 1]);
+
+                            prevPointPx = pointToPixels(prevPoint);
+                            nextPointPx = pointToPixels(nextPoint);
+
+                            g2.drawLine((int) prevPointPx.getX(),
+                                    (int) prevPointPx.getY(),
+                                    (int) nextPointPx.getX(),
+                                    (int) nextPointPx.getY()
                             );
 
+                            POIs.put(prevPointPx, prevPoint);
                         }
+                        POIs.put(nextPointPx, nextPoint);
+
                     }
 
                 } else {
@@ -363,6 +378,7 @@ public class Plotter {
         }
 
         public void drawAllFunctions(Graphics2D g2, int width, int height) {
+            POIs.clear();
             for (int i = 0; i < functionsDomains.size(); i++) {
                 drawFunction(g2, width, height, functionsDomains.get(i), functionsCodomains.get(i));
             }
