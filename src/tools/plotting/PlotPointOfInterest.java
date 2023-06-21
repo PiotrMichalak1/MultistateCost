@@ -14,7 +14,7 @@ public class PlotPointOfInterest {
 
     private boolean isVisible;
 
-    public PlotPointOfInterest() {
+    public PlotPointOfInterest(Plotter.Plot plot) {
 
     }
 

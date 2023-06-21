@@ -290,7 +290,7 @@ public class Plotter {
 
     }
 
-    private class Plot {
+    public class Plot {
 
         ArrayList<double[]> functionsDomains = new ArrayList<>();
         ArrayList<double[]> functionsCodomains = new ArrayList<>();
@@ -303,7 +303,7 @@ public class Plotter {
 
         Plot() {
             this.margin = coordinateSystem.getMargin();
-            this.plotPOI = new PlotPointOfInterest();
+            this.plotPOI = new PlotPointOfInterest(this);
         }
 
         public void onMouseMovement(Point mousePosition) {
