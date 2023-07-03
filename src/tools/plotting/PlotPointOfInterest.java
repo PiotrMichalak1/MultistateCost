@@ -1,6 +1,7 @@
 package tools.plotting;
 
 import settings.GraphicSettings;
+import tools.Mathematics;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ public class PlotPointOfInterest {
     private int mouseY;
 
     private int argumentPX;
-    private int valuePX;
+    private int functionValuePX;
     private double argument;
     private double functionValue;
 
@@ -17,14 +18,21 @@ public class PlotPointOfInterest {
 
     private boolean isVisible = false;
 
-    private Plotter.Plot plot;
 
-    public PlotPointOfInterest(Plotter.Plot plot) {
-        this.plot = plot;
+
+    public PlotPointOfInterest() {
+
     }
 
     public void drawPOI(Graphics2D g2) {
-
+        if (mouseDistanceToClosest<GraphicSettings.POINT_OF_INTEREST_VISIBILITY_THRESHOLD) {
+            setVisible(true);
+            g2.setColor(GraphicSettings.POI_COLOR);
+            g2.fillOval((int) argumentPX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                    (int) functionValuePX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                    GraphicSettings.PLOT_POINT_THICKNESS,
+                    GraphicSettings.PLOT_POINT_THICKNESS);
+        }
     }
 
     public void drawPOIdata(Graphics2D g2) {
@@ -55,13 +63,20 @@ public class PlotPointOfInterest {
 
     }
 
-    public void updatePOIValues() {
-        if (plot.functionsDomains.size() == 0) {
-            setVisible(false);
-        } else {
-            setArgument(plot.functionsDomains.get(0)[0]);
-            setFunctionValue(2137.0);
+    public void updatePOIValues(Point pointPx, DoublePoint point) {
+        int distance = Mathematics.manhattan(pointPx,new Point(mouseX,mouseY));
+        if (distance<mouseDistanceToClosest) {
+            mouseDistanceToClosest = distance;
+            argumentPX = pointPx.x;
+            functionValuePX = pointPx.y;
+            argument = point.getX();
+            functionValue = point.getY();
         }
+    }
+
+    public void resetDistanceAndVisibility(){
+        setMouseDistanceToClosest(GraphicSettings.POINT_OF_INTEREST_VISIBILITY_THRESHOLD +1);
+        setVisible(false);
     }
 
 

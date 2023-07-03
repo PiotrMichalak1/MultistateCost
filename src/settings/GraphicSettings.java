@@ -3,8 +3,8 @@ package settings;
 import java.awt.*;
 
 public class GraphicSettings {
-    public static final int PLOT_POINT_THICKNESS = 10;
-    public static final Color POINT_COLOR = Color.red;
+    public static final int PLOT_POINT_THICKNESS = 7;
+    public static final Color POI_COLOR = new Color(233, 86, 86);
     public static final Color MAIN_GRAPH_COLOR = new Color(35, 140, 167);
 
     public static final Color MARGIN_COLOR = new Color(236, 236, 237);
@@ -21,6 +21,6 @@ public class GraphicSettings {
     public static final int POINT_OF_INTEREST_STRING_SPACING = 15;
     public static final Point POINT_OF_INTEREST_OFFSET = new Point(10,19);
 
-    public static final int POINT_OF_INTEREST_VISIBILITY_THRESHOLD = 20;
+    public static final int POINT_OF_INTEREST_VISIBILITY_THRESHOLD = 40;
 
 }

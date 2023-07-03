@@ -22,7 +22,7 @@ public class GridBagButton implements GridBagElement {
                     test.initializeTestFunction();
                     parentTab.plotter.clearFunctionData();
                     parentTab.plotter.addFunctionData(test.testDomain, test.testCodomain);
-                    //parentTab.plotter.addFunctionData(test.testDomain2, test.testCodomain2);
+                    parentTab.plotter.addFunctionData(test.testDomain2, test.testCodomain2);
                     parentTab.repaint();
 
                 });

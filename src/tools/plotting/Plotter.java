@@ -21,16 +21,16 @@ public class Plotter {
 
     }
 
-    public void drawMainPlot(Graphics2D g2) {
+    public void drawMainPlot(Graphics2D g2, Point mousePosition) {
         coordinateSystem.updateRanges(width, height);
 
         coordinateSystem.drawGrid(g2, width, height);
-        plot.drawAllFunctions(g2);
+        plot.drawAllFunctions(g2, mousePosition);
         coordinateSystem.drawMargins(g2, width, height);
         coordinateSystem.drawAxes(g2, width, height);
         coordinateSystem.drawLabels(g2, width, height);
+        plot.plotPOI.drawPOI(g2);
         plot.plotPOI.drawPOIdata(g2);
-        plot.plotPOI.updatePOIValues();
     }
 
 
@@ -301,7 +301,7 @@ public class Plotter {
 
         Plot() {
             this.margin = coordinateSystem.getMargin();
-            this.plotPOI = new PlotPointOfInterest(this);
+            this.plotPOI = new PlotPointOfInterest();
         }
 
         public void onMouseMovement(Point mousePosition) {
@@ -320,7 +320,7 @@ public class Plotter {
             functionsCodomains.removeAll(functionsCodomains);
         }
 
-        public void drawFunction(Graphics2D g2, double[] functionDomain, double[] functionCodomain) {
+        public void drawFunction(Graphics2D g2, double[] functionDomain, double[] functionCodomain, Point mousePosition) {
             if (functionDomain != null && functionCodomain != null) {
                 if (functionDomain.length == functionCodomain.length) {
                     Point pointPx;
@@ -329,7 +329,8 @@ public class Plotter {
                         point = new DoublePoint(functionDomain[0], functionCodomain[0]);
                         if (isPointInVisibleRange(point)) {
                             pointPx = pointToPixels(point);
-                            g2.setColor(GraphicSettings.POINT_COLOR);
+                            plotPOI.updatePOIValues(pointPx,point);
+                            g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
                             g2.fillOval((int) pointPx.getX() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                     (int) pointPx.getY() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                     GraphicSettings.PLOT_POINT_THICKNESS,
@@ -339,16 +340,30 @@ public class Plotter {
                         g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
 
                         DoublePoint prevPoint;
-                        DoublePoint nextPoint = new DoublePoint(0.0, 0.0);
+                        DoublePoint nextPoint;
                         Point prevPointPx;
-                        Point nextPointPx = new Point();
-                        for (int i = 0; i < functionDomain.length - 1; i++) {
+                        Point nextPointPx;
+
+                        prevPoint = new DoublePoint(functionDomain[0], functionCodomain[0]);
+                        nextPoint = new DoublePoint(functionDomain[1], functionCodomain[1]);
+
+                        prevPointPx = pointToPixels(prevPoint);
+                        nextPointPx = pointToPixels(nextPoint);
+                        plotPOI.updatePOIValues(prevPointPx,prevPoint);
+                        plotPOI.updatePOIValues(nextPointPx,nextPoint);
+                        g2.drawLine((int) prevPointPx.getX(),
+                                (int) prevPointPx.getY(),
+                                (int) nextPointPx.getX(),
+                                (int) nextPointPx.getY()
+                        );
+
+                        for (int i = 1; i < functionDomain.length - 1; i++) {
                             prevPoint = new DoublePoint(functionDomain[i], functionCodomain[i]);
                             nextPoint = new DoublePoint(functionDomain[i + 1], functionCodomain[i + 1]);
 
                             prevPointPx = pointToPixels(prevPoint);
                             nextPointPx = pointToPixels(nextPoint);
-
+                            plotPOI.updatePOIValues(nextPointPx,nextPoint);
                             g2.drawLine((int) prevPointPx.getX(),
                                     (int) prevPointPx.getY(),
                                     (int) nextPointPx.getX(),
@@ -369,9 +384,10 @@ public class Plotter {
             }
         }
 
-        public void drawAllFunctions(Graphics2D g2) {
+        public void drawAllFunctions(Graphics2D g2, Point mousePosition) {
+            plotPOI.resetDistanceAndVisibility();
             for (int i = 0; i < functionsDomains.size(); i++) {
-                drawFunction(g2,  functionsDomains.get(i), functionsCodomains.get(i));
+                drawFunction(g2,  functionsDomains.get(i), functionsCodomains.get(i), mousePosition);
             }
 
         }

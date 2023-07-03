@@ -31,7 +31,7 @@ public class PlotPanel extends JPanel{
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
-            plotter.drawMainPlot(g2);
+            plotter.drawMainPlot(g2, getMousePosition());
         }
     }
 
@@ -69,6 +69,7 @@ public class PlotPanel extends JPanel{
                     (int)(currentMousePosition.getY()-previousMousePosition.getY())
             );
             previousMousePosition = currentMousePosition;
+            plotter.onMouseMovement(event.getPoint());
             repaint();
         }
 
