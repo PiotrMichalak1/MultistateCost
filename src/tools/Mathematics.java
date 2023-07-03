@@ -46,4 +46,12 @@ public class Mathematics {
         return Math.abs(p1.x-p2.x)+Math.abs(p1.y-p2.y);
     }
 
+    public static double cartesianDistance(Point p1, Point p2) {
+        int deltaX = p2.x - p1.x;
+        int deltaY = p2.y - p1.y;
+        int distanceSquared = deltaX * deltaX + deltaY * deltaY;
+        double distance = Math.sqrt(distanceSquared);
+        return distance;
+    }
+
 }

@@ -14,7 +14,7 @@ public class PlotPointOfInterest {
     private double argument;
     private double functionValue;
 
-    private int mouseDistanceToClosest = GraphicSettings.POINT_OF_INTEREST_VISIBILITY_THRESHOLD +1;
+    private double mouseDistanceToClosest = GraphicSettings.POINT_OF_INTEREST_VISIBILITY_THRESHOLD +1;
 
     private boolean isVisible = false;
 
@@ -64,7 +64,7 @@ public class PlotPointOfInterest {
     }
 
     public void updatePOIValues(Point pointPx, DoublePoint point) {
-        int distance = Mathematics.manhattan(pointPx,new Point(mouseX,mouseY));
+        double distance = Mathematics.cartesianDistance(pointPx,new Point(mouseX,mouseY));
         if (distance<mouseDistanceToClosest) {
             mouseDistanceToClosest = distance;
             argumentPX = pointPx.x;
@@ -96,9 +96,6 @@ public class PlotPointOfInterest {
         this.functionValue = functionValue;
     }
 
-    public int getMouseDistanceToClosest() {
-        return mouseDistanceToClosest;
-    }
 
     public void setMouseDistanceToClosest(int mouseDistanceToClosest) {
         this.mouseDistanceToClosest = mouseDistanceToClosest;
