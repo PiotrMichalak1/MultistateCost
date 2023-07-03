@@ -21,4 +21,6 @@ public class GraphicSettings {
     public static final int POINT_OF_INTEREST_STRING_SPACING = 15;
     public static final Point POINT_OF_INTEREST_OFFSET = new Point(10,19);
 
+    public static final int POINT_OF_INTEREST_VISIBILITY_THRESHOLD = 20;
+
 }

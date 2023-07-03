@@ -6,7 +6,6 @@ import tools.Mathematics;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class Plotter {
@@ -26,11 +25,12 @@ public class Plotter {
         coordinateSystem.updateRanges(width, height);
 
         coordinateSystem.drawGrid(g2, width, height);
-        plot.drawAllFunctions(g2, width, height);
+        plot.drawAllFunctions(g2);
         coordinateSystem.drawMargins(g2, width, height);
         coordinateSystem.drawAxes(g2, width, height);
         coordinateSystem.drawLabels(g2, width, height);
-
+        plot.plotPOI.drawPOIdata(g2);
+        plot.plotPOI.updatePOIValues();
     }
 
 
@@ -292,10 +292,8 @@ public class Plotter {
 
     public class Plot {
 
-        ArrayList<double[]> functionsDomains = new ArrayList<>();
-        ArrayList<double[]> functionsCodomains = new ArrayList<>();
-
-        HashMap<Point, DoublePoint> POIs = new HashMap<>();
+        public ArrayList<double[]> functionsDomains = new ArrayList<>();
+        public ArrayList<double[]> functionsCodomains = new ArrayList<>();
 
         private final int margin;
         private final PlotPointOfInterest plotPOI;
@@ -307,9 +305,8 @@ public class Plotter {
         }
 
         public void onMouseMovement(Point mousePosition) {
-            plotPOI.setxPxCoordinate(mousePosition.x);
-            plotPOI.setyPxCoordinate(mousePosition.y);
-            plotPOI.setVisible(true);
+            plotPOI.setMouseX(mousePosition.x);
+            plotPOI.setMouseY(mousePosition.y);
         }
 
         public void addFunctionData(double[] domain, double[] codomain) {
@@ -323,7 +320,7 @@ public class Plotter {
             functionsCodomains.removeAll(functionsCodomains);
         }
 
-        public void drawFunction(Graphics2D g2, int width, int height, double[] functionDomain, double[] functionCodomain) {
+        public void drawFunction(Graphics2D g2, double[] functionDomain, double[] functionCodomain) {
             if (functionDomain != null && functionCodomain != null) {
                 if (functionDomain.length == functionCodomain.length) {
                     Point pointPx;
@@ -332,9 +329,6 @@ public class Plotter {
                         point = new DoublePoint(functionDomain[0], functionCodomain[0]);
                         if (isPointInVisibleRange(point)) {
                             pointPx = pointToPixels(point);
-
-                            POIs.put(pointPx, point);
-
                             g2.setColor(GraphicSettings.POINT_COLOR);
                             g2.fillOval((int) pointPx.getX() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                     (int) pointPx.getY() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
@@ -361,9 +355,7 @@ public class Plotter {
                                     (int) nextPointPx.getY()
                             );
 
-                            POIs.put(prevPointPx, prevPoint);
                         }
-                        POIs.put(nextPointPx, nextPoint);
 
                     }
 
@@ -377,12 +369,11 @@ public class Plotter {
             }
         }
 
-        public void drawAllFunctions(Graphics2D g2, int width, int height) {
-            POIs.clear();
+        public void drawAllFunctions(Graphics2D g2) {
             for (int i = 0; i < functionsDomains.size(); i++) {
-                drawFunction(g2, width, height, functionsDomains.get(i), functionsCodomains.get(i));
+                drawFunction(g2,  functionsDomains.get(i), functionsCodomains.get(i));
             }
-            plotPOI.drawPointOfInterest(g2);
+
         }
 
         private void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain) {

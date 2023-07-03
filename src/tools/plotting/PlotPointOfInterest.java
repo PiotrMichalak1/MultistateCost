@@ -1,24 +1,33 @@
 package tools.plotting;
 
 import settings.GraphicSettings;
-import tools.Mathematics;
 
 import java.awt.*;
-import java.util.HashMap;
 
 public class PlotPointOfInterest {
-    private int xPxCoordinate;
-    private int yPxCoordinate;
+    private int mouseX;
+    private int mouseY;
+
+    private int argumentPX;
+    private int valuePX;
     private double argument;
     private double functionValue;
 
-    private boolean isVisible;
+    private int mouseDistanceToClosest = GraphicSettings.POINT_OF_INTEREST_VISIBILITY_THRESHOLD +1;
+
+    private boolean isVisible = false;
+
+    private Plotter.Plot plot;
 
     public PlotPointOfInterest(Plotter.Plot plot) {
+        this.plot = plot;
+    }
+
+    public void drawPOI(Graphics2D g2) {
 
     }
 
-    public void drawPointOfInterest(Graphics2D g2) {
+    public void drawPOIdata(Graphics2D g2) {
         if (isVisible) {
             FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
 
@@ -32,49 +41,36 @@ public class PlotPointOfInterest {
 
             g2.setColor(new Color(223, 213, 186));
 
-            int topLeftCornerY = yPxCoordinate + GraphicSettings.POINT_OF_INTEREST_OFFSET.y;
+            int topLeftCornerY = mouseY + GraphicSettings.POINT_OF_INTEREST_OFFSET.y;
             int width = GraphicSettings.POINT_OF_INTEREST_MARGIN_X * 2 + stringWidth;
             int height = GraphicSettings.POINT_OF_INTEREST_MARGIN_Y * 2 + stringHeight * 2 + GraphicSettings.POINT_OF_INTEREST_STRING_SPACING;
 
-            g2.fillRect(xPxCoordinate, topLeftCornerY, width, height);
+            g2.fillRect(mouseX, topLeftCornerY, width, height);
             g2.setColor(Color.black);
-            g2.drawRect(xPxCoordinate, topLeftCornerY, width, height);
-            g2.drawString("x: " + argumentString, xPxCoordinate + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (int) (height - stringHeight) / 2);
-            g2.drawString("y: " + functionValueString, xPxCoordinate + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (int) (height + GraphicSettings.POINT_OF_INTEREST_STRING_SPACING) / 2 + stringHeight);
+            g2.drawRect(mouseX, topLeftCornerY, width, height);
+            g2.drawString("x: " + argumentString, mouseX + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (int) (height - stringHeight) / 2);
+            g2.drawString("y: " + functionValueString, mouseX + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (int) (height + GraphicSettings.POINT_OF_INTEREST_STRING_SPACING) / 2 + stringHeight);
 
         }
 
     }
 
-    public Point getTheNearestPlottingPoint(Point mousePosition, HashMap<Point, DoublePoint> POIs) {
-        int mouseX = mousePosition.x;
-        int mouseY = mousePosition.y;
-        Point closestPoint = null;
-
-        Integer initialDistance = null;
-        int distance = 0;
-
-        for (Point p : POIs.keySet()) {
-            int currentDistance;
-            if (initialDistance == null) {
-                initialDistance = Mathematics.manhattan(mousePosition,p);
-                distance = initialDistance;
-                closestPoint = p;
-            }
-            currentDistance = Mathematics.manhattan(mousePosition,p);
-            if (currentDistance < distance) {
-                closestPoint = p;
-            }
+    public void updatePOIValues() {
+        if (plot.functionsDomains.size() == 0) {
+            setVisible(false);
+        } else {
+            setArgument(plot.functionsDomains.get(0)[0]);
+            setFunctionValue(2137.0);
         }
-        return closestPoint;
     }
 
-    public void setxPxCoordinate(int xPxCoordinate) {
-        this.xPxCoordinate = xPxCoordinate;
+
+    public void setMouseX(int mouseX) {
+        this.mouseX = mouseX;
     }
 
-    public void setyPxCoordinate(int yPxCoordinate) {
-        this.yPxCoordinate = yPxCoordinate;
+    public void setMouseY(int mouseY) {
+        this.mouseY = mouseY;
     }
 
     public void setArgument(double argument) {
@@ -83,6 +79,14 @@ public class PlotPointOfInterest {
 
     public void setFunctionValue(double functionValue) {
         this.functionValue = functionValue;
+    }
+
+    public int getMouseDistanceToClosest() {
+        return mouseDistanceToClosest;
+    }
+
+    public void setMouseDistanceToClosest(int mouseDistanceToClosest) {
+        this.mouseDistanceToClosest = mouseDistanceToClosest;
     }
 
     public void setVisible(boolean visible) {
