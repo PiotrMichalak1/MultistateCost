@@ -4,8 +4,9 @@ package simulation;
 import org.apache.commons.math3.distribution.WeibullDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.RandomGeneratorFactory;
-import settings.InitialSettings;
 import settings.Parameters;
+import tools.Mathematics;
+import tools.MatrixOperations;
 
 import java.util.Random;
 
@@ -34,25 +35,15 @@ public class Simulation {
     }
 
     public void simulate() {
-        simulationDomain = new double[(parameters.getMaxInterval() - parameters.getMinInterval()) / parameters.getStep() + 1];
-        simulationValues = new double[simulationDomain.length];
+        prepareDomainAndValues();
         createRandomData(parameters.isShockDegradation());
+        simulateForDifferentTimeIntervals();
 
-        int currentInterval = parameters.getMinInterval();
-        int intervalIndex = 0;
-        while (currentInterval <= parameters.getMaxInterval()) {
-
-            simulationDomain[intervalIndex] = currentInterval;
-            simulationValues[intervalIndex] = simulateForGivenInterval();
-
-            intervalIndex++;
-            currentInterval += parameters.getStep();
-        }
     }
 
-    private double simulateForGivenInterval() {
-
-        return 0;
+    private void prepareDomainAndValues() {
+        simulationDomain = new double[(parameters.getMaxInterval() - parameters.getMinInterval()) / parameters.getStep() + 1];
+        simulationValues = new double[simulationDomain.length];
     }
 
     private void createRandomData(boolean isShockDegradation) {
@@ -65,44 +56,125 @@ public class Simulation {
 
         if (!isShockDegradation) {
 
-            for (int state = 1; state <= parameters.getNumOfStates()-1; state++) {
+            for (int state = 1; state <= parameters.getNumOfStates() - 1; state++) {
                 WeibullDistribution distribution = new WeibullDistribution(randomGenerator,
                         parameters.getWeibullShape(state),
                         parameters.getWeibullScale(state));
                 for (int cycle = 1; cycle <= parameters.getProdCycles(); cycle++) {
-                    System.out.println("Amount of cycles is "+randomData[0].length);
+                    //System.out.println("Amount of cycles is " + randomData[0].length);
                     double sample = distribution.sample();
                     for (int layer = 1; layer <= parameters.getNumOfStates(); layer++) {
                         randomData[state - 1][cycle - 1][layer - 1] = sample;
-                        System.out.println(sample);
+                        //System.out.println(sample);
                     }
                 }
             }
         } else {
             for (int layer = 1; layer <= randomData[0][0].length; layer++) {
-                for (int state = layer; state<=parameters.getNumOfStates()-1;state++){
+                for (int state = layer; state <= parameters.getNumOfStates() - 1; state++) {
                     WeibullDistribution distribution = new WeibullDistribution(randomGenerator,
                             parameters.getWeibullShape(state),
-                            shockScale(layer,state));
+                            shockScale(layer, state));
                     for (int cycle = 1; cycle <= parameters.getProdCycles(); cycle++) {
                         randomData[state - 1][cycle - 1][layer - 1] = distribution.sample();
-                       // System.out.println(randomData[state - 1][cycle - 1][layer - 1]);
+                        //System.out.println("State" + state + " cycle " + cycle + " layer "+ layer +" value: "+ randomData[state - 1][cycle - 1][layer - 1]);
                     }
                 }
             }
 
         }
-        //creating random numbers for states 1,2,...,n-1
 
 
     }
 
+    private void simulateForDifferentTimeIntervals() {
+        int currentInterval = parameters.getMinInterval();
+        int intervalIndex = 0;
+        while (currentInterval <= parameters.getMaxInterval()) {
+
+            simulationDomain[intervalIndex] = currentInterval;
+            simulationValues[intervalIndex] = simulateForGivenInterval(currentInterval);
+
+            intervalIndex++;
+            currentInterval += parameters.getStep();
+        }
+    }
+
+    private double simulateForGivenInterval(int currentInterval) {
+        MatrixOperations.fillRow(randomData, currentInterval, parameters.getNumOfStates());
+        double[][] lifeSpans = new double[parameters.getNumOfStates() + 1][parameters.getProdCycles()];
+
+        double repairCost = 0;
+        int currentState = 1;
+        double lastSeenValues = 0;
+        double timeShift = 0;
+        double missedInspections = 0;
+        boolean repairOccured = false;
+
+        for (int cycle = 1; cycle <= parameters.getProdCycles(); cycle++) {
+            repairOccured = false;
+            lifeSpans[parameters.getNumOfStates()][cycle - 1] = lastSeenValues;
+            lastSeenValues = lastSeenValues + timeShift;
+            lifeSpans[currentState - 1][cycle - 1] = randomData[currentState - 1][cycle - 1][currentState - 1];
+
+            for (int state = currentState; state <= parameters.getNumOfStates(); state++) {
+                if (isRepairAllowed(state)) {
+                    if (willRepairOccurInThisState(state, cycle, currentInterval, currentState, lastSeenValues)) {
+                        repairCost += parameters.getRepairCost(state, parameters.getInspectionObjectives(state)) +
+                                parameters.getStaticCost(parameters.getNumOfStates()) * parameters.getRepairDuration(state, parameters.getInspectionObjectives(state));
+                        lifeSpans[state - 1][cycle - 1] = Mathematics.roundUpToTheNearestMultiple(
+                                lastSeenValues, currentInterval) - lastSeenValues;
+                        currentState = parameters.getInspectionObjectives(state);
+                        lastSeenValues = parameters.getRepairDuration(state, parameters.getInspectionObjectives(state));
+                        timeShift = 0;
+                        repairOccured = true;
+                        missedInspections += Math.floor(lastSeenValues / currentInterval);
+                        break;
+                    } else {
+                        lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];
+                    }
+                } else {
+                    lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];
+                }
+
+                lastSeenValues += randomData[state - 1][cycle - 1][currentState - 1];
+            }
+
+            if (!repairOccured) {
+                currentState = 4;
+                lastSeenValues = 0;
+                timeShift = 0;
+            }
+        }
+
+        double overallTime = MatrixOperations.sum(lifeSpans);
+        double inspectionNumber = overallTime/currentInterval - missedInspections;
+        double inspectionCost = inspectionNumber*parameters.getInspectionCost();
+
+        MatrixOperations.multiplyMatrixRowsByVector(lifeSpans, parameters.getStaticCostVector());
+
+        double operationalCost = MatrixOperations.sum(lifeSpans);
+
+        double cost = operationalCost + repairCost + inspectionCost;
+
+        cost = cost/overallTime;
+
+        return cost;
+    }
+
+    private boolean isRepairAllowed(int state) {
+        return state > parameters.getInspectionObjectives(state);
+    }
+
+    private boolean willRepairOccurInThisState(int state, int cycle, int currentInterval, int currentState, double lastSeenValues) {
+        return randomData[state - 1][cycle - 1][currentState - 1] + (lastSeenValues % currentInterval) >= currentInterval;
+    }
+
     private double shockScale(int layer, int state) {
         double scale = 0.0;
-        for (int i=layer; i <= state; i++) {
+        for (int i = layer; i <= state; i++) {
             scale += parameters.getWeibullScale(i);
         }
-        System.out.println("scale for layer: "+ layer+ "state: "+ state + " is equal to: " + scale);
         return scale;
     }
 

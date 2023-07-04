@@ -126,7 +126,7 @@ public class GridBagSpinner implements GridBagElement {
             case InitialSettings.PRODUCTION_CYCLES -> {
                 spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
                         10,
-                        10000,
+                        1000000,
                         1));
                 spinner.setToolTipText("Value Must be an integer value between 0 and 10000");
                 spinner.addChangeListener(e -> {

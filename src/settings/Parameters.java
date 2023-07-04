@@ -154,6 +154,10 @@ public class Parameters {
         return staticCostVector[state - 1];
     }
 
+    public int[] getStaticCostVector() {
+        return staticCostVector;
+    }
+
     public void setStaticCost(int state, int value) {
         staticCostVector[state - 1] = value;
     }
@@ -182,7 +186,13 @@ public class Parameters {
         this.inspectionCost = cost;
     }
 
-    public int getInspectionObjectives(int state){return inspectionObjectives[state-2];}
+    public int getInspectionObjectives(int state){
+        if (state == 1){
+            return 1;
+        }else {
+            return inspectionObjectives[state-2];}
+        }
+
 
     public void setInspectionObjectives(int state, int repairToState){this.inspectionObjectives[state-2] = repairToState;}
 

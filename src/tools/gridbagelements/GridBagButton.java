@@ -14,6 +14,8 @@ public class GridBagButton implements GridBagElement {
 
     TestingValues test = new TestingValues();
 
+    Parameters parameters = Parameters.getInstance();
+
 
     public GridBagButton(int type, PlotPanel parentTab) {
         button = new JButton();
@@ -24,7 +26,7 @@ public class GridBagButton implements GridBagElement {
                     Simulation sim = Simulation.getInstance();
 
                     test.initializeTestFunction();
-                    if (!Parameters.getInstance().isHoldTheData()) {
+                    if (!parameters.isHoldTheData()) {
                         parentTab.plotter.clearFunctionData();
                     }
                     //test.initializeTestFunction();
