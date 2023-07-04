@@ -24,6 +24,9 @@ public class InitialSettings {
     public static final int DEFAULT_STEP = 1;
     public static final boolean DEFAULT_HOLD_THE_DATA = false;
     public static final boolean DEFAULT_RUN_MULTIPLE_TIMES = false;
+    public static final boolean DEFAULT_SHOCK_DEGRADATION = false;
+
+
 
     public static final int DEFAULT_RUN_MULTIPLE_TIMES_NUM = 5;
 

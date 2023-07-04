@@ -11,11 +11,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RunSimulationPanel extends JPanel {
-    private final Parameters parameters = Parameters.getInstance();
+
     private final GridBagLabel bagLabel;
     private final GridBagButton bagButton;
 
-    private CostPlotTab parentTab;
 
     public RunSimulationPanel(PlotPanel parentTab) {
         bagLabel = new GridBagLabel();

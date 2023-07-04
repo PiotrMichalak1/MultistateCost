@@ -6,6 +6,8 @@ public class Parameters {
 
     private static Parameters instance = null;
 
+    private int numOfStates;
+
     private boolean emergencyRepair;
     private boolean holdTheData;
     private boolean runMultipleTimes;
@@ -128,6 +130,8 @@ public class Parameters {
         this.holdTheData = InitialSettings.DEFAULT_HOLD_THE_DATA;
         this.runMultipleTimes = InitialSettings.DEFAULT_RUN_MULTIPLE_TIMES;
         this.runMultipleTimesNum = InitialSettings.DEFAULT_RUN_MULTIPLE_TIMES_NUM;
+        this.shockDegradation = InitialSettings.DEFAULT_SHOCK_DEGRADATION;
+        this.numOfStates = InitialSettings.DEFAULT_NUM_OF_STATES;
     }
 
     public int getRepairCost(int fromState, int toState) {
@@ -284,6 +288,10 @@ public class Parameters {
 
     public void setShockDegradation(boolean shockDegradation) {
         this.shockDegradation = shockDegradation;
+    }
+
+    public int getNumOfStates() {
+        return numOfStates;
     }
 
     public int getValueFromParameters(int type, int fromState, int toState) {

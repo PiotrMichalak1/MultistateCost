@@ -27,10 +27,11 @@ public class GridBagButton implements GridBagElement {
                     if (!Parameters.getInstance().isHoldTheData()) {
                         parentTab.plotter.clearFunctionData();
                     }
-                    test.initializeTestFunction();
-                    parentTab.plotter.plot.addFunctionData(test.testDomain, test.testCodomain);
-                    parentTab.plotter.plot.addFunctionData(test.testDomain2, test.testCodomain2);
+                    //test.initializeTestFunction();
+                    //parentTab.plotter.plot.addFunctionData(test.testDomain, test.testCodomain);
+                    //parentTab.plotter.plot.addFunctionData(test.testDomain2, test.testCodomain2);
                     sim.simulate();
+                    parentTab.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getSimulationValues());
                     parentTab.repaint();
 
                 });
