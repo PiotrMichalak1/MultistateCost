@@ -37,6 +37,12 @@ public class GridBagCheckbox implements GridBagElement {
                 });
                 checkBox.setSelected(InitialSettings.DEFAULT_RUN_MULTIPLE_TIMES);
             }
+            case InitialSettings.SHOCK_DEGRADATION -> {
+                checkBox.addActionListener(e -> {
+                    parameters.setShockDegradation(checkBox.isSelected());
+                    System.out.println(checkBox.isSelected());
+                });
+            }
             default -> throw new IllegalStateException(
                     "Type of checkbox mismatch");
         }
@@ -44,12 +50,11 @@ public class GridBagCheckbox implements GridBagElement {
     }
 
 
-
     @Override
     public void putInGrid(JComponent parent, String text, int bagX, int bagY) {
         checkBox.setText(text);
         GridBagConstraints c = new GridBagConstraints();
-
+        //c.gridwidth = InitialSettings.DEFAULT_NUM_OF_STATES + 1;
 
         c.insets = new Insets(5, 5, 5, 5);
         c.fill = GridBagConstraints.HORIZONTAL;

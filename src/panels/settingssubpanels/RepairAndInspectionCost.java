@@ -8,11 +8,11 @@ import tools.gridbagelements.GridBagSpinner;
 import javax.swing.*;
 import java.awt.*;
 
-public class RepairCostPanel extends JPanel {
+public class RepairAndInspectionCost extends JPanel {
     Parameters parameters;
     GridBagLabel bagLabel;
 
-    public RepairCostPanel() {
+    public RepairAndInspectionCost() {
         parameters = Parameters.getInstance();
         bagLabel = new GridBagLabel();
         initializeRepairCostLabels();
@@ -22,7 +22,7 @@ public class RepairCostPanel extends JPanel {
     private void initializeRepairCostLabels() {
         this.setLayout(new GridBagLayout());
 
-        bagLabel.putInGrid(this,"Repair Cost",0,0, InitialSettings.REPAIR_COST);
+        bagLabel.putInGrid(this,"Repair and Inspection Costs",0,0, InitialSettings.REPAIR_COST);
 
         for (int i = 1; i <= InitialSettings.DEFAULT_NUM_OF_STATES; i++) {
             if(i==1){

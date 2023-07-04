@@ -1,17 +1,19 @@
 package panels.settingssubpanels;
 
+import panels.simulationsubpanels.tabbedPanels.costplot.RunMultipleTimesPanel;
 import settings.InitialSettings;
 import settings.Parameters;
+import tools.gridbagelements.GridBagCheckbox;
 import tools.gridbagelements.GridBagLabel;
 import tools.gridbagelements.GridBagSpinner;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class OtherPropertiesPanel extends JPanel {
+public class StateRelatedParameters extends JPanel {
     Parameters parameters;
     GridBagLabel bagLabel;
-    public OtherPropertiesPanel() {
+    public StateRelatedParameters() {
         parameters = Parameters.getInstance();
         bagLabel = new GridBagLabel();
         initializeOtherPropertiesLabels();
@@ -22,7 +24,7 @@ public class OtherPropertiesPanel extends JPanel {
     private void initializeOtherPropertiesLabels() {
         this.setLayout(new GridBagLayout());
 
-        bagLabel.putInGrid(this,"Other Properties",0,0, InitialSettings.OTHER_PROPERTIES);
+        bagLabel.putInGrid(this,"State-Related Parameters ",0,0, InitialSettings.STATE_RELATED_PROPERTIES);
 
         for (int i = 1; i <= InitialSettings.DEFAULT_NUM_OF_STATES; i++) {
             if(i==1){
@@ -37,6 +39,7 @@ public class OtherPropertiesPanel extends JPanel {
         bagLabel.putInGrid(this,"Static Cost",0,2);
         bagLabel.putInGrid(this,"Weibull Scale",0,3);
         bagLabel.putInGrid(this,"Weibull Shape",0,4);
+
 
 
     }

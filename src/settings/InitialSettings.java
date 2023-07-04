@@ -34,7 +34,7 @@ public class InitialSettings {
     //Types
     public static final int REPAIR_COST = 1;
     public static final int REPAIR_DURATION = 2;
-    public static final int OTHER_PROPERTIES = 3;
+    public static final int STATE_RELATED_PROPERTIES = 3;
     public static final int STATIC_COST = 4;
     public static final int WEIBULL_SCALE = 5;
     public static final int WEIBULL_SHAPE = 6;
@@ -53,6 +53,7 @@ public class InitialSettings {
     public static final int RUN_MULTIPLE_TIMES = 19;
 
     public static final int SIMULATE_BUTTON =20;
+    public static final int SHOCK_DEGRADATION = 21;
 
 
 

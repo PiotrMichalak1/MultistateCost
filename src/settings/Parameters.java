@@ -9,6 +9,8 @@ public class Parameters {
     private boolean emergencyRepair;
     private boolean holdTheData;
     private boolean runMultipleTimes;
+
+    private boolean shockDegradation = true;
     private int runMultipleTimesNum;
 
     private int[][] repairCostMatrix;
@@ -274,6 +276,14 @@ public class Parameters {
 
     public void setRunMultipleTimesNum(int runMultipleTimesNum) {
         this.runMultipleTimesNum = runMultipleTimesNum;
+    }
+
+    public boolean isShockDegradation() {
+        return shockDegradation;
+    }
+
+    public void setShockDegradation(boolean shockDegradation) {
+        this.shockDegradation = shockDegradation;
     }
 
     public int getValueFromParameters(int type, int fromState, int toState) {
