@@ -1,6 +1,8 @@
 package tools.gridbagelements;
 
 import panels.simulationsubpanels.tabbedPanels.costplot.PlotPanel;
+import settings.Parameters;
+import simulation.Simulation;
 import tools.TestingValues;
 import tools.interfaces.GridBagElement;
 import javax.swing.*;
@@ -19,10 +21,16 @@ public class GridBagButton implements GridBagElement {
         switch (type) {
             case InitialSettings.SIMULATE_BUTTON ->{
                 button.addActionListener(e -> {
+                    Simulation sim = Simulation.getInstance();
+
                     test.initializeTestFunction();
-                    parentTab.plotter.clearFunctionData();
-                    parentTab.plotter.addFunctionData(test.testDomain, test.testCodomain);
-                    parentTab.plotter.addFunctionData(test.testDomain2, test.testCodomain2);
+                    if (!Parameters.getInstance().isHoldTheData()) {
+                        parentTab.plotter.clearFunctionData();
+                    }
+                    test.initializeTestFunction();
+                    parentTab.plotter.plot.addFunctionData(test.testDomain, test.testCodomain);
+                    parentTab.plotter.plot.addFunctionData(test.testDomain2, test.testCodomain2);
+                    sim.simulate();
                     parentTab.repaint();
 
                 });

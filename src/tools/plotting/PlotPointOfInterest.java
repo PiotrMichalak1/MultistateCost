@@ -88,15 +88,6 @@ public class PlotPointOfInterest {
         this.mouseY = mouseY;
     }
 
-    public void setArgument(double argument) {
-        this.argument = argument;
-    }
-
-    public void setFunctionValue(double functionValue) {
-        this.functionValue = functionValue;
-    }
-
-
     public void setMouseDistanceToClosest(int mouseDistanceToClosest) {
         this.mouseDistanceToClosest = mouseDistanceToClosest;
     }

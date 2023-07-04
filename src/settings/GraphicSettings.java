@@ -3,7 +3,7 @@ package settings;
 import java.awt.*;
 
 public class GraphicSettings {
-    public static final int PLOT_POINT_THICKNESS = 7;
+    public static final int PLOT_POINT_THICKNESS = 6;
     public static final Color POI_COLOR = new Color(233, 86, 86);
     public static final Color MAIN_GRAPH_COLOR = new Color(35, 140, 167);
 

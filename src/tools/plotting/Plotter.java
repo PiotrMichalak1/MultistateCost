@@ -21,11 +21,11 @@ public class Plotter {
 
     }
 
-    public void drawMainPlot(Graphics2D g2, Point mousePosition) {
+    public void drawMainPlot(Graphics2D g2) {
         coordinateSystem.updateRanges(width, height);
 
         coordinateSystem.drawGrid(g2, width, height);
-        plot.drawAllFunctions(g2, mousePosition);
+        plot.drawAllFunctions(g2);
         coordinateSystem.drawMargins(g2, width, height);
         coordinateSystem.drawAxes(g2, width, height);
         coordinateSystem.drawLabels(g2, width, height);
@@ -320,7 +320,7 @@ public class Plotter {
             functionsCodomains.removeAll(functionsCodomains);
         }
 
-        public void drawFunction(Graphics2D g2, double[] functionDomain, double[] functionCodomain, Point mousePosition) {
+        public void drawFunction(Graphics2D g2, double[] functionDomain, double[] functionCodomain) {
             if (functionDomain != null && functionCodomain != null) {
                 if (functionDomain.length == functionCodomain.length) {
                     Point pointPx;
@@ -384,10 +384,10 @@ public class Plotter {
             }
         }
 
-        public void drawAllFunctions(Graphics2D g2, Point mousePosition) {
+        public void drawAllFunctions(Graphics2D g2) {
             plotPOI.resetDistanceAndVisibility();
             for (int i = 0; i < functionsDomains.size(); i++) {
-                drawFunction(g2,  functionsDomains.get(i), functionsCodomains.get(i), mousePosition);
+                drawFunction(g2,  functionsDomains.get(i), functionsCodomains.get(i));
             }
 
         }

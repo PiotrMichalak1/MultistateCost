@@ -36,6 +36,7 @@ public class RepairCostPanel extends JPanel {
         for (int i = 1; i < InitialSettings.DEFAULT_NUM_OF_STATES; i++) {
             bagLabel.putInGrid(this,"to "+i,0,i+1);
         }
+        bagLabel.putInGrid(this,"Inspection Cost",0,5);
 
     }
 
@@ -46,5 +47,7 @@ public class RepairCostPanel extends JPanel {
                 spinner.putInGrid(this,"",fromState-1,toState+1);
             }
         }
+        GridBagSpinner spinner = new GridBagSpinner(InitialSettings.INSPECTION_COST, InitialSettings.INSPECTION_COST);
+        spinner.putInGrid(this,"",1,5);
     }
 }

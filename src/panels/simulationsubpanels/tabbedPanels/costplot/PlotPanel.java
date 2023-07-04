@@ -31,7 +31,7 @@ public class PlotPanel extends JPanel{
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
-            plotter.drawMainPlot(g2, getMousePosition());
+            plotter.drawMainPlot(g2);
         }
     }
 
