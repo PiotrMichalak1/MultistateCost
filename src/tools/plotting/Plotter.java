@@ -2,6 +2,7 @@ package tools.plotting;
 
 import settings.GraphicSettings;
 import settings.InitialSettings;
+import tools.FunctionTools;
 import tools.Mathematics;
 
 import java.awt.*;
@@ -125,12 +126,13 @@ public class Plotter {
         }
 
         private void drawLabels(Graphics2D g2, int width, int height) {
+            //xLabels
             g2.setColor(new Color(150, 145, 145));
             FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
             double labelNum = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier);
             int xLabelXCoord = (int) ((labelNum - xRange[0]) / (xRange[1] - xRange[0]) * width);
             String label;
-            String format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling) + "f";
+            String format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling, 'x') + "f";
             while (xLabelXCoord <= width) {
 
                 if (numOfMouseScrolls < InitialSettings.DEFAULT_SMALL_GRID_SPACING) {
@@ -144,12 +146,12 @@ public class Plotter {
                 xLabelXCoord += bigGridSpacing;
                 labelNum += scaleUnitX * scaleMultiplier;
             }
-
+            //yLabels
             labelNum = Mathematics.roundUpToTheNearestMultiple(yRange[0], scaleUnitY * scaleMultiplier);
             int yLabelYCoord = (int) ((labelNum - yRange[0]) / (yRange[1] - yRange[0]) * height);
             while (yLabelYCoord <= height) {
 
-                format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling) + "f";
+                format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling, 'y') + "f";
                 label = String.format(format, labelNum);
 
                 g2.drawString(label, margin - 5 - fontMetrics.stringWidth(label), margin + height - yLabelYCoord + (int) fontMetrics.getStringBounds(label, g2).getHeight() / 2 - 2);
@@ -279,8 +281,13 @@ public class Plotter {
 
         }
 
-        private int decimalPlacesNeededInLabels(int numOfGridZoomInScaling) {
-            return (int) Math.ceil(numOfGridZoomInScaling / 3.0);
+        private int decimalPlacesNeededInLabels(int numOfGridZoomInScaling, char axis) {
+            if (Character.toLowerCase(axis) == 'x') {
+                return (int) Math.ceil(numOfGridZoomInScaling / 3.0);
+            } else {
+                return (int) Math.ceil(numOfGridZoomInScaling / 3.0) + (int) Math.round(Math.sqrt(1 / scaleUnitY))-1;
+            }
+
         }
 
         public int getMargin() {
@@ -329,7 +336,7 @@ public class Plotter {
                         point = new DoublePoint(functionDomain[0], functionCodomain[0]);
                         if (isPointInVisibleRange(point)) {
                             pointPx = pointToPixels(point);
-                            plotPOI.updatePOIValues(pointPx,point);
+                            plotPOI.updatePOIValues(pointPx, point);
                             g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
                             g2.fillOval((int) pointPx.getX() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                     (int) pointPx.getY() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
@@ -349,8 +356,8 @@ public class Plotter {
 
                         prevPointPx = pointToPixels(prevPoint);
                         nextPointPx = pointToPixels(nextPoint);
-                        plotPOI.updatePOIValues(prevPointPx,prevPoint);
-                        plotPOI.updatePOIValues(nextPointPx,nextPoint);
+                        plotPOI.updatePOIValues(prevPointPx, prevPoint);
+                        plotPOI.updatePOIValues(nextPointPx, nextPoint);
                         g2.drawLine((int) prevPointPx.getX(),
                                 (int) prevPointPx.getY(),
                                 (int) nextPointPx.getX(),
@@ -363,7 +370,7 @@ public class Plotter {
 
                             prevPointPx = pointToPixels(prevPoint);
                             nextPointPx = pointToPixels(nextPoint);
-                            plotPOI.updatePOIValues(nextPointPx,nextPoint);
+                            plotPOI.updatePOIValues(nextPointPx, nextPoint);
                             g2.drawLine((int) prevPointPx.getX(),
                                     (int) prevPointPx.getY(),
                                     (int) nextPointPx.getX(),
@@ -387,29 +394,21 @@ public class Plotter {
         public void drawAllFunctions(Graphics2D g2) {
             plotPOI.resetDistanceAndVisibility();
             for (int i = 0; i < functionsDomains.size(); i++) {
-                drawFunction(g2,  functionsDomains.get(i), functionsCodomains.get(i));
+                drawFunction(g2, functionsDomains.get(i), functionsCodomains.get(i));
             }
 
         }
 
         private void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain) {
             if (functionDomain.length > 1) {
-                double smallestValue = functionCodomain[0];
-                double biggestValue = functionCodomain[0];
-                for (int i = 1; i < functionCodomain.length; i++) {
-                    if (functionCodomain[i] < smallestValue) {
-                        smallestValue = functionCodomain[i];
-                    }
-                    if (functionCodomain[i] > biggestValue) {
-                        biggestValue = functionCodomain[i];
-                    }
-                }
+
+                double smallestValue = FunctionTools.getSmallestValueOfFunction(functionCodomain);
+                double biggestValue = FunctionTools.getBiggestValueOfFunction(functionCodomain);
 
                 double rangeOfValues = biggestValue - smallestValue;
 
                 coordinateSystem.xRange[0] = functionDomain[0];
                 coordinateSystem.yRange[0] = smallestValue;
-
                 coordinateSystem.updateRanges(width, height);
 
                 double visibleXWidth = coordinateSystem.xRange[1] - coordinateSystem.xRange[0];

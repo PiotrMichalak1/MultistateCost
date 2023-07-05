@@ -13,7 +13,7 @@ public class GraphicSettings {
     public static final double DEFAULT_SCALE_UNIT_Y = 1.0;
     public static final double DEFAULT_SCALE_MULTIPLIER = 1.0;
     //Plot Defaults
-    public static final int DEFAULT_PLOT_MARGIN = 50;
+    public static final int DEFAULT_PLOT_MARGIN = 70;
 
     public static final int POINT_OF_INTEREST_MARGIN_X = 15;
     public static final int POINT_OF_INTEREST_MARGIN_Y = 5;
