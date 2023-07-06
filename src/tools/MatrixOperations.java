@@ -53,8 +53,6 @@ public class MatrixOperations {
                 index++;
             }
         }
-
-        System.out.println(Arrays.toString(result));
         return result;
     }
 

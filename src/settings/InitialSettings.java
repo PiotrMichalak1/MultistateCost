@@ -18,7 +18,7 @@ public class InitialSettings {
 
     //Simulation defaults
 
-    public static final int DEFAULT_PROD_CYCLES_NUM = 1000;
+    public static final int DEFAULT_PROD_CYCLES_NUM = 10000;
     public static final int DEFAULT_MIN_INTERVAL = 10;
     public static final int DEFAULT_MAX_INTERVAL = 200;
     public static final int DEFAULT_STEP = 1;

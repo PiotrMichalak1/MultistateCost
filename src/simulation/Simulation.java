@@ -81,18 +81,17 @@ public class Simulation {
                     }
                 }
                 for (int row = 2; row <= parameters.getNumOfStates() - 1; row++) {
-                    for (int col=1; col <= parameters.getProdCycles(); col++) {
-                        randomData[row-1][col-1][layer-1]= Math.max(randomData[row-1][col-1][layer-1],
-                                randomData[row-2][col-1][layer-1]);
+                    for (int col = 1; col <= parameters.getProdCycles(); col++) {
+                        randomData[row - 1][col - 1][layer - 1] = Math.max(randomData[row - 1][col - 1][layer - 1],
+                                randomData[row - 2][col - 1][layer - 1]);
                     }
                 }
                 for (int row = 2; row <= parameters.getNumOfStates() - 1; row++) {
-                    for (int col=1; col <= parameters.getProdCycles(); col++) {
-                        randomData[row-1][col-1][layer-1]= randomData[row-1][col-1][layer-1] -
-                                randomData[row-2][col-1][layer-1];
+                    for (int col = 1; col <= parameters.getProdCycles(); col++) {
+                        randomData[row - 1][col - 1][layer - 1] = randomData[row - 1][col - 1][layer - 1] -
+                                randomData[row - 2][col - 1][layer - 1];
                     }
                 }
-
 
 
             }
@@ -121,54 +120,84 @@ public class Simulation {
         double[][] lifeSpans = new double[parameters.getNumOfStates() + 1][parameters.getProdCycles()];
 
         double repairCost = 0;
-        int currentState = 1;
+        int startingState = 1;
         double lastSeenValues = 0;
         double timeShift = 0;
         double missedInspections = 0;
-        boolean repairOccured = false;
+        boolean repairOccured;
+
 
         for (int cycle = 1; cycle <= parameters.getProdCycles(); cycle++) {
             repairOccured = false;
             lifeSpans[parameters.getNumOfStates()][cycle - 1] = lastSeenValues; //save repair time
             lastSeenValues = lastSeenValues + timeShift; //add emergency time shift
+            lifeSpans[startingState-1][cycle-1] = randomData[startingState-1][cycle-1][startingState-1];
 
-            for (int state = currentState; state <= parameters.getNumOfStates(); state++) {
+
+            for (int state = startingState; state <= parameters.getNumOfStates(); state++) {
+
+                if (parameters.isEmergencyRepairEnabled()) {
+                    if (isEmergencyCalled(state, startingState, currentInterval, lastSeenValues)) {
+
+                        double timeToEm = parameters.getEmDelay();
+
+                        for (int i = state; i <= parameters.getNumOfStates(); i++) {
+
+                            lifeSpans[i-1][cycle-1] = Math.min(timeToEm,randomData[i-1][cycle-1][startingState-1]);
+                            timeToEm-=lifeSpans[i-1][cycle-1];
+                            if (timeToEm <= 0) {
+                                repairCost += parameters.getRepairCost(state, parameters.getInspectionObjectives(state)) +
+                                        parameters.getStaticCost(parameters.getNumOfStates()) * parameters.getRepairDuration(state, parameters.getInspectionObjectives(state))+
+                                parameters.getEmEmergencyCost();
+                                timeShift = lastSeenValues + parameters.getEmDelay();
+                                lastSeenValues = parameters.getRepairDuration(state, parameters.getInspectionObjectives(state));
+                                startingState = parameters.getInspectionObjectives(state);
+                                missedInspections += Math.floor(lastSeenValues / currentInterval) - Math.floor(timeShift/ currentInterval+lastSeenValues/ currentInterval);
+                                repairOccured = true;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+
                 if (isRepairAllowed(state)) {
-                    if (willRepairOccurInThisState(state, cycle, currentInterval, currentState, lastSeenValues)) {
+                    if (willRepairOccurInThisState(state, cycle, currentInterval, startingState, lastSeenValues)) {
                         repairCost += parameters.getRepairCost(state, parameters.getInspectionObjectives(state)) +
                                 parameters.getStaticCost(parameters.getNumOfStates()) * parameters.getRepairDuration(state, parameters.getInspectionObjectives(state));
                         lifeSpans[state - 1][cycle - 1] = Mathematics.roundUpToTheNearestMultiple(
                                 lastSeenValues, currentInterval) - lastSeenValues;
-                        currentState = parameters.getInspectionObjectives(state);
+                        startingState = parameters.getInspectionObjectives(state);
                         lastSeenValues = parameters.getRepairDuration(state, parameters.getInspectionObjectives(state));
                         timeShift = 0;
                         repairOccured = true;
                         missedInspections += Math.floor(lastSeenValues / currentInterval);
                         break;
                     } else {
-                        lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];//inspection will occur in further deterioration state
+                        lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][startingState - 1];//inspection will occur in further deterioration state
                     }
                 } else {
-                    lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];//waiting with repair
+                    lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][startingState - 1];//waiting with repair
                 }
 
-                lastSeenValues += randomData[state - 1][cycle - 1][currentState - 1];//summing days from the start of a cycle
+                lastSeenValues += randomData[state - 1][cycle - 1][startingState - 1];//summing days from the start of a cycle
             }
 
             if (!repairOccured) {
-                currentState = 4;
+                startingState = 4;
                 lastSeenValues = 0;
                 timeShift = 0;
             }
         }
 
         double overallTime = MatrixOperations.sum(lifeSpans);
-        double inspectionNumber = overallTime/currentInterval - missedInspections;
-        double inspectionCost = inspectionNumber*parameters.getInspectionCost();
+        double inspectionNumber = overallTime / currentInterval - missedInspections;
+        double inspectionCost = inspectionNumber * parameters.getInspectionCost();
 
 
         Double[] v = Arrays.stream(parameters.getStaticCostVector()).boxed().toArray(Double[]::new);
-        double[] concatenated = MatrixOperations.concatenateVectors(v,new Integer[]{0});
+        double[] concatenated = MatrixOperations.concatenateVectors(v, new Integer[]{0});
         MatrixOperations.multiplyMatrixRowsByVector(lifeSpans, concatenated);
 
 
@@ -176,9 +205,16 @@ public class Simulation {
 
         double cost = operationalCost + repairCost + inspectionCost;
 
-        cost = cost/overallTime;
+        cost = cost / overallTime;
 
         return cost;
+    }
+
+    private boolean isEmergencyCalled(int state, int startingState, int currentInterval, double lastSeenValues) {
+        return (state >= parameters.getEmStateDropsTo())//em settings allow calling emergency inspection
+                && (state > startingState)// system deteriorated since last repair
+                && (parameters.getEmNextInspectionIn() < Mathematics.roundUpToTheNearestMultiple(
+                lastSeenValues, currentInterval) - lastSeenValues);
     }
 
     private boolean isRepairAllowed(int state) {

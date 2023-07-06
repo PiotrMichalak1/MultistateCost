@@ -228,7 +228,7 @@ public class Parameters {
         this.emDelay = emDelay;
     }
 
-    public boolean isEmergencyRepair() {
+    public boolean isEmergencyRepairEnabled() {
         return emergencyRepair;
     }
 

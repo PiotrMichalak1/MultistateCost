@@ -283,9 +283,9 @@ public class Plotter {
 
         private int decimalPlacesNeededInLabels(int numOfGridZoomInScaling, char axis) {
             if (Character.toLowerCase(axis) == 'x') {
-                return (int) Math.ceil(numOfGridZoomInScaling / 3.0);
+              return (int) Math.min(Math.ceil(numOfGridZoomInScaling / 3.0),4);
             } else {
-                return (int) Math.ceil(numOfGridZoomInScaling / 3.0) + (int) Math.round(Math.sqrt(1 / scaleUnitY))-1;
+                return (int) Math.min(Math.ceil(numOfGridZoomInScaling / 3.0) + (int) Math.round(Math.sqrt(1 / scaleUnitY))-1,4);
             }
 
         }
