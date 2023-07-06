@@ -8,6 +8,7 @@ import settings.Parameters;
 import tools.Mathematics;
 import tools.MatrixOperations;
 
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -165,7 +166,11 @@ public class Simulation {
         double inspectionNumber = overallTime/currentInterval - missedInspections;
         double inspectionCost = inspectionNumber*parameters.getInspectionCost();
 
-        MatrixOperations.multiplyMatrixRowsByVector(lifeSpans, parameters.getStaticCostVector());
+
+        Double[] v = Arrays.stream(parameters.getStaticCostVector()).boxed().toArray(Double[]::new);
+        double[] concatenated = MatrixOperations.concatenateVectors(v,new Integer[]{0});
+        MatrixOperations.multiplyMatrixRowsByVector(lifeSpans, concatenated);
+
 
         double operationalCost = MatrixOperations.sum(lifeSpans);
 
