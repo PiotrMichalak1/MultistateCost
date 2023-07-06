@@ -7,6 +7,8 @@ import tools.TestingValues;
 import tools.interfaces.GridBagElement;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import settings.InitialSettings;
 public class GridBagButton implements GridBagElement {
@@ -35,7 +37,12 @@ public class GridBagButton implements GridBagElement {
                     sim.simulate();
                     parentTab.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getSimulationValues());
                     parentTab.repaint();
-
+                });
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        button.requestFocusInWindow(); // Request focus when the button is pressed
+                    }
                 });
             }
         }

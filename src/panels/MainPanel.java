@@ -13,6 +13,8 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         this.setPreferredSize(new Dimension(1200, 675));
         addWeightedPanes();
+
+
     }
 
     private void addWeightedPanes(){
@@ -35,4 +37,6 @@ public class MainPanel extends JPanel {
         this.add(tabbedPlotPanel, c);
 
     }
+
+
 }

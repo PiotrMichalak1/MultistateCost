@@ -70,17 +70,32 @@ public class Simulation {
                 }
             }
         } else {
-            for (int layer = 1; layer <= randomData[0][0].length; layer++) {
+            for (int layer = 1; layer <= parameters.getNumOfStates(); layer++) {
                 for (int state = layer; state <= parameters.getNumOfStates() - 1; state++) {
                     WeibullDistribution distribution = new WeibullDistribution(randomGenerator,
                             parameters.getWeibullShape(state),
                             shockScale(layer, state));
                     for (int cycle = 1; cycle <= parameters.getProdCycles(); cycle++) {
                         randomData[state - 1][cycle - 1][layer - 1] = distribution.sample();
-                        //System.out.println("State" + state + " cycle " + cycle + " layer "+ layer +" value: "+ randomData[state - 1][cycle - 1][layer - 1]);
                     }
                 }
+                for (int row = 2; row <= parameters.getNumOfStates() - 1; row++) {
+                    for (int col=1; col <= parameters.getProdCycles(); col++) {
+                        randomData[row-1][col-1][layer-1]= Math.max(randomData[row-1][col-1][layer-1],
+                                randomData[row-2][col-1][layer-1]);
+                    }
+                }
+                for (int row = 2; row <= parameters.getNumOfStates() - 1; row++) {
+                    for (int col=1; col <= parameters.getProdCycles(); col++) {
+                        randomData[row-1][col-1][layer-1]= randomData[row-1][col-1][layer-1] -
+                                randomData[row-2][col-1][layer-1];
+                    }
+                }
+
+
+
             }
+
 
         }
 
@@ -113,9 +128,8 @@ public class Simulation {
 
         for (int cycle = 1; cycle <= parameters.getProdCycles(); cycle++) {
             repairOccured = false;
-            lifeSpans[parameters.getNumOfStates()][cycle - 1] = lastSeenValues;
-            lastSeenValues = lastSeenValues + timeShift;
-            lifeSpans[currentState - 1][cycle - 1] = randomData[currentState - 1][cycle - 1][currentState - 1];
+            lifeSpans[parameters.getNumOfStates()][cycle - 1] = lastSeenValues; //save repair time
+            lastSeenValues = lastSeenValues + timeShift; //add emergency time shift
 
             for (int state = currentState; state <= parameters.getNumOfStates(); state++) {
                 if (isRepairAllowed(state)) {
@@ -131,13 +145,13 @@ public class Simulation {
                         missedInspections += Math.floor(lastSeenValues / currentInterval);
                         break;
                     } else {
-                        lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];
+                        lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];//inspection will occur in further deterioration state
                     }
                 } else {
-                    lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];
+                    lifeSpans[state - 1][cycle - 1] = randomData[state - 1][cycle - 1][currentState - 1];//waiting with repair
                 }
 
-                lastSeenValues += randomData[state - 1][cycle - 1][currentState - 1];
+                lastSeenValues += randomData[state - 1][cycle - 1][currentState - 1];//summing days from the start of a cycle
             }
 
             if (!repairOccured) {

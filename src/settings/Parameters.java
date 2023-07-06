@@ -18,7 +18,7 @@ public class Parameters {
     private int[][] repairCostMatrix;
     private int[][] repairDurationMatrix;
 
-    private int[] staticCostVector;
+    private double[] staticCostVector;
     private int[] weibullScaleVector;
     private double[] weibullShapeVector;
     private int inspectionCost = 5;
@@ -77,7 +77,7 @@ public class Parameters {
     }
 
     private void initializeStaticCostVector() {
-        staticCostVector = new int[InitialSettings.DEFAULT_NUM_OF_STATES];
+        staticCostVector = new double[InitialSettings.DEFAULT_NUM_OF_STATES];
         for (int state = 0; state < InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
             if (state == 0) {
                 staticCostVector[state] = 0;
@@ -150,15 +150,15 @@ public class Parameters {
         repairDurationMatrix[toState - 1][fromState - 2] = value;
     }
 
-    public int getStaticCost(int state) {
+    public double getStaticCost(int state) {
         return staticCostVector[state - 1];
     }
 
-    public int[] getStaticCostVector() {
+    public double[] getStaticCostVector() {
         return staticCostVector;
     }
 
-    public void setStaticCost(int state, int value) {
+    public void setStaticCost(int state, double value) {
         staticCostVector[state - 1] = value;
     }
 
@@ -326,7 +326,6 @@ public class Parameters {
 
     public int getValueFromParameters(int type, int state) {
         return switch (type) {
-            case InitialSettings.STATIC_COST -> getStaticCost(state);
             case InitialSettings.WEIBULL_SCALE -> getWeibullScale(state);
             case InitialSettings.INSPECTION_COST -> getInspectionCost();
             case InitialSettings.INSPECTION_OBJECTIVES -> getInspectionObjectives(state);
@@ -334,9 +333,27 @@ public class Parameters {
         };
     }
 
-    public void setValueInParameters(int type, int state, int value) {
+    public double getDoubleValueFromParameters(int type, int state){
+        return switch (type) {
+            case InitialSettings.STATIC_COST -> getStaticCost(state);
+            case InitialSettings.WEIBULL_SHAPE -> getWeibullShape(state);
+            default -> throw new IllegalStateException("Data to retrieve mismatch");
+        };
+    }
+
+    public void setDoubleValueInParameters(int type, int state, double value){
         switch (type) {
             case InitialSettings.STATIC_COST -> setStaticCost(state, value);
+            case InitialSettings.WEIBULL_SHAPE -> setWeibullShape(state,value);
+            default -> throw new IllegalStateException(
+                    "Data type mismatch");
+        }
+    }
+
+
+    public void setValueInParameters(int type, int state, int value) {
+        switch (type) {
+
             case InitialSettings.WEIBULL_SCALE -> setWeibullScale(state, value);
             case InitialSettings.INSPECTION_COST -> setInspectionCost(value);
             case InitialSettings.INSPECTION_OBJECTIVES -> setInspectionObjectives(state, value);

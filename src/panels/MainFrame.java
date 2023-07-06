@@ -11,4 +11,5 @@ public class MainFrame extends JFrame {
         this.pack();
         this.setVisible(true);
     }
+
 }

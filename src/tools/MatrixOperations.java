@@ -25,7 +25,7 @@ public class MatrixOperations {
         return sum1;
     }
 
-    public static void multiplyMatrixRowsByVector(double[][] matrix, int[] vector){
+    public static void multiplyMatrixRowsByVector(double[][] matrix, double[] vector){
         int nRow = vector.length;
         int nCol = matrix[0].length;
         for (int row = 0; row < nRow; row++) {
@@ -34,5 +34,7 @@ public class MatrixOperations {
             }
         }
     }
+
+    //public static double
 
 }

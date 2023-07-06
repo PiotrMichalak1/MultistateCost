@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class GraphicSettings {
     public static final int PLOT_POINT_THICKNESS = 6;
+    //colors
+    public static final Color INVALID_VALUE_COLOR = new Color(234, 116, 116);
     public static final Color POI_COLOR = new Color(233, 86, 86);
     public static final Color MAIN_GRAPH_COLOR = new Color(35, 140, 167);
 
