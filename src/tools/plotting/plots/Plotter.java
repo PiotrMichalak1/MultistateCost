@@ -1,9 +1,11 @@
-package tools.plotting;
+package tools.plotting.plots;
 
 import settings.GraphicSettings;
 import settings.InitialSettings;
 import tools.FunctionTools;
 import tools.Mathematics;
+import tools.plotting.DoublePoint;
+import tools.plotting.PlotPointOfInterest;
 
 import java.awt.*;
 import java.util.ArrayList;

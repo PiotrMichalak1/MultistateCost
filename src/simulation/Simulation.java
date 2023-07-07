@@ -145,7 +145,7 @@ public class Simulation {
 
                             lifeSpans[i-1][cycle-1] = Math.min(timeToEm,randomData[i-1][cycle-1][startingState-1]);
                             timeToEm-=lifeSpans[i-1][cycle-1];
-                            if (timeToEm <= 0) {
+                            if (timeToEm <= 0.0) {
                                 repairCost += parameters.getRepairCost(state, parameters.getInspectionObjectives(state)) +
                                         parameters.getStaticCost(parameters.getNumOfStates()) * parameters.getRepairDuration(state, parameters.getInspectionObjectives(state))+
                                 parameters.getEmEmergencyCost();

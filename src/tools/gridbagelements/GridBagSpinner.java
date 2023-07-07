@@ -16,9 +16,12 @@ public class GridBagSpinner implements GridBagElement {
     Parameters parameters = Parameters.getInstance();
     JSpinner spinner;
 
+    private int type;
+
     Number lastValid;
 
     public GridBagSpinner(int type, int fromState, int toState) {
+        this.type = type;
         spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type, fromState, toState),
                 0,
                 1000,
@@ -41,6 +44,9 @@ public class GridBagSpinner implements GridBagElement {
     }
 
     public GridBagSpinner(int type, int state) {
+
+        this.type = type;
+
         switch (type) {
             case InitialSettings.WEIBULL_SHAPE -> {
                 spinner = new JSpinner(new SpinnerNumberModel(parameters.getWeibullShape(state),
@@ -117,6 +123,9 @@ public class GridBagSpinner implements GridBagElement {
     }
 
     public GridBagSpinner(int type) {
+
+        this.type = type;
+
         switch (type) {
             case InitialSettings.STATE_DROPS_TO -> {
                 spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type),
@@ -260,6 +269,10 @@ public class GridBagSpinner implements GridBagElement {
             }
 
         });
+    }
+
+    public int getType() {
+        return type;
     }
 
     public JSpinner getInstanceOfSpinner() {

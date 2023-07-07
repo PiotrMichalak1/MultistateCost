@@ -1,6 +1,6 @@
 package panels.simulationsubpanels.tabbedPanels.costplot;
 
-import tools.plotting.Plotter;
+import tools.plotting.plots.Plotter;
 
 import javax.swing.*;
 import java.awt.*;

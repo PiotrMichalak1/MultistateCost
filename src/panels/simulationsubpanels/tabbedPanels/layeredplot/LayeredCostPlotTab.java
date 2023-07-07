@@ -1,12 +1,15 @@
-package panels.simulationsubpanels.tabbedPanels.costplot;
+package panels.simulationsubpanels.tabbedPanels.layeredplot;
+
+import panels.simulationsubpanels.tabbedPanels.costplot.PlotPanel;
+import panels.simulationsubpanels.tabbedPanels.costplot.RunSimulationPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class CostPlotTab extends JPanel {
+public class LayeredCostPlotTab extends JPanel {
     public PlotPanel plotPanel;
-    private RunSimulationPanel runSimulationPanel;
-    public CostPlotTab() {
+    RunSimulationPanel runSimulationPanel;
+    public LayeredCostPlotTab() {
         this.plotPanel = new PlotPanel();
         this.runSimulationPanel = new RunSimulationPanel(plotPanel);
         addWeightedPanes();
