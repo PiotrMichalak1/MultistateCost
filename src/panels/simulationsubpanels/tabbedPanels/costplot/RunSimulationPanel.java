@@ -18,7 +18,11 @@ public class RunSimulationPanel extends JPanel {
     private final GridBagLabel bagLabel;
     private final GridBagButton bagButton;
 
-    private final ArrayList<GridBagSpinner> spinners = new ArrayList<GridBagSpinner>();
+    private final ArrayList<GridBagSpinner> GBspinners = new ArrayList<GridBagSpinner>();
+
+    private final GridBagCheckbox holdTheDataCB = new GridBagCheckbox(InitialSettings.HOLD_THE_DATA);
+
+    RunMultipleTimesPanel runMultipleTimesPanel = new RunMultipleTimesPanel();
 
 
     public RunSimulationPanel(PlotPanel parentTab) {
@@ -41,29 +45,28 @@ public class RunSimulationPanel extends JPanel {
     private void initializeRunSimulationSpinnersAndButtons() {
         GridBagSpinner spinner = new GridBagSpinner(InitialSettings.PRODUCTION_CYCLES);
         spinner.putInGrid(this, "", 1, 0);
-        spinners.add(spinner);
+        GBspinners.add(spinner);
         spinner = new GridBagSpinner(InitialSettings.MIN_INTERVAL);
         spinner.putInGrid(this, "", 1, 1);
-        spinners.add(spinner);
+        GBspinners.add(spinner);
         spinner = new GridBagSpinner(InitialSettings.MAX_INTERVAL);
         spinner.putInGrid(this, "", 1, 2);
-        spinners.add(spinner);
+        GBspinners.add(spinner);
         spinner = new GridBagSpinner(InitialSettings.STEP);
         spinner.putInGrid(this, "", 1, 3);
-        spinners.add(spinner);
+        GBspinners.add(spinner);
 
         bagButton.putInGrid(this, "Simulate", 3, 2);
-
-        GridBagCheckbox checkbox = new GridBagCheckbox(InitialSettings.HOLD_THE_DATA);
-        checkbox.putInGrid(this, "Hold the data", 2, 2);
-        RunMultipleTimesPanel runMultipleTimesPanel = new RunMultipleTimesPanel();
+        holdTheDataCB.putInGrid(this, "Hold the data", 2, 2);
         runMultipleTimesPanel.putInGrid(this, 2, 3);
     }
 
     //reads value from Parameters singleton and updates the field.
-    public void updateSpinners() {
-        for (GridBagSpinner spinner: spinners) {
-            spinner.getInstanceOfSpinner().setValue(parameters.getValueFromParameters(spinner.getType()));
+    public void updateSpinnersAndCheckboxes() {
+        for (GridBagSpinner GBspinner: GBspinners) {
+            GBspinner.getInstanceOfSpinner().setValue(parameters.getValueFromParameters(GBspinner.getType()));
         }
+        holdTheDataCB.getInstanceOfCheckbox().setSelected(parameters.isHoldTheData());
+        runMultipleTimesPanel.updateSpinnersAndCheckboxes();
     }
 }

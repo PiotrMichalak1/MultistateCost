@@ -34,6 +34,6 @@ public class LayeredCostPlotTab extends JPanel {
     }
 
     public void updateSpinners() {
-        runSimulationPanel.updateSpinners();
+        runSimulationPanel.updateSpinnersAndCheckboxes();
     }
 }

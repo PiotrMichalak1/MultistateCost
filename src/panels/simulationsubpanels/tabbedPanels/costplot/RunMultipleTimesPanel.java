@@ -12,6 +12,10 @@ import java.awt.*;
 public class RunMultipleTimesPanel extends JPanel {
     Parameters parameters;
     GridBagLabel bagLabel;
+
+    GridBagCheckbox runMultipleTimesCB = new GridBagCheckbox(InitialSettings.RUN_MULTIPLE_TIMES);
+
+    GridBagSpinner runMultipleTimesSP = new GridBagSpinner(InitialSettings.RUN_MULTIPLE_TIMES);
     public RunMultipleTimesPanel(){
         parameters = Parameters.getInstance();
         bagLabel = new GridBagLabel();
@@ -23,11 +27,8 @@ public class RunMultipleTimesPanel extends JPanel {
         bagLabel.putInGrid(this,"Times",2,0);
     }
     private void initializeRunMultipleTimesSpinners(){
-        GridBagCheckbox checkbox = new GridBagCheckbox(InitialSettings.RUN_MULTIPLE_TIMES);
-        checkbox.putInGrid(this,"Run", 0,0);
-
-        GridBagSpinner spinner = new GridBagSpinner(InitialSettings.RUN_MULTIPLE_TIMES);
-        spinner.putInGrid(this,"",1,0);
+        runMultipleTimesCB.putInGrid(this,"Run", 0,0);
+        runMultipleTimesSP.putInGrid(this,"",1,0);
     }
 
     public void putInGrid(JComponent parent, int bagX, int bagY) {
@@ -38,5 +39,10 @@ public class RunMultipleTimesPanel extends JPanel {
         c.gridx = bagX;
         c.gridy = bagY;
         parent.add(this, c);
+    }
+
+    public void updateSpinnersAndCheckboxes() {
+        runMultipleTimesSP.getInstanceOfSpinner().setValue(parameters.getRunMultipleTimesNum());
+        runMultipleTimesCB.getInstanceOfCheckbox().setSelected(parameters.isRunMultipleTimes());
     }
 }

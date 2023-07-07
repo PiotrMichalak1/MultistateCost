@@ -31,6 +31,6 @@ public class CostPlotTab extends JPanel {
     }
 
     public void updateSpinners() {
-        runSimulationPanel.updateSpinners();
+        runSimulationPanel.updateSpinnersAndCheckboxes();
     }
 }

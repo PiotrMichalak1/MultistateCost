@@ -65,4 +65,8 @@ public class GridBagCheckbox implements GridBagElement {
         parent.add(checkBox, c);
 
     }
+
+    public JCheckBox getInstanceOfCheckbox(){
+        return checkBox;
+    }
 }
