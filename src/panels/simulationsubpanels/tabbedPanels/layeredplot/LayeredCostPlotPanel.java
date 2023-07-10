@@ -1,8 +1,7 @@
 package panels.simulationsubpanels.tabbedPanels.layeredplot;
 
 import panels.simulationsubpanels.tabbedPanels.costplot.MainPlotPanel;
-import tools.plotting.plots.LayeredPlotter;
-import tools.plotting.plots.MainPlotter;
+import tools.plotting.plotters.LayeredPlotter;
 
 
 public class LayeredCostPlotPanel extends MainPlotPanel {

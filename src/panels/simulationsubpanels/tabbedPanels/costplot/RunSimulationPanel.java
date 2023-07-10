@@ -1,5 +1,6 @@
 package panels.simulationsubpanels.tabbedPanels.costplot;
 
+import panels.mainpanels.TabbedPlotPanel;
 import settings.InitialSettings;
 import settings.Parameters;
 import tools.gridbagelements.GridBagButton;
@@ -25,9 +26,9 @@ public class RunSimulationPanel extends JPanel {
     RunMultipleTimesPanel runMultipleTimesPanel = new RunMultipleTimesPanel();
 
 
-    public RunSimulationPanel(MainPlotPanel parentTab) {
+    public RunSimulationPanel(TabbedPlotPanel parentTabbedPanel) {
         bagLabel = new GridBagLabel();
-        bagButton = new GridBagButton(InitialSettings.SIMULATE_BUTTON,parentTab);
+        bagButton = new GridBagButton(InitialSettings.SIMULATE_BUTTON,parentTabbedPanel);
 
 
         initializeRunSimulationLabels();

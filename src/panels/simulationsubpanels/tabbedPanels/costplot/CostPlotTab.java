@@ -1,6 +1,6 @@
 package panels.simulationsubpanels.tabbedPanels.costplot;
 
-import com.sun.tools.javac.Main;
+import panels.mainpanels.TabbedPlotPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,9 +8,12 @@ import java.awt.*;
 public class CostPlotTab extends JPanel {
     public MainPlotPanel plotPanel;
     private final RunSimulationPanel runSimulationPanel;
-    public CostPlotTab() {
+
+    private final TabbedPlotPanel parentTabbedPanel;
+    public CostPlotTab(TabbedPlotPanel parentTabbedPanel) {
+        this.parentTabbedPanel = parentTabbedPanel;
         setPlotPanel();
-        this.runSimulationPanel = new RunSimulationPanel(plotPanel);
+        this.runSimulationPanel = new RunSimulationPanel(parentTabbedPanel);
         addWeightedPanes();
     }
 

@@ -1,6 +1,6 @@
 package tools.gridbagelements;
 
-import panels.simulationsubpanels.tabbedPanels.costplot.MainPlotPanel;
+import panels.mainpanels.TabbedPlotPanel;
 import settings.Parameters;
 import simulation.Simulation;
 import tools.TestingValues;
@@ -19,7 +19,7 @@ public class GridBagButton implements GridBagElement {
     Parameters parameters = Parameters.getInstance();
 
 
-    public GridBagButton(int type, MainPlotPanel parentTab) {
+    public GridBagButton(int type, TabbedPlotPanel parentTabbedPanel) {
         button = new JButton();
 
         switch (type) {
@@ -29,14 +29,15 @@ public class GridBagButton implements GridBagElement {
 
                     test.initializeTestFunction();
                     if (!parameters.isHoldTheData()) {
-                        parentTab.plotter.clearFunctionData();
+                        parentTabbedPanel.costPlotTab.plotPanel.plotter.clearFunctionData();
+                        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.clearFunctionData();
                     }
-                    //test.initializeTestFunction();
-                    //parentTab.mainPlotter.plot.addFunctionData(test.testDomain, test.testCodomain);
-                    //parentTab.mainPlotter.plot.addFunctionData(test.testDomain2, test.testCodomain2);
+
                     sim.simulate();
-                    parentTab.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getSimulationValues());
-                    parentTab.repaint();
+
+                    addSimulationDataToMainPlot(parentTabbedPanel, sim);
+                    addSimulationDataToLayeredPlot(parentTabbedPanel,sim);
+
                 });
                 button.addMouseListener(new MouseAdapter() {
                     @Override
@@ -47,6 +48,20 @@ public class GridBagButton implements GridBagElement {
             }
         }
     }
+
+    private void addSimulationDataToLayeredPlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) {
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getOperationalCost());
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getRepairCost());
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getInspectionsCost());
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.repaint();
+    }
+
+
+    private void addSimulationDataToMainPlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) {
+        parentTabbedPanel.costPlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getOverallCostValues());
+        parentTabbedPanel.costPlotTab.plotPanel.repaint();
+    }
+
 
     @Override
     public void putInGrid(JComponent parent, String text, int bagX, int bagY) {

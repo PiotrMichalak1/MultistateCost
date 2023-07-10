@@ -25,6 +25,14 @@ public class MatrixOperations {
         return sum1;
     }
 
+    public static double sum(double[] vector) {
+        double sum1 = 0;
+        for (double item : vector)
+                sum1 += item;
+
+        return sum1;
+    }
+
     public static void multiplyMatrixRowsByVector(double[][] matrix, double[] vector) {
         int nRow = vector.length;
 

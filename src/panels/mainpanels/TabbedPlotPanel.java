@@ -11,17 +11,24 @@ import java.awt.*;
 
 public class TabbedPlotPanel extends JTabbedPane {
 
+    public CostPlotTab costPlotTab;
+
+    public LayeredCostPlotTab layeredCostPlotTab;
+
     public TabbedPlotPanel() {
         //index 0
-        CostPlotTab costPlotTab = new CostPlotTab();
+        costPlotTab = new CostPlotTab(this);
         this.addTab("Cost Plot",costPlotTab);
         //index 1
-        LayeredCostPlotTab layeredCostPlotPanel = new LayeredCostPlotTab();
-        this.addTab("Layered Cost Plot",layeredCostPlotPanel);
+        layeredCostPlotTab = new LayeredCostPlotTab(this);
+        this.addTab("Layered Cost Plot",layeredCostPlotTab);
+        //index 2
         LayeredStatePlotTab layeredStatePlot = new LayeredStatePlotTab();
         this.addTab("Layered State Plot",layeredStatePlot);
+        //index 3
         StructuralPlotsTab structuralPlots = new StructuralPlotsTab();
         this.addTab("Structural Plots", structuralPlots);
+        //index 4
         DistributionsTab distributions = new DistributionsTab();
         this.addTab("Distributions", distributions);
 
@@ -33,7 +40,7 @@ public class TabbedPlotPanel extends JTabbedPane {
                 if (selectedIndex == 0) {
                     costPlotTab.updateSpinners();
                 } else if (selectedIndex == 1) {
-                    layeredCostPlotPanel.updateSpinners();
+                    layeredCostPlotTab.updateSpinners();
                 }
             }
         });

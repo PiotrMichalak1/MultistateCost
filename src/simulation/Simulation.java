@@ -21,7 +21,9 @@ public class Simulation {
 
     private double[] simulationDomain;
 
-    private double[] simulationValues;
+    private double[] overallCostValues;
+
+    private LayeredCostValues layeredCostValues;
 
     private static RandomGenerator randomGenerator = RandomGeneratorFactory.createRandomGenerator(new Random());
 
@@ -44,7 +46,8 @@ public class Simulation {
 
     private void prepareDomainAndValues() {
         simulationDomain = new double[(parameters.getMaxInterval() - parameters.getMinInterval()) / parameters.getStep() + 1];
-        simulationValues = new double[simulationDomain.length];
+        overallCostValues = new double[simulationDomain.length];
+        layeredCostValues = new LayeredCostValues(simulationDomain.length);
     }
 
     private void createRandomData(boolean isShockDegradation) {
@@ -107,15 +110,21 @@ public class Simulation {
         int intervalIndex = 0;
         while (currentInterval <= parameters.getMaxInterval()) {
 
+            double[] layeredSimulationResults = simulateForGivenInterval(currentInterval);
+
             simulationDomain[intervalIndex] = currentInterval;
-            simulationValues[intervalIndex] = simulateForGivenInterval(currentInterval);
+            overallCostValues[intervalIndex] = MatrixOperations.sum(layeredSimulationResults);
+
+            layeredCostValues.setOperationalCost(intervalIndex,layeredSimulationResults[0]);
+            layeredCostValues.setRepairCost(intervalIndex,layeredSimulationResults[1]);
+            layeredCostValues.setInspectionsCost(intervalIndex,layeredSimulationResults[2]);
 
             intervalIndex++;
             currentInterval += parameters.getStep();
         }
     }
 
-    private double simulateForGivenInterval(int currentInterval) {
+    private double[] simulateForGivenInterval(int currentInterval) {
         MatrixOperations.fillRow(randomData, currentInterval, parameters.getNumOfStates());
         double[][] lifeSpans = new double[parameters.getNumOfStates() + 1][parameters.getProdCycles()];
 
@@ -203,11 +212,14 @@ public class Simulation {
 
         double operationalCost = MatrixOperations.sum(lifeSpans);
 
-        double cost = operationalCost + repairCost + inspectionCost;
+        //normalization of costs in time
+        operationalCost = operationalCost/overallTime;
+        repairCost = repairCost/overallTime;
+        inspectionCost =inspectionCost/overallTime;
 
-        cost = cost / overallTime;
+        double[] result = {operationalCost,repairCost,inspectionCost};
 
-        return cost;
+        return result;
     }
 
     private boolean isEmergencyCalled(int state, int startingState, int currentInterval, double lastSeenValues) {
@@ -225,6 +237,7 @@ public class Simulation {
         return randomData[state - 1][cycle - 1][currentState - 1] + (lastSeenValues % currentInterval) >= currentInterval;
     }
 
+    //calculate new scales if shock degradation mode is active
     private double shockScale(int layer, int state) {
         double scale = 0.0;
         for (int i = layer; i <= state; i++) {
@@ -237,9 +250,11 @@ public class Simulation {
         return simulationDomain;
     }
 
-    public double[] getSimulationValues() {
-        return simulationValues;
+    public double[] getOverallCostValues() {
+        return overallCostValues;
     }
 
-
+    public LayeredCostValues getLayeredCostValues() {
+        return layeredCostValues;
+    }
 }
