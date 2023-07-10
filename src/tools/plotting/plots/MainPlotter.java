@@ -11,14 +11,14 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-public class Plotter {
+public class MainPlotter {
     public CoordinateSystem coordinateSystem;
     public Plot plot;
 
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
 
-    public Plotter() {
+    public MainPlotter() {
         this.coordinateSystem = new CoordinateSystem();
         this.plot = new Plot();
 
@@ -26,7 +26,6 @@ public class Plotter {
 
     public void drawMainPlot(Graphics2D g2) {
         coordinateSystem.updateRanges(width, height);
-
         coordinateSystem.drawGrid(g2, width, height);
         plot.drawAllFunctions(g2);
         coordinateSystem.drawMargins(g2, width, height);
@@ -69,9 +68,9 @@ public class Plotter {
         this.height = height;
     }
 
-    private static class CoordinateSystem {
+    static class CoordinateSystem {
 
-        private final int margin;
+        protected final int margin;
 
         private double scaleMultiplier;
         public int numOfMouseScrolls;
@@ -100,7 +99,7 @@ public class Plotter {
             this.yRange = new double[2];
         }
 
-        private void drawMargins(Graphics2D g2, int width, int height) {
+        public void drawMargins(Graphics2D g2, int width, int height) {
             g2.setColor(GraphicSettings.MARGIN_COLOR);
             g2.fillRect(0, 0, 2 * margin + width, margin);
             g2.fillRect(0, 0, margin, 2 * margin + height);

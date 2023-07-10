@@ -1,4 +1,7 @@
 package tools.plotting.plots;
 
-public class LayeredPlotter extends Plotter{
+import java.awt.*;
+
+public class LayeredPlotter extends MainPlotter {
+
 }

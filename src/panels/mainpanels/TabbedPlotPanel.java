@@ -13,8 +13,8 @@ public class TabbedPlotPanel extends JTabbedPane {
 
     public TabbedPlotPanel() {
         //index 0
-        CostPlotTab costPlot = new CostPlotTab();
-        this.addTab("Cost Plot",costPlot);
+        CostPlotTab costPlotTab = new CostPlotTab();
+        this.addTab("Cost Plot",costPlotTab);
         //index 1
         LayeredCostPlotTab layeredCostPlotPanel = new LayeredCostPlotTab();
         this.addTab("Layered Cost Plot",layeredCostPlotPanel);
@@ -31,7 +31,7 @@ public class TabbedPlotPanel extends JTabbedPane {
                 int selectedIndex = getSelectedIndex();
 
                 if (selectedIndex == 0) {
-                    costPlot.updateSpinners();
+                    costPlotTab.updateSpinners();
                 } else if (selectedIndex == 1) {
                     layeredCostPlotPanel.updateSpinners();
                 }

@@ -1,4 +1,13 @@
 package panels.simulationsubpanels.tabbedPanels.layeredplot;
 
-public class LayeredCostPlotPanel {
+import panels.simulationsubpanels.tabbedPanels.costplot.MainPlotPanel;
+import tools.plotting.plots.LayeredPlotter;
+import tools.plotting.plots.MainPlotter;
+
+
+public class LayeredCostPlotPanel extends MainPlotPanel {
+    @Override
+    public void setPlotter() {
+        this.plotter = new LayeredPlotter();
+    }
 }

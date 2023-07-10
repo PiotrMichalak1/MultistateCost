@@ -1,17 +1,18 @@
 package panels.simulationsubpanels.tabbedPanels.costplot;
 
-import tools.plotting.plots.Plotter;
+import tools.plotting.plots.MainPlotter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class PlotPanel extends JPanel{
-    public Plotter plotter;
+public class MainPlotPanel extends JPanel{
+    public MainPlotter plotter;
     private Point previousMousePosition;
 
-    public PlotPanel() {
-        plotter = new Plotter();
+
+    public MainPlotPanel() {
+        setPlotter();
         ClickListener clickListener = new ClickListener();
         DragListener dragListener = new DragListener();
         WheelListener wheelListener = new WheelListener();
@@ -33,6 +34,10 @@ public class PlotPanel extends JPanel{
 
             plotter.drawMainPlot(g2);
         }
+    }
+
+    public void setPlotter() {
+        this.plotter = new MainPlotter();
     }
 
 

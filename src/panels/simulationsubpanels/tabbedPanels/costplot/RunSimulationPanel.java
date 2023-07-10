@@ -25,7 +25,7 @@ public class RunSimulationPanel extends JPanel {
     RunMultipleTimesPanel runMultipleTimesPanel = new RunMultipleTimesPanel();
 
 
-    public RunSimulationPanel(PlotPanel parentTab) {
+    public RunSimulationPanel(MainPlotPanel parentTab) {
         bagLabel = new GridBagLabel();
         bagButton = new GridBagButton(InitialSettings.SIMULATE_BUTTON,parentTab);
 
