@@ -5,6 +5,7 @@ import tools.plotting.plotters.plots.Plot;
 
 
 public class LayeredPlotter extends MainPlotter {
+
     @Override
     public void setPlot() {
         this.plot = new LayeredPlot(this);

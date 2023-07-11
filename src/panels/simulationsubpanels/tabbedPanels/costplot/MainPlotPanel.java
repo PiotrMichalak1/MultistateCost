@@ -27,16 +27,15 @@ public class MainPlotPanel extends JPanel{
         super.paintComponent(g);
         int width = getWidth()- plotter.getMargin()*2;
         int height = getHeight()- plotter.getMargin()*2;
-        plotter.setWidth(width);
-        plotter.setHeight(height);
+
+        setPlottersSize(width,height);
+
         if(width > 0 && height> 0){
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-
-            plotter.drawMainPlot(g2);
-
             setPlottersSize(width,height);
+            plotter.drawMainPlot(g2);
 
         }
 
@@ -44,8 +43,12 @@ public class MainPlotPanel extends JPanel{
     }
 
     private void setPlottersSize(int width, int height){
-        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setWidth(width);
-        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setHeight(height);
+        //main plot
+        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
+        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
+        //layered plot
+        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
+        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
     }
 
     public void setPlotter() {

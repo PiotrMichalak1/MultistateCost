@@ -30,13 +30,13 @@ public class GridBagButton implements GridBagElement {
                     test.initializeTestFunction();
                     if (!parameters.isHoldTheData()) {
                         parentTabbedPanel.costPlotTab.plotPanel.plotter.clearFunctionData();
-                        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.clearFunctionData();
                     }
+                    parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.clearFunctionData();
 
                     sim.simulate();
 
-                    addSimulationDataToMainPlot(parentTabbedPanel, sim);
-                    addSimulationDataToLayeredPlot(parentTabbedPanel,sim);
+                   addSimulationDataToMainPlot(parentTabbedPanel, sim);
+                   addSimulationDataToLayeredPlot(parentTabbedPanel,sim);
 
                 });
                 button.addMouseListener(new MouseAdapter() {
