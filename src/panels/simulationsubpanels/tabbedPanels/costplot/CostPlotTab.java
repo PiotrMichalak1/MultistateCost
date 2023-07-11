@@ -9,7 +9,7 @@ public class CostPlotTab extends JPanel {
     public MainPlotPanel plotPanel;
     private final RunSimulationPanel runSimulationPanel;
 
-    private final TabbedPlotPanel parentTabbedPanel;
+    public final TabbedPlotPanel parentTabbedPanel;
     public CostPlotTab(TabbedPlotPanel parentTabbedPanel) {
         this.parentTabbedPanel = parentTabbedPanel;
         setPlotPanel();
@@ -18,7 +18,7 @@ public class CostPlotTab extends JPanel {
     }
 
     public void setPlotPanel(){
-        this.plotPanel = new MainPlotPanel();
+        this.plotPanel = new MainPlotPanel(this);
     }
 
     private void addWeightedPanes(){

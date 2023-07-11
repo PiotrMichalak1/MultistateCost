@@ -34,7 +34,7 @@ public class Plot {
     public void addFunctionData(double[] domain, double[] codomain) {
         functionsDomains.add(domain);
         functionsCodomains.add(codomain);
-        adjustCameraToPlot(domain, codomain);
+        adjustCameraToPlot();
     }
 
     public void clearFunctionData() {
@@ -114,68 +114,76 @@ public class Plot {
 
     }
 
-    public void adjustCameraToPlot(double[] functionDomain, double[] functionCodomain) {
-        if (functionDomain.length > 1) {
+    public void adjustCameraToPlot() {
+        double[] functionDomain;
+        double[] functionCodomain;
+        if (!functionsDomains.isEmpty()){
+            functionDomain = functionsDomains.get(functionsDomains.size()-1);
+            functionCodomain = functionsCodomains.get(functionsCodomains.size()-1);
 
-            double smallestValue = FunctionTools.getSmallestValueOfFunction(functionCodomain);
-            double biggestValue = FunctionTools.getBiggestValueOfFunction(functionCodomain);
+            if (functionDomain.length > 1) {
 
-            double rangeOfValues = biggestValue - smallestValue;
+                double smallestValue = FunctionTools.getSmallestValueOfFunction(functionCodomain);
+                double biggestValue = FunctionTools.getBiggestValueOfFunction(functionCodomain);
 
-            plotter.coordinateSystem.xRange[0] = functionDomain[0];
-            plotter.coordinateSystem.yRange[0] = smallestValue;
-            plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                double rangeOfValues = biggestValue - smallestValue;
 
-            double visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
-            double domainWidth = functionDomain[functionCodomain.length - 1] - functionDomain[0];
+                plotter.coordinateSystem.xRange[0] = functionDomain[0];
+                plotter.coordinateSystem.yRange[0] = smallestValue;
+                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
 
-            if (visibleXWidth < domainWidth) {
+                double visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+                double domainWidth = functionDomain[functionCodomain.length - 1] - functionDomain[0];
 
-                while (visibleXWidth < domainWidth) {
+                if (visibleXWidth < domainWidth) {
 
+                    while (visibleXWidth < domainWidth) {
+
+                        plotter.coordinateSystem.numOfMouseScrolls -= 1;
+                        plotter.coordinateSystem.updateGridSpacing();
+                        plotter.coordinateSystem.updateScaleOnMouseScroll();
+                        plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                        visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+
+                    }
+
+                    plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
+                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+
+                } else if (visibleXWidth > domainWidth) {
+                    while (visibleXWidth > domainWidth) {
+
+                        plotter.coordinateSystem.numOfMouseScrolls += 1;
+                        plotter.coordinateSystem.updateGridSpacing();
+                        plotter.coordinateSystem.updateScaleOnMouseScroll();
+                        plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                        visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+
+                    }
                     plotter.coordinateSystem.numOfMouseScrolls -= 1;
                     plotter.coordinateSystem.updateGridSpacing();
                     plotter.coordinateSystem.updateScaleOnMouseScroll();
                     plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
                     visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
-
-                }
-
-                plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-
-            } else if (visibleXWidth > domainWidth) {
-                while (visibleXWidth > domainWidth) {
-
-                    plotter.coordinateSystem.numOfMouseScrolls += 1;
-                    plotter.coordinateSystem.updateGridSpacing();
-                    plotter.coordinateSystem.updateScaleOnMouseScroll();
+                    plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
                     plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                    visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
 
                 }
-                plotter.coordinateSystem.numOfMouseScrolls -= 1;
-                plotter.coordinateSystem.updateGridSpacing();
-                plotter.coordinateSystem.updateScaleOnMouseScroll();
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
-                plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+
+                if (rangeOfValues != 0) {
+                    double exactValue = (rangeOfValues * 5.0 * plotter.coordinateSystem.smallGridSpacing) / (plotter.coordinateSystem.scaleMultiplier * plotter.height);
+                    plotter.coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue, 2);
+                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+
+                    double visibleYHeight = plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0];
+                    plotter.coordinateSystem.yRange[0] = smallestValue - (visibleYHeight - rangeOfValues) / 2;
+                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                }
+
 
             }
-
-            if (rangeOfValues != 0) {
-                double exactValue = (rangeOfValues * 5.0 * plotter.coordinateSystem.smallGridSpacing) / (plotter.coordinateSystem.scaleMultiplier * plotter.height);
-                plotter.coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue, 2);
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-
-                double visibleYHeight = plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0];
-                plotter.coordinateSystem.yRange[0] = smallestValue - (visibleYHeight - rangeOfValues) / 2;
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-            }
-
-
         }
+
 
 
     }

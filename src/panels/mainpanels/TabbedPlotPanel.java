@@ -19,6 +19,7 @@ public class TabbedPlotPanel extends JTabbedPane {
         //index 0
         costPlotTab = new CostPlotTab(this);
         this.addTab("Cost Plot",costPlotTab);
+        System.out.println("CostPlotTab width is :" + costPlotTab.plotPanel.getWidth());
         //index 1
         layeredCostPlotTab = new LayeredCostPlotTab(this);
         this.addTab("Layered Cost Plot",layeredCostPlotTab);
@@ -44,6 +45,7 @@ public class TabbedPlotPanel extends JTabbedPane {
                 }
             }
         });
+
 
     }
 

@@ -10,8 +10,10 @@ public class MainPlotPanel extends JPanel{
     public MainPlotter plotter;
     private Point previousMousePosition;
 
+    private CostPlotTab parentTab;
 
-    public MainPlotPanel() {
+    public MainPlotPanel(CostPlotTab parentTab) {
+        this.parentTab = parentTab;
         setPlotter();
         ClickListener clickListener = new ClickListener();
         DragListener dragListener = new DragListener();
@@ -33,12 +35,26 @@ public class MainPlotPanel extends JPanel{
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
             plotter.drawMainPlot(g2);
+
+            setPlottersSize(width,height);
+
         }
+
+
+    }
+
+    private void setPlottersSize(int width, int height){
+        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setWidth(width);
+        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setHeight(height);
     }
 
     public void setPlotter() {
         this.plotter = new MainPlotter();
     }
+
+
+
+
 
 
 

@@ -15,6 +15,6 @@ public class LayeredCostPlotTab extends CostPlotTab {
 
     @Override
     public void setPlotPanel(){
-        this.plotPanel = new LayeredCostPlotPanel();
+        this.plotPanel = new LayeredCostPlotPanel(this);
     }
 }
