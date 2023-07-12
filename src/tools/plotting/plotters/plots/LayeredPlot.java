@@ -115,7 +115,7 @@ public class LayeredPlot extends Plot {
 
     public void fillLayers(Graphics2D g2) {
         PlotColors.resetColor();
-        long start = System.currentTimeMillis();
+
 
         double[] domain = functionsDomains.get(0);
         double[] domainRev = MatrixOperations.getReversedArray(domain); // required by the way polygon is drawn in fillPoly()
@@ -142,8 +142,7 @@ public class LayeredPlot extends Plot {
                 g2.fillPolygon(polyX, polyY, polyY.length);
             }
         }
-        long end = System.currentTimeMillis();
-        System.out.println("Time to fill layers : " + (end-start));
+
     }
 
     @Override
