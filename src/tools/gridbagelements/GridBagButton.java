@@ -3,7 +3,7 @@ package tools.gridbagelements;
 import panels.mainpanels.TabbedPlotPanel;
 import settings.Parameters;
 import simulation.Simulation;
-import tools.TestingValues;
+import tools.Functions.TestingValues;
 import tools.interfaces.GridBagElement;
 import javax.swing.*;
 import java.awt.*;
@@ -50,9 +50,12 @@ public class GridBagButton implements GridBagElement {
     }
 
     private void addSimulationDataToLayeredPlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) {
-        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getOperationalCost());
-        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getRepairCost());
-        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getInspectionsCost());
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getOperationalCost(),"Operational");
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getRepairCost(),"Repair");
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getInspectionsCost(),"Inspections");
+
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.updateFunctionValuesToStacked();
+
         parentTabbedPanel.layeredCostPlotTab.plotPanel.repaint();
     }
 

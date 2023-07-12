@@ -45,7 +45,6 @@ public class TabbedPlotPanel extends JTabbedPane {
             }
         });
 
-        this.setSelectedIndex(1);
 
 
     }

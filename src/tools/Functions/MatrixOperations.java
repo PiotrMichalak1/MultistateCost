@@ -1,6 +1,4 @@
-package tools;
-
-import java.util.Arrays;
+package tools.Functions;
 
 public class MatrixOperations {
 
@@ -64,5 +62,58 @@ public class MatrixOperations {
         return result;
     }
 
+    //concatenate given amount of vectors of double values
+    public static double[] concatenateVectors(double[]... vectors){
+        int length = 0;
+        for (double[] vector : vectors) {
+            length += vector.length;
+        }
+        double[] result = new double[length];
+        int index = 0;
+        for (double[] vector : vectors){
+            for (double val : vector) {
+                result[index] = val;
+                index++;
+            }
+        }
+        return result;
+    }
+
+    //concatenate given amount of vectors of int values
+    public static int[] concatenateVectors(int[]... vectors){
+        int length = 0;
+        for (int[] vector : vectors) {
+            length += vector.length;
+        }
+        int[] result = new int[length];
+        int index = 0;
+        for (int[] vector : vectors){
+            for (int val : vector) {
+                result[index] = val;
+                index++;
+            }
+        }
+        return result;
+    }
+
+    public static int[] getReversedArray(int[] array) {
+        int[] reversedArray = new int[array.length];
+
+        for (int i = 0; i < array.length; i++) {
+            reversedArray[i] = array[array.length - 1 - i];
+        }
+
+        return reversedArray;
+    }
+
+    public static double[] getReversedArray(double[] array) {
+        double[] reversedArray = new double[array.length];
+
+        for (int i = 0; i < array.length; i++) {
+            reversedArray[i] = array[array.length - 1 - i];
+        }
+
+        return reversedArray;
+    }
 
 }

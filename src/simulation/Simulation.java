@@ -5,8 +5,8 @@ import org.apache.commons.math3.distribution.WeibullDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.RandomGeneratorFactory;
 import settings.Parameters;
-import tools.Mathematics;
-import tools.MatrixOperations;
+import tools.Functions.Mathematics;
+import tools.Functions.MatrixOperations;
 
 import java.util.Arrays;
 import java.util.Random;

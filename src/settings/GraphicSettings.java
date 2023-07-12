@@ -25,4 +25,5 @@ public class GraphicSettings {
 
     public static final int POINT_OF_INTEREST_VISIBILITY_THRESHOLD = 40;
 
+    public static final float FUNCTION_THICKNESS = 2.0f;
 }

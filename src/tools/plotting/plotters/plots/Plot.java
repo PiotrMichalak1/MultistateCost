@@ -2,10 +2,11 @@ package tools.plotting.plotters.plots;
 
 import settings.GraphicSettings;
 import tools.FunctionTools;
-import tools.Mathematics;
+import tools.Functions.Mathematics;
 import tools.plotting.DoublePoint;
 import tools.plotting.PlotPointOfInterest;
 import tools.plotting.plotters.MainPlotter;
+import tools.plotting.plotters.plots.graphics.PlotColors;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Plot {
 
     public final MainPlotter plotter;
     public ArrayList<double[]> functionsDomains = new ArrayList<>();
-    public ArrayList<double[]> functionsCodomains = new ArrayList<>();
+    public ArrayList<double[]> functionsValues = new ArrayList<>();
 
     private final int margin;
     public final PlotPointOfInterest plotPOI;
@@ -33,41 +34,46 @@ public class Plot {
 
     public void addFunctionData(double[] domain, double[] codomain) {
         functionsDomains.add(domain);
-        functionsCodomains.add(codomain);
+        functionsValues.add(codomain);
         adjustCameraToPlot();
     }
 
     public void clearFunctionData() {
-        functionsDomains.removeAll(functionsDomains);
-        functionsCodomains.removeAll(functionsCodomains);
+        functionsDomains.clear();
+        functionsValues.clear();
     }
 
-    public void drawFunction(Graphics2D g2, double[] functionDomain, double[] functionCodomain) {
-        if (functionDomain != null && functionCodomain != null) {
-            if (functionDomain.length == functionCodomain.length) {
+    public void drawFunction(Graphics2D g2, double[] functionDomain, double[] functionValues, boolean isLayered) {
+        g2.setStroke(new BasicStroke(GraphicSettings.FUNCTION_THICKNESS));
+        if (functionDomain != null && functionValues != null) {
+
+            if (functionDomain.length == functionValues.length) {
                 Point pointPx;
                 DoublePoint point;
                 if (functionDomain.length == 1) {
-                    point = new DoublePoint(functionDomain[0], functionCodomain[0]);
+                    point = new DoublePoint(functionDomain[0], functionValues[0]);
                     if (isPointInVisibleRange(point)) {
                         pointPx = pointToPixels(point);
                         plotPOI.updatePOIValues(pointPx, point);
-                        g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
+                        g2.setColor(PlotColors.next());
                         g2.fillOval((int) pointPx.getX() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                 (int) pointPx.getY() - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                                 GraphicSettings.PLOT_POINT_THICKNESS,
                                 GraphicSettings.PLOT_POINT_THICKNESS);
                     }
                 } else {
-                    g2.setColor(GraphicSettings.MAIN_GRAPH_COLOR);
+                    if (isLayered)
+                        g2.setColor(PlotColors.nextLayered());
+                    else
+                        g2.setColor(PlotColors.next());
 
                     DoublePoint prevPoint;
                     DoublePoint nextPoint;
                     Point prevPointPx;
                     Point nextPointPx;
 
-                    prevPoint = new DoublePoint(functionDomain[0], functionCodomain[0]);
-                    nextPoint = new DoublePoint(functionDomain[1], functionCodomain[1]);
+                    prevPoint = new DoublePoint(functionDomain[0], functionValues[0]);
+                    nextPoint = new DoublePoint(functionDomain[1], functionValues[1]);
 
                     prevPointPx = pointToPixels(prevPoint);
                     nextPointPx = pointToPixels(nextPoint);
@@ -80,8 +86,8 @@ public class Plot {
                     );
 
                     for (int i = 1; i < functionDomain.length - 1; i++) {
-                        prevPoint = new DoublePoint(functionDomain[i], functionCodomain[i]);
-                        nextPoint = new DoublePoint(functionDomain[i + 1], functionCodomain[i + 1]);
+                        prevPoint = new DoublePoint(functionDomain[i], functionValues[i]);
+                        nextPoint = new DoublePoint(functionDomain[i + 1], functionValues[i + 1]);
 
                         prevPointPx = pointToPixels(prevPoint);
                         nextPointPx = pointToPixels(nextPoint);
@@ -104,12 +110,14 @@ public class Plot {
             throw new IllegalArgumentException((functionDomain == null) ? "Domain of function is null" :
                     "Codomain of function is null");
         }
+        g2.setStroke(new BasicStroke(1));
     }
 
     public void drawAllFunctions(Graphics2D g2) {
         plotPOI.resetDistanceAndVisibility();
+        PlotColors.resetColor();
         for (int i = 0; i < functionsDomains.size(); i++) {
-            drawFunction(g2, functionsDomains.get(i), functionsCodomains.get(i));
+            drawFunction(g2, functionsDomains.get(i), functionsValues.get(i), false);
         }
 
     }
@@ -117,9 +125,9 @@ public class Plot {
     public void adjustCameraToPlot() {
         double[] functionDomain;
         double[] functionCodomain;
-        if (!functionsDomains.isEmpty()){
-            functionDomain = functionsDomains.get(functionsDomains.size()-1);
-            functionCodomain = functionsCodomains.get(functionsCodomains.size()-1);
+        if (!functionsDomains.isEmpty()) {
+            functionDomain = functionsDomains.get(functionsDomains.size() - 1);
+            functionCodomain = functionsValues.get(functionsValues.size() - 1);
 
             if (functionDomain.length > 1) {
 
@@ -185,10 +193,9 @@ public class Plot {
         }
 
 
-
     }
 
-    private boolean isPointInVisibleRange(DoublePoint point) {
+    boolean isPointInVisibleRange(DoublePoint point) {
         boolean isInXRange = (plotter.coordinateSystem.xRange[0] < point.getX() &&
                 plotter.coordinateSystem.xRange[1] > point.getX());
         boolean isInYRange = (plotter.coordinateSystem.yRange[0] < point.getY() &&
@@ -198,25 +205,33 @@ public class Plot {
     }
 
 
-    private Point pointToPixels(DoublePoint point) {
+    public Point pointToPixels(DoublePoint point) {
         int xPx = margin + (int) Math.round(plotter.width * (point.getX() - plotter.coordinateSystem.xRange[0]) / (plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0]));
         int yPx = margin + plotter.height - (int) Math.round(plotter.height * (point.getY() - plotter.coordinateSystem.yRange[0]) / (plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0]));
         return new Point(xPx, yPx);
     }
 
-    private DoublePoint pixelsToPoint(Point mousePosition) {
-        double mouseX = mousePosition.getX() - margin;
-        double mouseY = margin + plotter.height - mousePosition.getY();
+    //gets vector of double domain values and translates it to pixel coordinates in plotter
+    public int[] domainVectorToPixels(double[] vector) {
+        int[] vectorPx = new int[vector.length];
+        for (int index =0;index<vector.length;index++){
+            vectorPx[index] = margin + (int) Math.round(plotter.width * (vector[index] - plotter.coordinateSystem.xRange[0]) / (plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0]));
+        }
+        return vectorPx;
+    }
 
-        double RangeX = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
-        double RangeY = plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0];
-
-        double argument = plotter.coordinateSystem.xRange[0] + (mouseX / plotter.width) * RangeX;
-        double value = plotter.coordinateSystem.yRange[0] + (mouseY / plotter.height) * RangeY;
-
-        return new DoublePoint(argument, value);
-
+    public int[] valuesVectorToPixels(double[] vector) {
+        int[] vectorPx = new int[vector.length];
+        for (int index =0;index<vector.length;index++){
+            vectorPx[index] = margin + plotter.height - (int) Math.round(plotter.height * (vector[index] - plotter.coordinateSystem.yRange[0]) / (plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0]));
+        }
+        return vectorPx;
     }
 
 
+    public void addLayeredFunctionData(double[] simulationDomain, double[] operationalCost, String operational) {
+    }
+
+    public void updateFunctionValuesToStacked() {
+    }
 }
