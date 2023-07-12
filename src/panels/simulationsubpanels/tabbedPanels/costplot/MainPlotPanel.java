@@ -46,9 +46,12 @@ public class MainPlotPanel extends JPanel{
         //main plot
         parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
         parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
-        //layered plot
+        //layered cost plot
         parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
         parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
+        //layered state plot
+        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
+        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
     }
 
     public void setPlotter() {

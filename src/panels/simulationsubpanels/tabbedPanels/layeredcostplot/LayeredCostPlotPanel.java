@@ -1,8 +1,8 @@
-package panels.simulationsubpanels.tabbedPanels.layeredplot;
+package panels.simulationsubpanels.tabbedPanels.layeredcostplot;
 
 import panels.simulationsubpanels.tabbedPanels.costplot.CostPlotTab;
 import panels.simulationsubpanels.tabbedPanels.costplot.MainPlotPanel;
-import tools.plotting.plotters.LayeredPlotter;
+import tools.plotting.plotters.LayeredCostPlotter;
 
 
 public class LayeredCostPlotPanel extends MainPlotPanel {
@@ -12,7 +12,7 @@ public class LayeredCostPlotPanel extends MainPlotPanel {
 
     @Override
     public void setPlotter() {
-        this.plotter = new LayeredPlotter();
+        this.plotter = new LayeredCostPlotter();
 
     }
 

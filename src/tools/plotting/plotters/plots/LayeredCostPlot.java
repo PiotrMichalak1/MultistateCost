@@ -8,18 +8,17 @@ import tools.plotting.plotters.plots.graphics.PlotColors;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class LayeredPlot extends Plot {
+public class LayeredCostPlot extends Plot {
     private ArrayList<double[]> segmentData = new ArrayList<>();//values of all costs without summing
 
     private ArrayList<String> legendStrings = new ArrayList<>();
 
-    public LayeredPlot(MainPlotter layeredPlotter) {
-        super(layeredPlotter);
+    public LayeredCostPlot(MainPlotter layeredCostPlotter) {
+        super(layeredCostPlotter);
     }
 
-    public void addLayeredFunctionData(double[] domain, double[] codomain, String label) {
+    public void addLayeredCostFunctionData(double[] domain, double[] codomain, String label) {
         functionsDomains.add(domain);
         functionsValues.add(codomain);
         legendStrings.add(label);

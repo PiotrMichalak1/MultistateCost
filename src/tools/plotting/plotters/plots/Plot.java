@@ -229,8 +229,9 @@ public class Plot {
     }
 
 
-    public void addLayeredFunctionData(double[] simulationDomain, double[] operationalCost, String operational) {
+    public void addLayeredCostFunctionData(double[] simulationDomain, double[] operationalCost, String operational) {
     }
+
 
     public void updateFunctionValuesToStacked() {
     }

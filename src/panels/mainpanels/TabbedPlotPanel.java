@@ -2,18 +2,20 @@ package panels.mainpanels;
 
 import panels.simulationsubpanels.tabbedPanels.*;
 import panels.simulationsubpanels.tabbedPanels.costplot.CostPlotTab;
-import panels.simulationsubpanels.tabbedPanels.layeredplot.LayeredCostPlotTab;
+import panels.simulationsubpanels.tabbedPanels.layeredcostplot.LayeredCostPlotTab;
+import panels.simulationsubpanels.tabbedPanels.layeredstateplot.LayeredStatePlotTab;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 
 public class TabbedPlotPanel extends JTabbedPane {
 
     public CostPlotTab costPlotTab;
 
     public LayeredCostPlotTab layeredCostPlotTab;
+
+    public LayeredStatePlotTab layeredStatePlotTab;
 
     public TabbedPlotPanel() {
         //index 0
@@ -23,8 +25,8 @@ public class TabbedPlotPanel extends JTabbedPane {
         layeredCostPlotTab = new LayeredCostPlotTab(this);
         this.addTab("Layered Cost Plot",layeredCostPlotTab);
         //index 2
-        LayeredStatePlotTab layeredStatePlot = new LayeredStatePlotTab();
-        this.addTab("Layered State Plot",layeredStatePlot);
+        layeredStatePlotTab = new LayeredStatePlotTab(this);
+        this.addTab("Layered State Plot",layeredStatePlotTab);
         //index 3
         StructuralPlotsTab structuralPlots = new StructuralPlotsTab();
         this.addTab("Structural Plots", structuralPlots);
