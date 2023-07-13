@@ -29,8 +29,8 @@ public class GridBagButton implements GridBagElement {
 
                     if (!parameters.isHoldTheData()) {
                         parentTabbedPanel.costPlotTab.plotPanel.plotter.clearFunctionData();
-                        parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.clearFunctionData();
                     }
+                    parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.clearFunctionData();
                     parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.clearFunctionData();
 
                     sim.simulate();
@@ -55,8 +55,6 @@ public class GridBagButton implements GridBagElement {
     }
 
     private void addSimulationDataToLayeredCostPlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) throws CloneNotSupportedException {
-
-
         parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredFunctionData(sim);
         parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.updateFunctionValuesToStacked();
 

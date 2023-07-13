@@ -32,6 +32,11 @@ public class PlotPointOfInterest {
                     (int) functionValuePX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                     GraphicSettings.PLOT_POINT_THICKNESS,
                     GraphicSettings.PLOT_POINT_THICKNESS);
+            g2.setColor(Color.BLUE);
+            g2.drawOval((int) argumentPX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                    (int) functionValuePX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                    GraphicSettings.PLOT_POINT_THICKNESS,
+                    GraphicSettings.PLOT_POINT_THICKNESS);
         }
     }
 

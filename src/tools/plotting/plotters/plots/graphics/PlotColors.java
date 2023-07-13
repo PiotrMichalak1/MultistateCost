@@ -44,9 +44,15 @@ public class PlotColors {
 
     private static Color randomColor(int colorNumber){
 
-        return new Color((65*colorNumber)%256,
-                (51*colorNumber)%256,
-                (95*colorNumber)%256);
+        int colorBrightness = (65*colorNumber)%256+ (51*colorNumber)%256+ (95*colorNumber)%256;
+        if (colorBrightness>535){
+            colorNumber++;
+            return randomColor(colorNumber);
+        }else {
+            return new Color((65*colorNumber)%256,
+                    (51*colorNumber)%256,
+                    (95*colorNumber)%256);
+        }
     }
 
     public static Color nextLayered() {
