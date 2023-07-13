@@ -1,5 +1,7 @@
 package tools.plotting.plotters.plots.graphics;
 
+import settings.InitialSettings;
+
 import java.awt.*;
 
 
@@ -32,6 +34,13 @@ public class PlotColors {
             default -> randomColor(colorNumber);
         };
     }
+    public static Color nextStateColor(){
+        double middleColorNumber = InitialSettings.DEFAULT_NUM_OF_STATES/2.0;
+        int r = colorNumber <= middleColorNumber ? (int) (255 * (colorNumber / middleColorNumber)) : 255;
+        int g = colorNumber <= middleColorNumber ? 255 : (int) (255 * (2 - colorNumber / middleColorNumber));
+        colorNumber++;
+        return new Color(r,g,0);
+    }
 
     private static Color randomColor(int colorNumber){
 
@@ -50,5 +59,8 @@ public class PlotColors {
             case 5 -> new Color(118, 171, 49);
             default -> randomColor(colorNumber);
         };
+    }
+    public static void setColorToBlack(){
+        colorNumber = -1;
     }
 }

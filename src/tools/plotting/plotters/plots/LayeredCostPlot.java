@@ -134,10 +134,22 @@ public class LayeredCostPlot extends Plot {
 
     }
 
+    @Override
+    public void drawAllFunctions(Graphics2D g2) {
+        plotPOI.resetDistanceAndVisibility();
+
+        if (functionsDomains.size() > 0) {
+            fillLayers(g2);
+            PlotColors.resetColor();
+            for (int i = functionsDomains.size() - 1; i >= 0; i--) {
+                drawFunction(g2, functionsDomains.get(i), functionsValues.get(i), true);
+            }
+        }
+
+    }
+
     public void fillLayers(Graphics2D g2) {
         PlotColors.resetColor();
-
-
         double[] domain = functionsDomains.get(0);
         double[] domainRev = MatrixOperations.getReversedArray(domain); // required by the way polygon is drawn in fillPoly()
         double[] twoDomains = MatrixOperations.concatenateVectors(domain, domainRev);//num of points in polygon is twice the domain length
@@ -161,20 +173,6 @@ public class LayeredCostPlot extends Plot {
                 polyY = MatrixOperations.concatenateVectors(topPolyY, bottomPolyY);
 
                 g2.fillPolygon(polyX, polyY, polyY.length);
-            }
-        }
-
-    }
-
-    @Override
-    public void drawAllFunctions(Graphics2D g2) {
-        plotPOI.resetDistanceAndVisibility();
-
-        if (functionsDomains.size() > 0) {
-            fillLayers(g2);
-            PlotColors.resetColor();
-            for (int i = functionsDomains.size() - 1; i >= 0; i--) {
-                drawFunction(g2, functionsDomains.get(i), functionsValues.get(i), true);
             }
         }
 
