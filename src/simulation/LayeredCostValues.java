@@ -1,10 +1,10 @@
 package simulation;
 
-public class LayeredCostValues {
+public class LayeredCostValues implements Cloneable{
 
-    private final double[] operationalCost;
-    private final double[] repairCost;
-    private final double[] inspectionsCost;
+    private double[] operationalCost;
+    private double[] repairCost;
+    private double[] inspectionsCost;
 
 
 
@@ -37,4 +37,17 @@ public class LayeredCostValues {
     public double[] getInspectionsCost() {
         return inspectionsCost;
     }
+
+
+    //creates deep copy of this object
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        LayeredCostValues cloned = (LayeredCostValues) super.clone();
+        cloned.operationalCost = this.operationalCost.clone();
+        cloned.repairCost = this.repairCost.clone();
+        cloned.inspectionsCost = this.inspectionsCost.clone();
+        return cloned;
+    }
+
+
 }

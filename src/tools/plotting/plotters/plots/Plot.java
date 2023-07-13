@@ -1,6 +1,7 @@
 package tools.plotting.plotters.plots;
 
 import settings.GraphicSettings;
+import simulation.Simulation;
 import tools.FunctionTools;
 import tools.Functions.Mathematics;
 import tools.plotting.DoublePoint;
@@ -229,7 +230,7 @@ public class Plot {
     }
 
 
-    public void addLayeredCostFunctionData(double[] simulationDomain, double[] operationalCost, String operational) {
+    public void addLayeredFunctionData(Simulation sim) throws CloneNotSupportedException {
     }
 
 

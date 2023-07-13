@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 
 import settings.InitialSettings;
 public class GridBagButton implements GridBagElement {
@@ -38,8 +37,12 @@ public class GridBagButton implements GridBagElement {
                     sim.simulate();
 
                    addSimulationDataToMainPlot(parentTabbedPanel, sim);
-                   addSimulationDataToLayeredCostPlot(parentTabbedPanel,sim);
-                   addSimulationDataToLayeredStatePlot(parentTabbedPanel,sim);
+                    try {
+                        addSimulationDataToLayeredCostPlot(parentTabbedPanel,sim);
+                        addSimulationDataToLayeredStatePlot(parentTabbedPanel,sim);
+                    } catch (CloneNotSupportedException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
                 });
                 button.addMouseListener(new MouseAdapter() {
@@ -52,27 +55,15 @@ public class GridBagButton implements GridBagElement {
         }
     }
 
-    private void addSimulationDataToLayeredCostPlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) {
-        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredCostFunctionData(Arrays.copyOf(sim.getSimulationDomain(),sim.getSimulationDomain().length),
-                Arrays.copyOf(sim.getLayeredCostValues().getOperationalCost(),sim.getLayeredCostValues().getOperationalCost().length),"Operational");
+    private void addSimulationDataToLayeredCostPlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) throws CloneNotSupportedException {
 
-        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredCostFunctionData(Arrays.copyOf(sim.getSimulationDomain(),sim.getSimulationDomain().length),
-                Arrays.copyOf(sim.getLayeredCostValues().getRepairCost(),sim.getLayeredCostValues().getRepairCost().length),"Repair");
 
-        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredCostFunctionData(Arrays.copyOf(sim.getSimulationDomain(),sim.getSimulationDomain().length),
-                Arrays.copyOf(sim.getLayeredCostValues().getInspectionsCost(),sim.getLayeredCostValues().getInspectionsCost().length),"Inspections");
-
-        //parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredCostFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getRepairCost(),"Repair");
-        //parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredCostFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getInspectionsCost(),"Inspections");
-
+        parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.addLayeredFunctionData(sim);
         parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.plot.updateFunctionValuesToStacked();
 
         parentTabbedPanel.layeredCostPlotTab.plotPanel.repaint();
-    }private void addSimulationDataToLayeredStatePlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) {
-        parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getOperationalCost());
-        parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getRepairCost());
-        parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getLayeredCostValues().getInspectionsCost());
-
+    }private void addSimulationDataToLayeredStatePlot(TabbedPlotPanel parentTabbedPanel, Simulation sim) throws CloneNotSupportedException {
+        parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.plot.addLayeredFunctionData(sim);
         parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.plot.updateFunctionValuesToStacked();
 
         parentTabbedPanel.layeredStatePlotTab.plotPanel.repaint();

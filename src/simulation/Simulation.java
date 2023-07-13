@@ -25,6 +25,8 @@ public class Simulation {
 
     private LayeredCostValues layeredCostValues;
 
+    private LayeredStateValues layeredStateValues;
+
     private static RandomGenerator randomGenerator = RandomGeneratorFactory.createRandomGenerator(new Random());
 
     public Simulation() {
@@ -110,19 +112,27 @@ public class Simulation {
         int intervalIndex = 0;
         while (currentInterval <= parameters.getMaxInterval()) {
 
-            double[] layeredSimulationResults = simulateForGivenInterval(currentInterval);
+            double[] layeredCostSimulationResults = simulateForGivenInterval(currentInterval);
 
-            simulationDomain[intervalIndex] = currentInterval;
-            overallCostValues[intervalIndex] = MatrixOperations.sum(layeredSimulationResults);
-
-            layeredCostValues.setOperationalCost(intervalIndex,layeredSimulationResults[0]);
-            layeredCostValues.setRepairCost(intervalIndex,layeredSimulationResults[1]);
-            layeredCostValues.setInspectionsCost(intervalIndex,layeredSimulationResults[2]);
+            updateMainSimulationData(currentInterval, intervalIndex, layeredCostSimulationResults);
+            updateLayeredCostSimulationData(intervalIndex, layeredCostSimulationResults);
 
             intervalIndex++;
             currentInterval += parameters.getStep();
         }
     }
+
+    private void updateLayeredCostSimulationData(int intervalIndex, double[] layeredCostSimulationResults) {
+        layeredCostValues.setOperationalCost(intervalIndex, layeredCostSimulationResults[0]);
+        layeredCostValues.setRepairCost(intervalIndex, layeredCostSimulationResults[1]);
+        layeredCostValues.setInspectionsCost(intervalIndex, layeredCostSimulationResults[2]);
+    }
+
+    private void updateMainSimulationData(int currentInterval, int intervalIndex, double[] layeredCostSimulationResults) {
+        simulationDomain[intervalIndex] = currentInterval;
+        overallCostValues[intervalIndex] = MatrixOperations.sum(layeredCostSimulationResults);
+    }
+
 
     private double[] simulateForGivenInterval(int currentInterval) {
         MatrixOperations.fillRow(randomData, currentInterval, parameters.getNumOfStates());

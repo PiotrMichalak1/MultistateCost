@@ -1,5 +1,7 @@
 package tools.plotting.plotters.plots;
 
+import simulation.LayeredCostValues;
+import simulation.Simulation;
 import tools.FunctionTools;
 import tools.Functions.Mathematics;
 import tools.Functions.MatrixOperations;
@@ -18,10 +20,35 @@ public class LayeredCostPlot extends Plot {
         super(layeredCostPlotter);
     }
 
-    public void addLayeredCostFunctionData(double[] domain, double[] codomain, String label) {
-        functionsDomains.add(domain);
-        functionsValues.add(codomain);
-        legendStrings.add(label);
+    //adds operational, repair, and inspection cost data to functionDomains and functionValues in plot
+    public void addLayeredFunctionData(Simulation sim) throws CloneNotSupportedException {
+        double[] domain = sim.getSimulationDomain();
+        LayeredCostValues lcv = (LayeredCostValues) sim.getLayeredCostValues().clone();
+
+        String label;
+        double[] values;
+        for (int i = 0; i < 3; i++) {
+            switch (i) {
+                case 0 -> {
+                    values = lcv.getOperationalCost();
+                    label = "Operational";
+                }
+                case 1 -> {
+                    values = lcv.getRepairCost();
+                    label = "Repair";
+                }
+                case 2 -> {
+                    values = lcv.getInspectionsCost();
+                    label = "Inspections";
+                }
+                default -> throw new RuntimeException("Unrecognised type of cost");
+            }
+            functionsDomains.add(domain);
+            functionsValues.add(values);
+            legendStrings.add(label);
+        }
+
+
     }
 
 
@@ -118,7 +145,7 @@ public class LayeredCostPlot extends Plot {
 
         double[] domain = functionsDomains.get(0);
         double[] domainRev = MatrixOperations.getReversedArray(domain); // required by the way polygon is drawn in fillPoly()
-        double[] twoDomains =MatrixOperations.concatenateVectors(domain,domainRev);//num of points in polygon is twice the domain length
+        double[] twoDomains = MatrixOperations.concatenateVectors(domain, domainRev);//num of points in polygon is twice the domain length
         int[] polyX = domainVectorToPixels(twoDomains); //X coordinates in all layers are the same
 
         int[] topPolyY = valuesVectorToPixels(functionsValues.get(0));
@@ -152,7 +179,7 @@ public class LayeredCostPlot extends Plot {
             fillLayers(g2);
             PlotColors.resetColor();
             for (int i = functionsDomains.size() - 1; i >= 0; i--) {
-                drawFunction(g2, functionsDomains.get(i), functionsValues.get(i),true);
+                drawFunction(g2, functionsDomains.get(i), functionsValues.get(i), true);
             }
         }
 
