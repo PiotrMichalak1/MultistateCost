@@ -1,20 +1,18 @@
 package tools.plotting.plotters.plots;
 
 import simulation.LayeredCostValues;
+import simulation.LayeredStateValues;
 import simulation.Simulation;
 import tools.Functions.Mathematics;
 import tools.plotting.plotters.MainPlotter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LayeredStatePlot extends Plot {
 
     public LayeredStatePlot(MainPlotter layeredStatePlotter) {
         super(layeredStatePlotter);
-    }
-
-    @Override
-    public void addFunctionData(double[] domain, double[] codomain) {
-        functionsDomains.add(domain);
-        functionsValues.add(codomain);
     }
 
     @Override
@@ -99,16 +97,11 @@ public class LayeredStatePlot extends Plot {
     @Override
     public void addLayeredFunctionData(Simulation sim) throws CloneNotSupportedException {
         double[] domain = sim.getSimulationDomain();
-        LayeredCostValues lcv = (LayeredCostValues) sim.getLayeredCostValues().clone();
-
+        LayeredStateValues lsv = (LayeredStateValues) sim.getLayeredStateValues().clone();
+        ArrayList<double[]> statePercentages = lsv.getStatePercentages();
         double[] values;
-        for (int i = 0; i < 3; i++) {
-            switch (i) {
-                case 0 -> values = lcv.getOperationalCost();
-                case 1 -> values = lcv.getRepairCost();
-                case 2 -> values = lcv.getInspectionsCost();
-                default -> throw new RuntimeException("Unrecognised state");
-            }
+        for (int i = 0; i < statePercentages.size(); i++) {
+            values = statePercentages.get(i);
             functionsDomains.add(domain);
             functionsValues.add(values);
         }

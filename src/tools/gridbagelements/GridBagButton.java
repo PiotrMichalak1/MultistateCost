@@ -27,7 +27,6 @@ public class GridBagButton implements GridBagElement {
                 button.addActionListener(e -> {
                     Simulation sim = Simulation.getInstance();
 
-                    test.initializeTestFunction();
                     if (!parameters.isHoldTheData()) {
                         parentTabbedPanel.costPlotTab.plotPanel.plotter.clearFunctionData();
                         parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.clearFunctionData();

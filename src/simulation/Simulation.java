@@ -1,7 +1,9 @@
 package simulation;
 
 
+
 import org.apache.commons.math3.distribution.WeibullDistribution;
+import org.apache.commons.math3.exception.NullArgumentException;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.RandomGeneratorFactory;
 import settings.Parameters;
@@ -9,6 +11,7 @@ import tools.Functions.Mathematics;
 import tools.Functions.MatrixOperations;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -27,7 +30,7 @@ public class Simulation {
 
     private LayeredStateValues layeredStateValues;
 
-    private static RandomGenerator randomGenerator = RandomGeneratorFactory.createRandomGenerator(new Random());
+    private static final RandomGenerator randomGenerator = RandomGeneratorFactory.createRandomGenerator(new Random());
 
     public Simulation() {
     }
@@ -113,34 +116,20 @@ public class Simulation {
         int intervalIndex = 0;
         while (currentInterval <= parameters.getMaxInterval()) {
 
-            double[] layeredCostSimulationResults = simulateForGivenInterval(currentInterval);
+            HashMap<String,double[]> simulationResults = simulateForGivenInterval(currentInterval);
 
-            updateMainSimulationData(currentInterval, intervalIndex, layeredCostSimulationResults);
-            updateLayeredCostSimulationData(intervalIndex, layeredCostSimulationResults);
+            updateMainSimulationData(currentInterval, intervalIndex, simulationResults.get("cost"));
+            updateLayeredCostSimulationData(intervalIndex, simulationResults.get("cost"));
+            updateLayeredStateSimulationData(intervalIndex,simulationResults.get("state"));
 
             intervalIndex++;
             currentInterval += parameters.getStep();
         }
     }
 
-    //takes operational, repair and inspection cost for a given interval and inserts this data into layeredCostValues
-    private void updateLayeredCostSimulationData(int intervalIndex, double[] layeredCostSimulationResults) {
-        layeredCostValues.setOperationalCost(intervalIndex, layeredCostSimulationResults[0]);
-        layeredCostValues.setRepairCost(intervalIndex, layeredCostSimulationResults[1]);
-        layeredCostValues.setInspectionsCost(intervalIndex, layeredCostSimulationResults[2]);
-    }
+    //Returns HashMap containing {overallCost}, {Operational, Repair, Inspections}, {State Percentage Shares []}
 
-    private void updateLayeredStateSimulationData(int intervalIndex, double[] layeredStateSimulationResults){
-        layeredStateValues.updateData(intervalIndex,layeredStateSimulationResults);
-    }
-
-    private void updateMainSimulationData(int currentInterval, int intervalIndex, double[] layeredCostSimulationResults) {
-        simulationDomain[intervalIndex] = currentInterval;
-        overallCostValues[intervalIndex] = MatrixOperations.sum(layeredCostSimulationResults);
-    }
-
-
-    private double[] simulateForGivenInterval(int currentInterval) {
+    private HashMap<String,double[]> simulateForGivenInterval(int currentInterval) {
         MatrixOperations.fillRow(randomData, currentInterval, parameters.getNumOfStates());
         double[][] lifeSpans = new double[parameters.getNumOfStates() + 1][parameters.getProdCycles()];
 
@@ -173,7 +162,7 @@ public class Simulation {
                             if (timeToEm <= 0.0) {
                                 repairCost += parameters.getRepairCost(state, parameters.getInspectionObjectives(state)) +
                                         parameters.getStaticCost(parameters.getNumOfStates()) * parameters.getRepairDuration(state, parameters.getInspectionObjectives(state))+
-                                parameters.getEmEmergencyCost();
+                                        parameters.getEmEmergencyCost();
                                 timeShift = lastSeenValues + parameters.getEmDelay();
                                 lastSeenValues = parameters.getRepairDuration(state, parameters.getInspectionObjectives(state));
                                 startingState = parameters.getInspectionObjectives(state);
@@ -223,19 +212,56 @@ public class Simulation {
 
         Double[] v = Arrays.stream(parameters.getStaticCostVector()).boxed().toArray(Double[]::new);
         double[] concatenated = MatrixOperations.concatenateVectors(v, new Integer[]{0});
-        MatrixOperations.multiplyMatrixRowsByVector(lifeSpans, concatenated);
+        double[][] lifeSpansMultiplied = MatrixOperations.multiplyMatrixRowsByVector(lifeSpans, concatenated);
 
 
-        double operationalCost = MatrixOperations.sum(lifeSpans);
+        double operationalCost = MatrixOperations.sum(lifeSpansMultiplied);
 
         //normalization of costs in time
         operationalCost = operationalCost/overallTime;
         repairCost = repairCost/overallTime;
         inspectionCost =inspectionCost/overallTime;
 
-        double[] result = {operationalCost,repairCost,inspectionCost};
+        HashMap<String,double[]> result = new HashMap<>();
+        double[] layeredCostSimulationResult = {operationalCost,repairCost,inspectionCost};
+        double[] layeredStateSimulationResult = getStatePercentage(lifeSpans,overallTime);
+        result.put("cost",layeredCostSimulationResult);
+        result.put("state", layeredStateSimulationResult);
 
         return result;
+    }
+    //takes operational, repair and inspection cost for a given interval and inserts this data into layeredCostValues
+
+    private void updateLayeredCostSimulationData(int intervalIndex, double[] layeredCostSimulationResults) {
+        layeredCostValues.setOperationalCost(intervalIndex, layeredCostSimulationResults[0]);
+        layeredCostValues.setRepairCost(intervalIndex, layeredCostSimulationResults[1]);
+        layeredCostValues.setInspectionsCost(intervalIndex, layeredCostSimulationResults[2]);
+    }
+
+    private void updateLayeredStateSimulationData(int intervalIndex, double[] layeredStateSimulationResults){
+        layeredStateValues.updateData(intervalIndex,layeredStateSimulationResults);
+    }
+
+    private void updateMainSimulationData(int currentInterval, int intervalIndex, double[] layeredCostSimulationResults) {
+        simulationDomain[intervalIndex] = currentInterval;
+        overallCostValues[intervalIndex] = MatrixOperations.sum(layeredCostSimulationResults);
+    }
+
+
+
+    //Given matrix of times being in certain state in certain cycle (lifeSpans), and overallTime of simulation
+    //Returns double[] vector of percentage share of sums of rows in a whole sum.
+    private double[] getStatePercentage(double[][] lifeSpans, double overallTime) {
+        if (overallTime <= 0) throw new IllegalArgumentException("Overall time must be positive.");
+        if (lifeSpans == null) System.out.println("Life Spans matrix cannot be null");
+
+        assert lifeSpans != null;
+        double[] statePercentages = new double[lifeSpans[0].length]; // 5 values in array representing percentage time that system is in state 1,...,n-th,repair
+        for (int state = 1; state <= lifeSpans.length; state++) {
+            statePercentages[state-1] = (MatrixOperations.sumRow(lifeSpans, state-1)/overallTime)*100;
+        }
+
+        return statePercentages;
     }
 
     private boolean isEmergencyCalled(int state, int startingState, int currentInterval, double lastSeenValues) {
@@ -272,5 +298,8 @@ public class Simulation {
 
     public LayeredCostValues getLayeredCostValues() {
         return layeredCostValues;
+    }
+
+    public LayeredStateValues getLayeredStateValues() {return  layeredStateValues;
     }
 }

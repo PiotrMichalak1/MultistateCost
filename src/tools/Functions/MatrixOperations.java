@@ -14,6 +14,7 @@ public class MatrixOperations {
         }
     }
 
+    //sums all elements of an array
     public static double sum(double[][] array) {
         double sum1 = 0;
         for (double[] arr : array)
@@ -23,27 +24,38 @@ public class MatrixOperations {
         return sum1;
     }
 
+    //returns sum of all elements in a given row of an array
+    public static double sumRow(double[][] array, int row) {
+        double sum = 0.0;
+        for (int i = 0; i < array[row].length; i++) {
+            sum += array[row][i];
+        }
+        return sum;
+    }
+
     public static double sum(double[] vector) {
         double sum1 = 0;
         for (double item : vector)
-                sum1 += item;
+            sum1 += item;
 
         return sum1;
     }
 
-    public static void multiplyMatrixRowsByVector(double[][] matrix, double[] vector) {
+    //multiplies each row of matrix by corresponding value of vector
+    public static double[][] multiplyMatrixRowsByVector(double[][] matrix, double[] vector) {
         int nRow = vector.length;
+        double[][] multipliedMatrix = new double[matrix.length][matrix[0].length];
 
         if (nRow == matrix.length) {
             int nCol = matrix[0].length;
             for (int row = 0; row < nRow; row++) {
                 for (int col = 0; col < nCol; col++) {
-                    matrix[row][col] = matrix[row][col] * vector[row];
+                    multipliedMatrix[row][col] = matrix[row][col] * vector[row];
                 }
             }
         } else
             throw new IllegalArgumentException("Number of rows is " + matrix.length + " number of vector elements is: " + vector.length + ". these numbers should be equal");
-
+        return multipliedMatrix;
     }
 
     public static <T extends Number> double[] concatenateVectors(T[]... vectors) {
@@ -63,14 +75,14 @@ public class MatrixOperations {
     }
 
     //concatenate given amount of vectors of double values
-    public static double[] concatenateVectors(double[]... vectors){
+    public static double[] concatenateVectors(double[]... vectors) {
         int length = 0;
         for (double[] vector : vectors) {
             length += vector.length;
         }
         double[] result = new double[length];
         int index = 0;
-        for (double[] vector : vectors){
+        for (double[] vector : vectors) {
             for (double val : vector) {
                 result[index] = val;
                 index++;
@@ -80,14 +92,14 @@ public class MatrixOperations {
     }
 
     //concatenate given amount of vectors of int values
-    public static int[] concatenateVectors(int[]... vectors){
+    public static int[] concatenateVectors(int[]... vectors) {
         int length = 0;
         for (int[] vector : vectors) {
             length += vector.length;
         }
         int[] result = new int[length];
         int index = 0;
-        for (int[] vector : vectors){
+        for (int[] vector : vectors) {
             for (int val : vector) {
                 result[index] = val;
                 index++;
