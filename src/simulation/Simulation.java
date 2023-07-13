@@ -50,6 +50,7 @@ public class Simulation {
         simulationDomain = new double[(parameters.getMaxInterval() - parameters.getMinInterval()) / parameters.getStep() + 1];
         overallCostValues = new double[simulationDomain.length];
         layeredCostValues = new LayeredCostValues(simulationDomain.length);
+        layeredStateValues = new LayeredStateValues(simulationDomain.length);
     }
 
     private void createRandomData(boolean isShockDegradation) {
@@ -122,10 +123,15 @@ public class Simulation {
         }
     }
 
+    //takes operational, repair and inspection cost for a given interval and inserts this data into layeredCostValues
     private void updateLayeredCostSimulationData(int intervalIndex, double[] layeredCostSimulationResults) {
         layeredCostValues.setOperationalCost(intervalIndex, layeredCostSimulationResults[0]);
         layeredCostValues.setRepairCost(intervalIndex, layeredCostSimulationResults[1]);
         layeredCostValues.setInspectionsCost(intervalIndex, layeredCostSimulationResults[2]);
+    }
+
+    private void updateLayeredStateSimulationData(int intervalIndex, double[] layeredStateSimulationResults){
+        layeredStateValues.updateData(intervalIndex,layeredStateSimulationResults);
     }
 
     private void updateMainSimulationData(int currentInterval, int intervalIndex, double[] layeredCostSimulationResults) {

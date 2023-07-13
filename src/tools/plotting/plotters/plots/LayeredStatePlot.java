@@ -21,12 +21,7 @@ public class LayeredStatePlot extends Plot {
     public void updateFunctionValuesToStacked() {
         for (int stack = 1; stack < functionsValues.size(); stack++) {
             for (int index = 0; index < functionsValues.get(stack).length; index++) {
-                double stackedValue;
-                stackedValue = functionsValues.get(stack)[index];
-
-                stackedValue += functionsValues.get(stack - 1)[index];
-
-                functionsValues.get(stack)[index] = stackedValue;
+                functionsValues.get(stack)[index] += functionsValues.get(stack - 1)[index];
             }
 
         }
