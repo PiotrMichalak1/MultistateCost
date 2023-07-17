@@ -1,12 +1,12 @@
-package panels.simulationsubpanels.tabbedPanels.costplot;
+package panels.tabs.sharedpanels;
 
-import panels.mainpanels.TabbedPlotPanel;
+import panels.mainpanels.TabsPanel;
 import settings.InitialSettings;
 import settings.Parameters;
-import tools.gridbagelements.GridBagButton;
-import tools.gridbagelements.GridBagCheckbox;
+import tools.gridbagelements.GridBagButtonFactory;
+import tools.gridbagelements.GridBagCheckboxFactory;
 import tools.gridbagelements.GridBagLabel;
-import tools.gridbagelements.GridBagSpinner;
+import tools.gridbagelements.GridBagSpinnerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,18 +17,18 @@ public class RunSimulationPanel extends JPanel {
     private Parameters parameters = Parameters.getInstance();
 
     private final GridBagLabel bagLabel;
-    private final GridBagButton bagButton;
+    private final GridBagButtonFactory bagButton;
 
-    private final ArrayList<GridBagSpinner> GBspinners = new ArrayList<GridBagSpinner>();
+    private final ArrayList<GridBagSpinnerFactory> GBspinners = new ArrayList<GridBagSpinnerFactory>();
 
-    private final GridBagCheckbox holdTheDataCB = new GridBagCheckbox(InitialSettings.HOLD_THE_DATA);
+    private final GridBagCheckboxFactory holdTheDataCB = new GridBagCheckboxFactory(InitialSettings.HOLD_THE_DATA);
 
     RunMultipleTimesPanel runMultipleTimesPanel = new RunMultipleTimesPanel();
 
 
-    public RunSimulationPanel(TabbedPlotPanel parentTabbedPanel) {
+    public RunSimulationPanel(TabsPanel parentTabbedPanel) {
         bagLabel = new GridBagLabel();
-        bagButton = new GridBagButton(InitialSettings.SIMULATE_BUTTON,parentTabbedPanel);
+        bagButton = new GridBagButtonFactory(InitialSettings.SIMULATE_BUTTON,parentTabbedPanel);
 
 
         initializeRunSimulationLabels();
@@ -44,16 +44,16 @@ public class RunSimulationPanel extends JPanel {
     }
 
     private void initializeRunSimulationSpinnersAndButtons() {
-        GridBagSpinner spinner = new GridBagSpinner(InitialSettings.PRODUCTION_CYCLES);
+        GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.PRODUCTION_CYCLES);
         spinner.putInGrid(this, "", 1, 0);
         GBspinners.add(spinner);
-        spinner = new GridBagSpinner(InitialSettings.MIN_INTERVAL);
+        spinner = new GridBagSpinnerFactory(InitialSettings.MIN_INTERVAL);
         spinner.putInGrid(this, "", 1, 1);
         GBspinners.add(spinner);
-        spinner = new GridBagSpinner(InitialSettings.MAX_INTERVAL);
+        spinner = new GridBagSpinnerFactory(InitialSettings.MAX_INTERVAL);
         spinner.putInGrid(this, "", 1, 2);
         GBspinners.add(spinner);
-        spinner = new GridBagSpinner(InitialSettings.STEP);
+        spinner = new GridBagSpinnerFactory(InitialSettings.STEP);
         spinner.putInGrid(this, "", 1, 3);
         GBspinners.add(spinner);
 
@@ -64,7 +64,7 @@ public class RunSimulationPanel extends JPanel {
 
     //reads value from Parameters singleton and updates the field.
     public void updateSpinnersAndCheckboxes() {
-        for (GridBagSpinner GBspinner: GBspinners) {
+        for (GridBagSpinnerFactory GBspinner: GBspinners) {
             GBspinner.getSpinner().setValue(parameters.getValueFromParameters(GBspinner.getType()));
         }
         holdTheDataCB.getInstanceOfCheckbox().setSelected(parameters.isHoldTheData());

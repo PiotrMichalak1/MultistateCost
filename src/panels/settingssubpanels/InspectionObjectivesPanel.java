@@ -2,7 +2,7 @@ package panels.settingssubpanels;
 
 import settings.InitialSettings;
 import tools.gridbagelements.GridBagLabel;
-import tools.gridbagelements.GridBagSpinner;
+import tools.gridbagelements.GridBagSpinnerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +33,7 @@ public class InspectionObjectivesPanel extends JPanel implements ISettingPanel {
 
     private void initializeInspectionObjectivesSpinners() {
         for (int stateNum = 2; stateNum <= InitialSettings.DEFAULT_NUM_OF_STATES; stateNum++) {
-            GridBagSpinner spinner = new GridBagSpinner(InitialSettings.INSPECTION_OBJECTIVES, stateNum);
+            GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.INSPECTION_OBJECTIVES, stateNum);
             spinner.putInGrid(this, "", stateNum - 1, 2);
         }
     }

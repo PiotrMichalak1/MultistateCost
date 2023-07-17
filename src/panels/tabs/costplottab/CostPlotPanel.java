@@ -1,4 +1,4 @@
-package panels.simulationsubpanels.tabbedPanels.costplot;
+package panels.tabs.costplottab;
 
 import tools.interfaces.IPlotPanel;
 import tools.plotting.plotters.MainPlotter;
@@ -7,15 +7,38 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainPlotPanel extends JPanel implements IPlotPanel {
+public class CostPlotPanel extends JPanel implements IPlotPanel {
     public MainPlotter plotter;
     private Point previousMousePosition;
 
     private final CostPlotTab parentTab;
 
-    public MainPlotPanel(CostPlotTab parentTab) {
+    public CostPlotPanel(CostPlotTab parentTab) {
         this.parentTab = parentTab;
         setPlotter();
+        initializeMouseControls();
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int width = getWidth() - plotter.getMargin() * 2;//width of drawing space
+        int height = getHeight() - plotter.getMargin() * 2;//height of drawing space
+
+        setPlottersSizes(width, height);
+
+        if (width > 0 && height > 0) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            setPlottersSizes(width, height);
+            plotter.drawMainPlot(g2);
+        }
+
+
+    }
+
+    private void initializeMouseControls() {
         ClickListener clickListener = new ClickListener();
         DragListener dragListener = new DragListener();
         WheelListener wheelListener = new WheelListener();
@@ -24,36 +47,8 @@ public class MainPlotPanel extends JPanel implements IPlotPanel {
         this.addMouseWheelListener(wheelListener);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int width = getWidth() - plotter.getMargin() * 2;
-        int height = getHeight() - plotter.getMargin() * 2;
-
-        setPlottersSize(width, height);
-
-        if (width > 0 && height > 0) {
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            setPlottersSize(width, height);
-            plotter.drawMainPlot(g2);
-
-        }
-
-
-    }
-
-    private void setPlottersSize(int width, int height) {
-        //main plot
-        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setWidth(Math.max(1, width));
-        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setHeight(Math.max(1, height));
-        //layered cost plot
-        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setWidth(Math.max(1, width));
-        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setHeight(Math.max(1, height));
-        //layered state plot
-        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setWidth(Math.max(1, width));
-        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setHeight(Math.max(1, height));
+    private void setPlottersSizes(int width, int height) {
+        parentTab.parentTabbedPanel.setPlottersSizes(width,height);
     }
 
     @Override

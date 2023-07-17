@@ -9,7 +9,7 @@ import javax.swing.text.NumberFormatter;
 import java.awt.*;
 
 
-public class GridBagSpinner implements IGridBagElement {
+public class GridBagSpinnerFactory implements IGridBagElement {
     Parameters parameters = Parameters.getInstance();
     JSpinner spinner;
 
@@ -17,7 +17,7 @@ public class GridBagSpinner implements IGridBagElement {
 
     Number lastValid;
 
-    public GridBagSpinner(int type, int fromState, int toState) {
+    public GridBagSpinnerFactory(int type, int fromState, int toState) {
         this.type = type;
         spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type, fromState, toState),
                 0,
@@ -40,7 +40,7 @@ public class GridBagSpinner implements IGridBagElement {
         });
     }
 
-    public GridBagSpinner(int type, int state) {
+    public GridBagSpinnerFactory(int type, int state) {
 
         this.type = type;
 
@@ -119,7 +119,7 @@ public class GridBagSpinner implements IGridBagElement {
 
     }
 
-    public GridBagSpinner(int type) {
+    public GridBagSpinnerFactory(int type) {
 
         this.type = type;
 
@@ -217,7 +217,7 @@ public class GridBagSpinner implements IGridBagElement {
                 });
             }
             default -> throw new IllegalStateException(
-                    "GridBagSpinner type mismatch");
+                    "GridBagSpinnerFactory type mismatch");
 
 
         }

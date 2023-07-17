@@ -6,12 +6,12 @@ import settings.Parameters;
 import javax.swing.*;
 import java.awt.*;
 
-public class GridBagCheckbox implements IGridBagElement {
+public class GridBagCheckboxFactory implements IGridBagElement {
     Parameters parameters = Parameters.getInstance();
     JCheckBox checkBox;
 
 
-    public GridBagCheckbox(int type) {
+    public GridBagCheckboxFactory(int type) {
         checkBox = new JCheckBox();
         checkBox.setFocusable(false);
         switch (type) {

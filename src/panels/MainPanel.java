@@ -1,7 +1,7 @@
 package panels;
 
 import panels.mainpanels.SettingsPanel;
-import panels.mainpanels.TabbedPlotPanel;
+import panels.mainpanels.TabsPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,12 +25,12 @@ public class MainPanel extends JPanel {
         this.add(settingsPanel, c);
 
         c.fill = GridBagConstraints.BOTH;
-        TabbedPlotPanel tabbedPlotPanel = new TabbedPlotPanel();
+        TabsPanel tabsPanel = new TabsPanel();
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = 1;
         c.gridy = 0;
-        this.add(tabbedPlotPanel, c);
+        this.add(tabsPanel, c);
 
     }
 

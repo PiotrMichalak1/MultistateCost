@@ -1,9 +1,8 @@
 package panels.settingssubpanels;
 
 import settings.InitialSettings;
-import settings.Parameters;
 import tools.gridbagelements.GridBagLabel;
-import tools.gridbagelements.GridBagSpinner;
+import tools.gridbagelements.GridBagSpinnerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,21 +42,21 @@ public class StateRelatedParameters extends JPanel implements ISettingPanel {
 
     private void initializeStaticCostSpinners() {
         for (int state = 1; state <= InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
-            GridBagSpinner spinner = new GridBagSpinner(InitialSettings.STATIC_COST, state);
+            GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.STATIC_COST, state);
             spinner.putInGrid(this, "", state, 2);
         }
     }
 
     private void initializeWeibullScaleSpinners() {
         for (int state = 1; state < InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
-            GridBagSpinner spinner = new GridBagSpinner(InitialSettings.WEIBULL_SCALE, state);
+            GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.WEIBULL_SCALE, state);
             spinner.putInGrid(this, "", state, 3);
         }
     }
 
     private void initializeWeibullShapeSpinners() {
         for (int state = 1; state < InitialSettings.DEFAULT_NUM_OF_STATES; state++) {
-            GridBagSpinner spinner = new GridBagSpinner(InitialSettings.WEIBULL_SHAPE, state);
+            GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.WEIBULL_SHAPE, state);
             spinner.putInGrid(this, "", state, 4);
         }
     }
