@@ -2,7 +2,7 @@ package tools.plotting.plotters.coordsys;
 
 import settings.GraphicSettings;
 import settings.InitialSettings;
-import tools.Functions.Mathematics;
+import tools.functions.Mathematics;
 
 import java.awt.*;
 

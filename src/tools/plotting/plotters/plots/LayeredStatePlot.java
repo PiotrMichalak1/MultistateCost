@@ -1,16 +1,14 @@
 package tools.plotting.plotters.plots;
 
-import simulation.LayeredCostValues;
 import simulation.LayeredStateValues;
 import simulation.Simulation;
-import tools.Functions.Mathematics;
-import tools.Functions.MatrixOperations;
+import tools.functions.Mathematics;
+import tools.functions.MatrixOperations;
 import tools.plotting.plotters.MainPlotter;
 import tools.plotting.plotters.plots.graphics.PlotColors;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LayeredStatePlot extends Plot {
 

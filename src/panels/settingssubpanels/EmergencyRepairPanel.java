@@ -9,7 +9,7 @@ import tools.gridbagelements.GridBagSpinner;
 import javax.swing.*;
 import java.awt.*;
 
-public class EmergencyRepairPanel extends JPanel {
+public class EmergencyRepairPanel extends JPanel implements ISettingPanel {
     Parameters parameters;
     GridBagLabel bagLabel;
 
@@ -49,20 +49,25 @@ public class EmergencyRepairPanel extends JPanel {
         delaySpinner.putInGrid(this, "", 1, 4);
         nextInspectionInSpinner.putInGrid(this, "", 1, 2);
 
-        delaySpinner.getInstanceOfSpinner().addChangeListener(e -> {
-            parameters.setValueInParameters(InitialSettings.EMERGENCY_DELAY,(int) delaySpinner.getInstanceOfSpinner().getValue());
+        delaySpinner.getSpinner().addChangeListener(e -> {
+            parameters.setValueInParameters(InitialSettings.EMERGENCY_DELAY,(int) delaySpinner.getSpinner().getValue());
             nextInspectionInSpinner.setModel(parameters.getEmNextInspectionIn(),parameters.getEmDelay(),1000,1);
             nextInspectionInSpinner.setToolTipText("Value Must be an integer value between "+ parameters.getEmDelay() +"and 1000");
-            System.out.println(delaySpinner.getInstanceOfSpinner().getValue());
+            System.out.println(delaySpinner.getSpinner().getValue());
         });
 
-        nextInspectionInSpinner.getInstanceOfSpinner().addChangeListener(e -> {
-            parameters.setValueInParameters(InitialSettings.NEXT_INSPECTION_IN,(int) nextInspectionInSpinner.getInstanceOfSpinner().getValue());
+        nextInspectionInSpinner.getSpinner().addChangeListener(e -> {
+            parameters.setValueInParameters(InitialSettings.NEXT_INSPECTION_IN,(int) nextInspectionInSpinner.getSpinner().getValue());
             delaySpinner.setModel(parameters.getEmDelay(),0,parameters.getEmNextInspectionIn(),1);
             delaySpinner.setToolTipText("Value Must be an integer value between 0 and "+ parameters.getEmNextInspectionIn());
-            System.out.println(nextInspectionInSpinner.getInstanceOfSpinner().getValue());
+            System.out.println(nextInspectionInSpinner.getSpinner().getValue());
         });
 
+    }
+
+    @Override
+    public JPanel getPanel() {
+        return this;
     }
 }
 

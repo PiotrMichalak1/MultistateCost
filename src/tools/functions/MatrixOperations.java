@@ -1,4 +1,4 @@
-package tools.Functions;
+package tools.functions;
 
 public class MatrixOperations {
 

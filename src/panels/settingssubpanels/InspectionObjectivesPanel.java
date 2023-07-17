@@ -8,7 +8,7 @@ import tools.gridbagelements.GridBagSpinner;
 import javax.swing.*;
 import java.awt.*;
 
-public class InspectionObjectivesPanel extends JPanel {
+public class InspectionObjectivesPanel extends JPanel implements ISettingPanel {
     Parameters parameters;
     GridBagLabel bagLabel;
     public InspectionObjectivesPanel(){
@@ -40,5 +40,9 @@ public class InspectionObjectivesPanel extends JPanel {
             GridBagSpinner spinner = new GridBagSpinner(InitialSettings.INSPECTION_OBJECTIVES,state);
             spinner.putInGrid(this,"",state-1,2);
         }
+    }
+
+    public JPanel getPanel() {
+        return this;
     }
 }

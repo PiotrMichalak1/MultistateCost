@@ -1,12 +1,13 @@
 package tools.plotting.plotters;
 
+import tools.interfaces.IPlotter;
 import tools.plotting.plotters.coordsys.MainCoordinateSystem;
 import tools.plotting.plotters.plots.Plot;
 
 import java.awt.*;
 
 
-public class MainPlotter {
+public class MainPlotter implements IPlotter {
     public MainCoordinateSystem coordinateSystem;
     public Plot plot;
 
@@ -23,6 +24,7 @@ public class MainPlotter {
     }
 
 
+    @Override
     public void setPlot() {
         this.plot = new Plot(this);
     }

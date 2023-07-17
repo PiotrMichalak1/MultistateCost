@@ -1,7 +1,7 @@
 package tools.plotting;
 
 import settings.GraphicSettings;
-import tools.Functions.Mathematics;
+import tools.functions.Mathematics;
 
 import java.awt.*;
 

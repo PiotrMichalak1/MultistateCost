@@ -8,7 +8,7 @@ import tools.gridbagelements.GridBagSpinner;
 import javax.swing.*;
 import java.awt.*;
 
-public class RepairAndInspectionCost extends JPanel {
+public class RepairAndInspectionCost extends JPanel implements ISettingPanel {
     Parameters parameters;
     GridBagLabel bagLabel;
 
@@ -22,32 +22,36 @@ public class RepairAndInspectionCost extends JPanel {
     private void initializeRepairCostLabels() {
         this.setLayout(new GridBagLayout());
 
-        bagLabel.putInGrid(this,"Repair and Inspection Costs",0,0, InitialSettings.REPAIR_COST);
+        bagLabel.putInGrid(this, "Repair and Inspection Costs", 0, 0, InitialSettings.REPAIR_COST);
 
         for (int i = 1; i <= InitialSettings.DEFAULT_NUM_OF_STATES; i++) {
-            if(i==1){
-                bagLabel.putInGrid(this,"State",0,1);
-            }else {
-                bagLabel.putInGrid(this,""+i,i-1,1);
+            if (i == 1) {
+                bagLabel.putInGrid(this, "State", 0, 1);
+            } else {
+                bagLabel.putInGrid(this, "" + i, i - 1, 1);
             }
 
         }
 
         for (int i = 1; i < InitialSettings.DEFAULT_NUM_OF_STATES; i++) {
-            bagLabel.putInGrid(this,"to "+i,0,i+1);
+            bagLabel.putInGrid(this, "to " + i, 0, i + 1);
         }
-        bagLabel.putInGrid(this,"Inspection Cost",0,5);
+        bagLabel.putInGrid(this, "Inspection Cost", 0, 5);
 
     }
 
     public void initializeRepairCostSpinners() {
         for (int toState = 1; toState < InitialSettings.DEFAULT_NUM_OF_STATES; toState++) {
-            for (int fromState = toState+1; fromState<= InitialSettings.DEFAULT_NUM_OF_STATES; fromState++) {
-                GridBagSpinner spinner = new GridBagSpinner(InitialSettings.REPAIR_COST,fromState,toState);
-                spinner.putInGrid(this,"",fromState-1,toState+1);
+            for (int fromState = toState + 1; fromState <= InitialSettings.DEFAULT_NUM_OF_STATES; fromState++) {
+                GridBagSpinner spinner = new GridBagSpinner(InitialSettings.REPAIR_COST, fromState, toState);
+                spinner.putInGrid(this, "", fromState - 1, toState + 1);
             }
         }
         GridBagSpinner spinner = new GridBagSpinner(InitialSettings.INSPECTION_COST, InitialSettings.INSPECTION_COST);
-        spinner.putInGrid(this,"",1,5);
+        spinner.putInGrid(this, "", 1, 5);
+    }
+
+    public JPanel getPanel() {
+        return this;
     }
 }

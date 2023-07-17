@@ -65,7 +65,7 @@ public class RunSimulationPanel extends JPanel {
     //reads value from Parameters singleton and updates the field.
     public void updateSpinnersAndCheckboxes() {
         for (GridBagSpinner GBspinner: GBspinners) {
-            GBspinner.getInstanceOfSpinner().setValue(parameters.getValueFromParameters(GBspinner.getType()));
+            GBspinner.getSpinner().setValue(parameters.getValueFromParameters(GBspinner.getType()));
         }
         holdTheDataCB.getInstanceOfCheckbox().setSelected(parameters.isHoldTheData());
         runMultipleTimesPanel.updateSpinnersAndCheckboxes();

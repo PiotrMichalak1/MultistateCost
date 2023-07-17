@@ -1,16 +1,17 @@
 package panels.simulationsubpanels.tabbedPanels.costplot;
 
+import tools.interfaces.IPlotPanel;
 import tools.plotting.plotters.MainPlotter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainPlotPanel extends JPanel{
+public class MainPlotPanel extends JPanel implements IPlotPanel {
     public MainPlotter plotter;
     private Point previousMousePosition;
 
-    private CostPlotTab parentTab;
+    private final CostPlotTab parentTab;
 
     public MainPlotPanel(CostPlotTab parentTab) {
         this.parentTab = parentTab;
@@ -22,19 +23,20 @@ public class MainPlotPanel extends JPanel{
         this.addMouseMotionListener(dragListener);
         this.addMouseWheelListener(wheelListener);
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int width = getWidth()- plotter.getMargin()*2;
-        int height = getHeight()- plotter.getMargin()*2;
+        int width = getWidth() - plotter.getMargin() * 2;
+        int height = getHeight() - plotter.getMargin() * 2;
 
-        setPlottersSize(width,height);
+        setPlottersSize(width, height);
 
-        if(width > 0 && height> 0){
+        if (width > 0 && height > 0) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-            setPlottersSize(width,height);
+            setPlottersSize(width, height);
             plotter.drawMainPlot(g2);
 
         }
@@ -42,39 +44,35 @@ public class MainPlotPanel extends JPanel{
 
     }
 
-    private void setPlottersSize(int width, int height){
+    private void setPlottersSize(int width, int height) {
         //main plot
-        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
-        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
+        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setWidth(Math.max(1, width));
+        parentTab.parentTabbedPanel.costPlotTab.plotPanel.plotter.setHeight(Math.max(1, height));
         //layered cost plot
-        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
-        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
+        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setWidth(Math.max(1, width));
+        parentTab.parentTabbedPanel.layeredCostPlotTab.plotPanel.plotter.setHeight(Math.max(1, height));
         //layered state plot
-        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setWidth(Math.max(1,width));
-        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setHeight(Math.max(1,height));
+        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setWidth(Math.max(1, width));
+        parentTab.parentTabbedPanel.layeredStatePlotTab.plotPanel.plotter.setHeight(Math.max(1, height));
     }
 
+    @Override
     public void setPlotter() {
         this.plotter = new MainPlotter();
     }
 
-
-
-
-
-
-
-    private boolean isMouseOnPlot(Point mousePosition){
+    private boolean isMouseOnPlot(Point mousePosition) {
         int margin = plotter.getMargin();
-        boolean horizontally = mousePosition.getX() >= margin && mousePosition.getX() <= getWidth() -margin;
-        boolean vertically = mousePosition.getY() >= margin && mousePosition.getY()<= getHeight()-margin;
+        boolean horizontally = mousePosition.getX() >= margin && mousePosition.getX() <= getWidth() - margin;
+        boolean vertically = mousePosition.getY() >= margin && mousePosition.getY() <= getHeight() - margin;
         return horizontally && vertically;
     }
+
     private class WheelListener implements MouseWheelListener {
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
             if (isMouseOnPlot(e.getPoint())) {
-                plotter.onMouseScroll(e.getPoint(),e.getWheelRotation(),getWidth()-2* plotter.getMargin(),getHeight()-2* plotter.getMargin());
+                plotter.onMouseScroll(e.getPoint(), e.getWheelRotation(), getWidth() - 2 * plotter.getMargin(), getHeight() - 2 * plotter.getMargin());
                 repaint();
             }
         }
@@ -92,8 +90,8 @@ public class MainPlotPanel extends JPanel{
         public void mouseDragged(MouseEvent event) {
             Point currentMousePosition = event.getPoint();
             plotter.dragPlot(
-                    (int)(currentMousePosition.getX()-previousMousePosition.getX()),
-                    (int)(currentMousePosition.getY()-previousMousePosition.getY())
+                    (int) (currentMousePosition.getX() - previousMousePosition.getX()),
+                    (int) (currentMousePosition.getY() - previousMousePosition.getY())
             );
             previousMousePosition = currentMousePosition;
             plotter.onMouseMovement(event.getPoint());

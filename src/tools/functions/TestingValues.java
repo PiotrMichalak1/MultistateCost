@@ -1,4 +1,4 @@
-package tools.Functions;
+package tools.functions;
 
 import settings.Parameters;
 

@@ -3,16 +3,13 @@ package tools.gridbagelements;
 import settings.GraphicSettings;
 import settings.InitialSettings;
 import settings.Parameters;
-import tools.interfaces.GridBagElement;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 
-public class GridBagSpinner implements GridBagElement {
+public class GridBagSpinner implements IGridBagElement {
     Parameters parameters = Parameters.getInstance();
     JSpinner spinner;
 
@@ -275,7 +272,7 @@ public class GridBagSpinner implements GridBagElement {
         return type;
     }
 
-    public JSpinner getInstanceOfSpinner() {
+    public JSpinner getSpinner() {
         return spinner;
     }
 

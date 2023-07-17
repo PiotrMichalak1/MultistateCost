@@ -42,7 +42,7 @@ public class RunMultipleTimesPanel extends JPanel {
     }
 
     public void updateSpinnersAndCheckboxes() {
-        runMultipleTimesSP.getInstanceOfSpinner().setValue(parameters.getRunMultipleTimesNum());
+        runMultipleTimesSP.getSpinner().setValue(parameters.getRunMultipleTimesNum());
         runMultipleTimesCB.getInstanceOfCheckbox().setSelected(parameters.isRunMultipleTimes());
     }
 }

@@ -1,8 +1,9 @@
-package tools.Functions;
+package tools.functions;
 
 import java.awt.*;
 
 public class Mathematics {
+    @SuppressWarnings("unused")
     public static double roundDownToTheNearestMultiple(double number, double multiple) {
         multiple = Math.abs(multiple);
         double roundedNumber = 0;

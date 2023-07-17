@@ -3,7 +3,7 @@ package tools.plotting.plotters.plots;
 import settings.GraphicSettings;
 import simulation.Simulation;
 import tools.FunctionTools;
-import tools.Functions.Mathematics;
+import tools.functions.Mathematics;
 import tools.plotting.DoublePoint;
 import tools.plotting.PlotPointOfInterest;
 import tools.plotting.plotters.MainPlotter;

@@ -3,15 +3,15 @@ package tools.gridbagelements;
 import panels.mainpanels.TabbedPlotPanel;
 import settings.Parameters;
 import simulation.Simulation;
-import tools.Functions.TestingValues;
-import tools.interfaces.GridBagElement;
+import tools.functions.TestingValues;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import settings.InitialSettings;
-public class GridBagButton implements GridBagElement {
+public class GridBagButton implements IGridBagElement {
     JButton button;
 
     TestingValues test = new TestingValues();

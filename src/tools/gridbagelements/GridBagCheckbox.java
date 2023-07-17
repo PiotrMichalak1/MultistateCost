@@ -2,12 +2,11 @@ package tools.gridbagelements;
 
 import settings.InitialSettings;
 import settings.Parameters;
-import tools.interfaces.GridBagElement;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GridBagCheckbox implements GridBagElement {
+public class GridBagCheckbox implements IGridBagElement {
     Parameters parameters = Parameters.getInstance();
     JCheckBox checkBox;
 

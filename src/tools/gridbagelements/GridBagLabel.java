@@ -1,12 +1,11 @@
 package tools.gridbagelements;
 
 import settings.InitialSettings;
-import tools.interfaces.GridBagElement;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GridBagLabel extends JLabel implements GridBagElement {
+public class GridBagLabel extends JLabel implements IGridBagElement {
     @Override
     public void putInGrid(JComponent parent, String text, int bagX, int bagY) {
         GridBagConstraints c = new GridBagConstraints();
