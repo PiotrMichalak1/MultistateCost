@@ -9,17 +9,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RepairDurationPanel extends JPanel implements ISettingPanel {
-    Parameters parameters;
-    GridBagLabel bagLabel;
+
 
     public RepairDurationPanel() {
-        parameters = Parameters.getInstance();
-        bagLabel = new GridBagLabel();
         initializeRepairDurationLabels();
         initializeRepairDurationSpinners();
     }
 
     private void initializeRepairDurationLabels() {
+        GridBagLabel bagLabel= new GridBagLabel();
+
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 

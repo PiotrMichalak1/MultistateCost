@@ -30,7 +30,6 @@ public class SettingsPanel extends JPanel {
                 emergencyRepairPanel);
     }
     private void addWeightedPanes(){
-
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = setGridBagConstraints();
 

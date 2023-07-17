@@ -9,12 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StateRelatedParameters extends JPanel implements ISettingPanel {
-    Parameters parameters;
-    GridBagLabel bagLabel;
+
 
     public StateRelatedParameters() {
-        parameters = Parameters.getInstance();
-        bagLabel = new GridBagLabel();
         initializeOtherPropertiesLabels();
         initializeStaticCostSpinners();
         initializeWeibullScaleSpinners();
@@ -22,6 +19,7 @@ public class StateRelatedParameters extends JPanel implements ISettingPanel {
     }
 
     private void initializeOtherPropertiesLabels() {
+        GridBagLabel bagLabel= new GridBagLabel();
         this.setLayout(new GridBagLayout());
 
         bagLabel.putInGrid(this, "State-Related Parameters ", 0, 0, InitialSettings.STATE_RELATED_PROPERTIES);

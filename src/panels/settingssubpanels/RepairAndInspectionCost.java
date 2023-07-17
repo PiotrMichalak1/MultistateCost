@@ -1,7 +1,6 @@
 package panels.settingssubpanels;
 
 import settings.InitialSettings;
-import settings.Parameters;
 import tools.gridbagelements.GridBagLabel;
 import tools.gridbagelements.GridBagSpinner;
 
@@ -9,17 +8,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RepairAndInspectionCost extends JPanel implements ISettingPanel {
-    Parameters parameters;
-    GridBagLabel bagLabel;
+
 
     public RepairAndInspectionCost() {
-        parameters = Parameters.getInstance();
-        bagLabel = new GridBagLabel();
         initializeRepairCostLabels();
         initializeRepairCostSpinners();
     }
 
     private void initializeRepairCostLabels() {
+        GridBagLabel bagLabel = new GridBagLabel();
         this.setLayout(new GridBagLayout());
 
         bagLabel.putInGrid(this, "Repair and Inspection Costs", 0, 0, InitialSettings.REPAIR_COST);
