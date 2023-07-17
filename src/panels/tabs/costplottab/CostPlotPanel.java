@@ -1,20 +1,21 @@
 package panels.tabs.costplottab;
 
+import panels.mainpanels.TabsPanel;
 import tools.interfaces.IPlotPanel;
-import tools.plotting.plotters.MainPlotter;
+import tools.plotting.plotters.Plotter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class CostPlotPanel extends JPanel implements IPlotPanel {
-    public MainPlotter plotter;
+    public Plotter plotter;
     private Point previousMousePosition;
 
-    private final CostPlotTab parentTab;
+    private final TabsPanel parentTabbedPanel;
 
-    public CostPlotPanel(CostPlotTab parentTab) {
-        this.parentTab = parentTab;
+    public CostPlotPanel(TabsPanel parentTab) {
+        this.parentTabbedPanel = parentTab;
         setPlotter();
         initializeMouseControls();
     }
@@ -32,9 +33,8 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             setPlottersSizes(width, height);
-            plotter.drawMainPlot(g2);
+            plotter.drawPlot(g2);
         }
-
 
     }
 
@@ -48,12 +48,12 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
     }
 
     private void setPlottersSizes(int width, int height) {
-        parentTab.parentTabbedPanel.setPlottersSizes(width,height);
+        parentTabbedPanel.setPlottersSizes(width,height);
     }
 
     @Override
     public void setPlotter() {
-        this.plotter = new MainPlotter();
+        this.plotter = new Plotter();
     }
 
     private boolean isMouseOnPlot(Point mousePosition) {

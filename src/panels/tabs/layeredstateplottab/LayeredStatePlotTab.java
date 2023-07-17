@@ -11,7 +11,7 @@ public class LayeredStatePlotTab extends CostPlotTab implements ITab {
     }
     @Override
     public void setPlotPanel(){
-        this.plotPanel = new LayeredStatePlotPanel(this);
+        this.plotPanel = new LayeredStatePlotPanel(parentTabbedPanel);
     }
 
     @Override

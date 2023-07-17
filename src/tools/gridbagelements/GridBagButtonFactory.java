@@ -18,7 +18,7 @@ public class GridBagButtonFactory implements IGridBagElement {
         button = new JButton();
 
         switch (type) {
-            case InitialSettings.SIMULATE_BUTTON ->{
+            case InitialSettings.SIMULATE_BUTTON ->
                 button.addActionListener(e -> {
                     Simulation sim = Simulation.getInstance();
                     sim.simulate();
@@ -33,13 +33,7 @@ public class GridBagButtonFactory implements IGridBagElement {
                     parentTabbedPanel.repaintAllPlots();
 
                 });
-                button.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        button.requestFocusInWindow(); // Request focus when the button is pressed
-                    }
-                });
-            }
+
         }
     }
 

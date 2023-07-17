@@ -5,7 +5,7 @@ import simulation.Simulation;
 import tools.FunctionTools;
 import tools.functions.Mathematics;
 import tools.functions.MatrixOperations;
-import tools.plotting.plotters.MainPlotter;
+import tools.plotting.plotters.Plotter;
 import tools.plotting.plotters.plots.graphics.PlotColors;
 
 import java.awt.*;
@@ -16,7 +16,7 @@ public class LayeredCostPlot extends Plot {
 
     private ArrayList<String> legendStrings = new ArrayList<>();
 
-    public LayeredCostPlot(MainPlotter layeredCostPlotter) {
+    public LayeredCostPlot(Plotter layeredCostPlotter) {
         super(layeredCostPlotter);
     }
 

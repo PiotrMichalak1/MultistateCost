@@ -4,7 +4,7 @@ import tools.interfaces.IPlotter;
 import tools.plotting.plotters.plots.LayeredCostPlot;
 
 
-public class LayeredCostPlotter extends MainPlotter implements IPlotter {
+public class LayeredCostPlotter extends Plotter implements IPlotter {
 
     @Override
     public void setPlot() {

@@ -6,7 +6,7 @@ import tools.FunctionTools;
 import tools.functions.Mathematics;
 import tools.plotting.DoublePoint;
 import tools.plotting.PlotPointOfInterest;
-import tools.plotting.plotters.MainPlotter;
+import tools.plotting.plotters.Plotter;
 import tools.plotting.plotters.plots.graphics.PlotColors;
 
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Plot {
 
-    public final MainPlotter plotter;
+    public final Plotter plotter;
     public ArrayList<double[]> functionsDomains = new ArrayList<>();
     public ArrayList<double[]> functionsValues = new ArrayList<>();
 
@@ -22,9 +22,9 @@ public class Plot {
     public final PlotPointOfInterest plotPOI;
 
 
-    public Plot(MainPlotter mainPlotter) {
-        this.plotter = mainPlotter;
-        this.margin = mainPlotter.coordinateSystem.getMargin();
+    public Plot(Plotter plotter) {
+        this.plotter = plotter;
+        this.margin = plotter.coordinateSystem.getMargin();
         this.plotPOI = new PlotPointOfInterest();
     }
 

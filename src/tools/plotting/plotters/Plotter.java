@@ -7,14 +7,14 @@ import tools.plotting.plotters.plots.Plot;
 import java.awt.*;
 
 
-public class MainPlotter implements IPlotter {
+public class Plotter implements IPlotter{
     public MainCoordinateSystem coordinateSystem;
     public Plot plot;
 
     public int width;
     public int height;
 
-    public MainPlotter() {
+    public Plotter() {
         setCoordinateSystem();
         setPlot();
     }
@@ -29,7 +29,7 @@ public class MainPlotter implements IPlotter {
         this.plot = new Plot(this);
     }
 
-    public void drawMainPlot(Graphics2D g2) {
+    public void drawPlot(Graphics2D g2) {
         coordinateSystem.updateRanges(width, height);
         coordinateSystem.drawGrid(g2, width, height);
         plot.drawAllFunctions(g2);

@@ -13,7 +13,7 @@ public class LayeredCostPlotTab extends CostPlotTab implements ITab {
 
     @Override
     public void setPlotPanel(){
-        this.plotPanel = new LayeredCostPlotPanel(this);
+        this.plotPanel = new LayeredCostPlotPanel(parentTabbedPanel);
     }
 
     @Override

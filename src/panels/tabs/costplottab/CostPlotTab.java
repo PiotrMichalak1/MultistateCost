@@ -10,19 +10,18 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CostPlotTab extends JPanel implements ITab {
-    public CostPlotPanel plotPanel;
-    private final RunSimulationPanel runSimulationPanel;
+    protected CostPlotPanel plotPanel;
 
+    private RunSimulationPanel runSimulationPanel;
     public final TabsPanel parentTabbedPanel;
     public CostPlotTab(TabsPanel parentTabbedPanel) {
         this.parentTabbedPanel = parentTabbedPanel;
         setPlotPanel();
-        this.runSimulationPanel = new RunSimulationPanel(parentTabbedPanel);
         addWeightedPanes();
     }
 
     public void setPlotPanel(){
-        this.plotPanel = new CostPlotPanel(this);
+        this.plotPanel = new CostPlotPanel(parentTabbedPanel);
     }
 
     private void addWeightedPanes(){
@@ -35,6 +34,7 @@ public class CostPlotTab extends JPanel implements ITab {
         c.gridy = 0;
         this.add(plotPanel, c);
 
+        runSimulationPanel = new RunSimulationPanel(parentTabbedPanel);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;

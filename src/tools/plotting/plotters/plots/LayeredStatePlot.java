@@ -4,7 +4,7 @@ import simulation.LayeredStateValues;
 import simulation.Simulation;
 import tools.functions.Mathematics;
 import tools.functions.MatrixOperations;
-import tools.plotting.plotters.MainPlotter;
+import tools.plotting.plotters.Plotter;
 import tools.plotting.plotters.plots.graphics.PlotColors;
 
 import java.awt.*;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class LayeredStatePlot extends Plot {
 
-    public LayeredStatePlot(MainPlotter layeredStatePlotter) {
+    public LayeredStatePlot(Plotter layeredStatePlotter) {
         super(layeredStatePlotter);
     }
 
