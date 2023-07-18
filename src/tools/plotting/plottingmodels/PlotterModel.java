@@ -1,13 +1,13 @@
 package tools.plotting.plottingmodels;
 
-import tools.plotting.plottingmodels.coordsys.MainCoordinateSystem;
+import tools.plotting.plottingmodels.coordsys.CoordinateSystem;
 import tools.plotting.plottingmodels.plots.Plot;
 
 import java.awt.*;
 
 
 public class PlotterModel implements IPlotterModel {
-    public MainCoordinateSystem coordinateSystem;
+    public CoordinateSystem coordinateSystem;
     protected Plot plot;
 
     public int drawingWidth;
@@ -19,7 +19,7 @@ public class PlotterModel implements IPlotterModel {
     }
 
     public void setCoordinateSystem() {
-        this.coordinateSystem = new MainCoordinateSystem();
+        this.coordinateSystem = new CoordinateSystem();
     }
 
 

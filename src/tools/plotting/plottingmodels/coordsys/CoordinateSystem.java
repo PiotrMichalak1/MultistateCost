@@ -6,7 +6,7 @@ import tools.functions.Mathematics;
 
 import java.awt.*;
 
-public class MainCoordinateSystem {
+public class CoordinateSystem {
 
     protected final int margin;
 
@@ -21,7 +21,7 @@ public class MainCoordinateSystem {
     public final double[] xRange;
     public final double[] yRange;
 
-    public MainCoordinateSystem() {
+    public CoordinateSystem() {
         this.margin = GraphicSettings.DEFAULT_PLOT_MARGIN;
 
         this.scaleUnitX = GraphicSettings.DEFAULT_SCALE_UNIT_X;
