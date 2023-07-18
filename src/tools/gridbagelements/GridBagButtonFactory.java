@@ -1,14 +1,11 @@
 package tools.gridbagelements;
 
 import panels.mainpanels.TabsPanel;
+import settings.InitialSettings;
 import simulation.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import settings.InitialSettings;
 public class GridBagButtonFactory implements IGridBagElement {
     JButton button;
 

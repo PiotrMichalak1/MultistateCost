@@ -1,19 +1,19 @@
-package tools.plotting.plotters.plots;
+package tools.plotting.plottingmodels.plots;
 
 import simulation.LayeredStateValues;
 import simulation.Simulation;
 import tools.functions.Mathematics;
 import tools.functions.MatrixOperations;
-import tools.plotting.plotters.Plotter;
-import tools.plotting.plotters.plots.graphics.PlotColors;
+import tools.plotting.plottingmodels.PlotterModel;
+import tools.plotting.plottingmodels.plots.graphics.PlotColors;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class LayeredStatePlot extends Plot {
 
-    public LayeredStatePlot(Plotter layeredStatePlotter) {
-        super(layeredStatePlotter);
+    public LayeredStatePlot(PlotterModel layeredStatePlotterModel) {
+        super(layeredStatePlotterModel);
     }
 
     @Override
@@ -37,10 +37,10 @@ public class LayeredStatePlot extends Plot {
         double[] functionDomain = functionsDomains.get(0);
         if (functionDomain.length > 1) {
 
-            plotter.coordinateSystem.xRange[0] = functionDomain[0];
-            plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+            parentPlotterModel.coordinateSystem.xRange[0] = functionDomain[0];
+            parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
-            double visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+            double visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
 
             double domainWidth = functionDomain[functionDomain.length - 1] - functionDomain[0];
 
@@ -49,46 +49,46 @@ public class LayeredStatePlot extends Plot {
 
                 while (visibleXWidth < domainWidth) {
 
-                    plotter.coordinateSystem.numOfMouseScrolls -= 1;
-                    plotter.coordinateSystem.updateGridSpacing();
-                    plotter.coordinateSystem.updateScaleOnMouseScroll();
-                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                    visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+                    parentPlotterModel.coordinateSystem.numOfMouseScrolls -= 1;
+                    parentPlotterModel.coordinateSystem.updateGridSpacing();
+                    parentPlotterModel.coordinateSystem.updateScaleOnMouseScroll();
+                    parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
+                    visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
 
                 }
 
-                plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                parentPlotterModel.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
+                parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
             } else if (visibleXWidth > domainWidth) {
                 while (visibleXWidth > domainWidth) {
 
-                    plotter.coordinateSystem.numOfMouseScrolls += 1;
-                    plotter.coordinateSystem.updateGridSpacing();
-                    plotter.coordinateSystem.updateScaleOnMouseScroll();
-                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                    visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+                    parentPlotterModel.coordinateSystem.numOfMouseScrolls += 1;
+                    parentPlotterModel.coordinateSystem.updateGridSpacing();
+                    parentPlotterModel.coordinateSystem.updateScaleOnMouseScroll();
+                    parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
+                    visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
 
                 }
-                plotter.coordinateSystem.numOfMouseScrolls -= 1;
-                plotter.coordinateSystem.updateGridSpacing();
-                plotter.coordinateSystem.updateScaleOnMouseScroll();
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
-                plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                parentPlotterModel.coordinateSystem.numOfMouseScrolls -= 1;
+                parentPlotterModel.coordinateSystem.updateGridSpacing();
+                parentPlotterModel.coordinateSystem.updateScaleOnMouseScroll();
+                parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
+                visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
+                parentPlotterModel.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
+                parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
             }
 
             double biggestValue = 100.0;
 
-            double exactValue = (biggestValue * 5.0 * plotter.coordinateSystem.smallGridSpacing) / (plotter.coordinateSystem.scaleMultiplier * plotter.height);
-            plotter.coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue, 2);
-            plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+            double exactValue = (biggestValue * 5.0 * parentPlotterModel.coordinateSystem.smallGridSpacing) / (parentPlotterModel.coordinateSystem.scaleMultiplier * parentPlotterModel.drawingHeight);
+            parentPlotterModel.coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue, 2);
+            parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
 
-            plotter.coordinateSystem.yRange[0] = 0;
-            plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+            parentPlotterModel.coordinateSystem.yRange[0] = 0;
+            parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
 
         }

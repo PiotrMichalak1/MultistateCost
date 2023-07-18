@@ -1,10 +1,9 @@
 package panels.tabs.layeredcostplottab;
 
 import panels.mainpanels.TabsPanel;
-import panels.tabs.costplottab.CostPlotTab;
+import panels.tabs.IPlotPanel;
 import panels.tabs.costplottab.CostPlotPanel;
-import tools.interfaces.IPlotPanel;
-import tools.plotting.plotters.LayeredCostPlotter;
+import tools.plotting.plottingmodels.LayeredCostPlotterModel;
 
 
 public class LayeredCostPlotPanel extends CostPlotPanel implements IPlotPanel {
@@ -14,7 +13,7 @@ public class LayeredCostPlotPanel extends CostPlotPanel implements IPlotPanel {
 
     @Override
     public void setPlotter() {
-        this.plotter = new LayeredCostPlotter();
+        this.plotterModel = new LayeredCostPlotterModel();
 
     }
 

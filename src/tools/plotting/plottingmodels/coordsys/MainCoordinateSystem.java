@@ -1,4 +1,4 @@
-package tools.plotting.plotters.coordsys;
+package tools.plotting.plottingmodels.coordsys;
 
 import settings.GraphicSettings;
 import settings.InitialSettings;

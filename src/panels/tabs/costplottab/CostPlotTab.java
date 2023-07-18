@@ -50,18 +50,18 @@ public class CostPlotTab extends JPanel implements ITab {
     @Override
     public void clearFunctionData() {
         if (!Parameters.getInstance().isHoldTheData()) {
-            plotPanel.plotter.clearFunctionData();
+            plotPanel.plotterModel.clearFunctionData();
         }
     }
 
     @Override
     public void addDataToPlots(Simulation sim) throws CloneNotSupportedException {
-        plotPanel.plotter.plot.addFunctionData(sim.getSimulationDomain(), sim.getOverallCostValues());
+        plotPanel.plotterModel.getPlot().addFunctionData(sim.getSimulationDomain(), sim.getOverallCostValues());
     }
 
     @Override
     public void setPlottersSizes(int width, int height) {
-        plotPanel.plotter.setWidth(Math.max(1, width));
-        plotPanel.plotter.setHeight(Math.max(1, height));
+        plotPanel.plotterModel.setDrawingWidth(Math.max(1, width));
+        plotPanel.plotterModel.setDrawingHeight(Math.max(1, height));
     }
 }

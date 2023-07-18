@@ -3,7 +3,6 @@ package panels.tabs.layeredcostplottab;
 import panels.mainpanels.TabsPanel;
 import panels.tabs.ITab;
 import panels.tabs.costplottab.CostPlotTab;
-import settings.Parameters;
 import simulation.Simulation;
 
 public class LayeredCostPlotTab extends CostPlotTab implements ITab {
@@ -18,11 +17,11 @@ public class LayeredCostPlotTab extends CostPlotTab implements ITab {
 
     @Override
     public void clearFunctionData() {
-            plotPanel.plotter.clearFunctionData();
+            plotPanel.plotterModel.clearFunctionData();
     }
     @Override
     public void addDataToPlots(Simulation sim) throws CloneNotSupportedException {
-        plotPanel.plotter.plot.addLayeredFunctionData(sim);
-        plotPanel.plotter.plot.updateFunctionValuesToStacked();
+        plotPanel.plotterModel.getPlot().addLayeredFunctionData(sim);
+        plotPanel.plotterModel.getPlot().updateFunctionValuesToStacked();
     }
 }

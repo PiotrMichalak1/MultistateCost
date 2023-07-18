@@ -1,4 +1,4 @@
-package tools.interfaces;
+package panels.tabs;
 
 public interface IPlotPanel {
     void setPlotter();

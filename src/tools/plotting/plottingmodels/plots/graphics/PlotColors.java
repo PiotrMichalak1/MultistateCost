@@ -1,4 +1,4 @@
-package tools.plotting.plotters.plots.graphics;
+package tools.plotting.plottingmodels.plots.graphics;
 
 import settings.InitialSettings;
 

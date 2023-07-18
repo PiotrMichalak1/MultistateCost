@@ -1,15 +1,16 @@
 package panels.tabs.costplottab;
 
 import panels.mainpanels.TabsPanel;
-import tools.interfaces.IPlotPanel;
-import tools.plotting.plotters.Plotter;
+import panels.tabs.IPlotPanel;
+import tools.plotting.plottingmodels.IPlotterModel;
+import tools.plotting.plottingmodels.PlotterModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class CostPlotPanel extends JPanel implements IPlotPanel {
-    public Plotter plotter;
+    public IPlotterModel plotterModel;
     private Point previousMousePosition;
 
     private final TabsPanel parentTabbedPanel;
@@ -23,8 +24,8 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int width = getWidth() - plotter.getMargin() * 2;//width of drawing space
-        int height = getHeight() - plotter.getMargin() * 2;//height of drawing space
+        int width = getWidth() - plotterModel.getMargin() * 2;//width of drawing space
+        int height = getHeight() - plotterModel.getMargin() * 2;//height of drawing space
 
         setPlottersSizes(width, height);
 
@@ -33,7 +34,7 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             setPlottersSizes(width, height);
-            plotter.drawPlot(g2);
+            plotterModel.drawPlot(g2);
         }
 
     }
@@ -53,11 +54,11 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
 
     @Override
     public void setPlotter() {
-        this.plotter = new Plotter();
+        this.plotterModel = new PlotterModel();
     }
 
     private boolean isMouseOnPlot(Point mousePosition) {
-        int margin = plotter.getMargin();
+        int margin = plotterModel.getMargin();
         boolean horizontally = mousePosition.getX() >= margin && mousePosition.getX() <= getWidth() - margin;
         boolean vertically = mousePosition.getY() >= margin && mousePosition.getY() <= getHeight() - margin;
         return horizontally && vertically;
@@ -67,7 +68,7 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
             if (isMouseOnPlot(e.getPoint())) {
-                plotter.onMouseScroll(e.getPoint(), e.getWheelRotation(), getWidth() - 2 * plotter.getMargin(), getHeight() - 2 * plotter.getMargin());
+                plotterModel.onMouseScroll(e.getPoint(), e.getWheelRotation(), getWidth() - 2 * plotterModel.getMargin(), getHeight() - 2 * plotterModel.getMargin());
                 repaint();
             }
         }
@@ -84,18 +85,18 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
         @Override
         public void mouseDragged(MouseEvent event) {
             Point currentMousePosition = event.getPoint();
-            plotter.dragPlot(
+            plotterModel.dragPlot(
                     (int) (currentMousePosition.getX() - previousMousePosition.getX()),
                     (int) (currentMousePosition.getY() - previousMousePosition.getY())
             );
             previousMousePosition = currentMousePosition;
-            plotter.onMouseMovement(event.getPoint());
+            plotterModel.onMouseMovement(event.getPoint());
             repaint();
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            plotter.onMouseMovement(e.getPoint());
+            plotterModel.onMouseMovement(e.getPoint());
             repaint();
 
         }

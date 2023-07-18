@@ -16,12 +16,12 @@ public class LayeredStatePlotTab extends CostPlotTab implements ITab {
 
     @Override
     public void clearFunctionData() {
-        plotPanel.plotter.clearFunctionData();
+        plotPanel.plotterModel.clearFunctionData();
     }
 
     @Override
     public void addDataToPlots(Simulation sim) throws CloneNotSupportedException {
-        plotPanel.plotter.plot.addLayeredFunctionData(sim);
-        plotPanel.plotter.plot.updateFunctionValuesToStacked();
+        plotPanel.plotterModel.getPlot().addLayeredFunctionData(sim);
+        plotPanel.plotterModel.getPlot().updateFunctionValuesToStacked();
     }
 }

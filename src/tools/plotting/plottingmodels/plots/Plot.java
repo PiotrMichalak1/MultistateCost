@@ -1,4 +1,4 @@
-package tools.plotting.plotters.plots;
+package tools.plotting.plottingmodels.plots;
 
 import settings.GraphicSettings;
 import simulation.Simulation;
@@ -6,15 +6,15 @@ import tools.FunctionTools;
 import tools.functions.Mathematics;
 import tools.plotting.DoublePoint;
 import tools.plotting.PlotPointOfInterest;
-import tools.plotting.plotters.Plotter;
-import tools.plotting.plotters.plots.graphics.PlotColors;
+import tools.plotting.plottingmodels.PlotterModel;
+import tools.plotting.plottingmodels.plots.graphics.PlotColors;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Plot {
 
-    public final Plotter plotter;
+    public final PlotterModel parentPlotterModel;
     public ArrayList<double[]> functionsDomains = new ArrayList<>();
     public ArrayList<double[]> functionsValues = new ArrayList<>();
 
@@ -22,9 +22,9 @@ public class Plot {
     public final PlotPointOfInterest plotPOI;
 
 
-    public Plot(Plotter plotter) {
-        this.plotter = plotter;
-        this.margin = plotter.coordinateSystem.getMargin();
+    public Plot(PlotterModel parentPlotterModel) {
+        this.parentPlotterModel = parentPlotterModel;
+        this.margin = parentPlotterModel.coordinateSystem.getMargin();
         this.plotPOI = new PlotPointOfInterest();
     }
 
@@ -137,56 +137,56 @@ public class Plot {
 
                 double rangeOfValues = biggestValue - smallestValue;
 
-                plotter.coordinateSystem.xRange[0] = functionDomain[0];
-                plotter.coordinateSystem.yRange[0] = smallestValue;
-                plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                parentPlotterModel.coordinateSystem.xRange[0] = functionDomain[0];
+                parentPlotterModel.coordinateSystem.yRange[0] = smallestValue;
+                parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
-                double visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+                double visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
                 double domainWidth = functionDomain[functionCodomain.length - 1] - functionDomain[0];
 
                 if (visibleXWidth < domainWidth) {
 
                     while (visibleXWidth < domainWidth) {
 
-                        plotter.coordinateSystem.numOfMouseScrolls -= 1;
-                        plotter.coordinateSystem.updateGridSpacing();
-                        plotter.coordinateSystem.updateScaleOnMouseScroll();
-                        plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                        visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+                        parentPlotterModel.coordinateSystem.numOfMouseScrolls -= 1;
+                        parentPlotterModel.coordinateSystem.updateGridSpacing();
+                        parentPlotterModel.coordinateSystem.updateScaleOnMouseScroll();
+                        parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
+                        visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
 
                     }
 
-                    plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
-                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                    parentPlotterModel.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
+                    parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
                 } else if (visibleXWidth > domainWidth) {
                     while (visibleXWidth > domainWidth) {
 
-                        plotter.coordinateSystem.numOfMouseScrolls += 1;
-                        plotter.coordinateSystem.updateGridSpacing();
-                        plotter.coordinateSystem.updateScaleOnMouseScroll();
-                        plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                        visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
+                        parentPlotterModel.coordinateSystem.numOfMouseScrolls += 1;
+                        parentPlotterModel.coordinateSystem.updateGridSpacing();
+                        parentPlotterModel.coordinateSystem.updateScaleOnMouseScroll();
+                        parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
+                        visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
 
                     }
-                    plotter.coordinateSystem.numOfMouseScrolls -= 1;
-                    plotter.coordinateSystem.updateGridSpacing();
-                    plotter.coordinateSystem.updateScaleOnMouseScroll();
-                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
-                    visibleXWidth = plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0];
-                    plotter.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
-                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                    parentPlotterModel.coordinateSystem.numOfMouseScrolls -= 1;
+                    parentPlotterModel.coordinateSystem.updateGridSpacing();
+                    parentPlotterModel.coordinateSystem.updateScaleOnMouseScroll();
+                    parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
+                    visibleXWidth = parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0];
+                    parentPlotterModel.coordinateSystem.xRange[0] = functionDomain[0] - (visibleXWidth - domainWidth) / 2;
+                    parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
                 }
 
                 if (rangeOfValues != 0) {
-                    double exactValue = (rangeOfValues * 5.0 * plotter.coordinateSystem.smallGridSpacing) / (plotter.coordinateSystem.scaleMultiplier * plotter.height);
-                    plotter.coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue, 2);
-                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                    double exactValue = (rangeOfValues * 5.0 * parentPlotterModel.coordinateSystem.smallGridSpacing) / (parentPlotterModel.coordinateSystem.scaleMultiplier * parentPlotterModel.drawingHeight);
+                    parentPlotterModel.coordinateSystem.scaleUnitY = Mathematics.roundUpToTheNearestPowerOf(exactValue, 2);
+                    parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
 
-                    double visibleYHeight = plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0];
-                    plotter.coordinateSystem.yRange[0] = smallestValue - (visibleYHeight - rangeOfValues) / 2;
-                    plotter.coordinateSystem.updateRanges(plotter.width, plotter.height);
+                    double visibleYHeight = parentPlotterModel.coordinateSystem.yRange[1] - parentPlotterModel.coordinateSystem.yRange[0];
+                    parentPlotterModel.coordinateSystem.yRange[0] = smallestValue - (visibleYHeight - rangeOfValues) / 2;
+                    parentPlotterModel.coordinateSystem.updateRanges(parentPlotterModel.drawingWidth, parentPlotterModel.drawingHeight);
                 }
 
 
@@ -197,26 +197,26 @@ public class Plot {
     }
 
     boolean isPointInVisibleRange(DoublePoint point) {
-        boolean isInXRange = (plotter.coordinateSystem.xRange[0] < point.getX() &&
-                plotter.coordinateSystem.xRange[1] > point.getX());
-        boolean isInYRange = (plotter.coordinateSystem.yRange[0] < point.getY() &&
-                plotter.coordinateSystem.yRange[1] > point.getY());
+        boolean isInXRange = (parentPlotterModel.coordinateSystem.xRange[0] < point.getX() &&
+                parentPlotterModel.coordinateSystem.xRange[1] > point.getX());
+        boolean isInYRange = (parentPlotterModel.coordinateSystem.yRange[0] < point.getY() &&
+                parentPlotterModel.coordinateSystem.yRange[1] > point.getY());
 
         return isInXRange && isInYRange;
     }
 
 
     public Point pointToPixels(DoublePoint point) {
-        int xPx = margin + (int) Math.round(plotter.width * (point.getX() - plotter.coordinateSystem.xRange[0]) / (plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0]));
-        int yPx = margin + plotter.height - (int) Math.round(plotter.height * (point.getY() - plotter.coordinateSystem.yRange[0]) / (plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0]));
+        int xPx = margin + (int) Math.round(parentPlotterModel.drawingWidth * (point.getX() - parentPlotterModel.coordinateSystem.xRange[0]) / (parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0]));
+        int yPx = margin + parentPlotterModel.drawingHeight - (int) Math.round(parentPlotterModel.drawingHeight * (point.getY() - parentPlotterModel.coordinateSystem.yRange[0]) / (parentPlotterModel.coordinateSystem.yRange[1] - parentPlotterModel.coordinateSystem.yRange[0]));
         return new Point(xPx, yPx);
     }
 
-    //gets vector of double domain values and translates it to pixel coordinates in plotter
+    //gets vector of double domain values and translates it to pixel coordinates in plotterModel
     public int[] domainVectorToPixels(double[] vector) {
         int[] vectorPx = new int[vector.length];
         for (int index =0;index<vector.length;index++){
-            vectorPx[index] = margin + (int) Math.round(plotter.width * (vector[index] - plotter.coordinateSystem.xRange[0]) / (plotter.coordinateSystem.xRange[1] - plotter.coordinateSystem.xRange[0]));
+            vectorPx[index] = margin + (int) Math.round(parentPlotterModel.drawingWidth * (vector[index] - parentPlotterModel.coordinateSystem.xRange[0]) / (parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0]));
         }
         return vectorPx;
     }
@@ -224,7 +224,7 @@ public class Plot {
     public int[] valuesVectorToPixels(double[] vector) {
         int[] vectorPx = new int[vector.length];
         for (int index =0;index<vector.length;index++){
-            vectorPx[index] = margin + plotter.height - (int) Math.round(plotter.height * (vector[index] - plotter.coordinateSystem.yRange[0]) / (plotter.coordinateSystem.yRange[1] - plotter.coordinateSystem.yRange[0]));
+            vectorPx[index] = margin + parentPlotterModel.drawingHeight - (int) Math.round(parentPlotterModel.drawingHeight * (vector[index] - parentPlotterModel.coordinateSystem.yRange[0]) / (parentPlotterModel.coordinateSystem.yRange[1] - parentPlotterModel.coordinateSystem.yRange[0]));
         }
         return vectorPx;
     }
