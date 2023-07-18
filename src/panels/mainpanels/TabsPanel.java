@@ -32,7 +32,7 @@ public class TabsPanel extends JTabbedPane {
         LayeredStatePlotTab layeredStatePlotTab = new LayeredStatePlotTab(this);
         this.addTab("Layered State Plot",layeredStatePlotTab);
         //index 3
-        StructuralPlotsTab structuralPlots = new StructuralPlotsTab();
+        StructuralPlotsTab structuralPlots = new StructuralPlotsTab(this);
         this.addTab("Structural Plots", structuralPlots);
         //index 4
         DistributionsTab distributions = new DistributionsTab();

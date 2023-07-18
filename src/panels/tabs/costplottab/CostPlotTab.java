@@ -24,7 +24,7 @@ public class CostPlotTab extends JPanel implements ITab {
         this.plotPanel = new CostPlotPanel(parentTabbedPanel);
     }
 
-    private void addWeightedPanes(){
+    public void addWeightedPanes(){
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;

@@ -15,11 +15,11 @@ public class CoordinateSystem {
     int numOfGridZoomInScaling;
 
     public int smallGridSpacing;
-    private int bigGridSpacing;
-    private final double scaleUnitX;
+    int bigGridSpacing;
+    protected double scaleUnitX;
     public double scaleUnitY;
-    public final double[] xRange;
-    public final double[] yRange;
+    public final double[] xRange = new double[2];
+    public final double[] yRange= new double[2];
 
     public CoordinateSystem() {
         this.margin = GraphicSettings.DEFAULT_PLOT_MARGIN;
@@ -33,8 +33,6 @@ public class CoordinateSystem {
         this.smallGridSpacing = InitialSettings.DEFAULT_SMALL_GRID_SPACING;
         this.bigGridSpacing = 5 * this.smallGridSpacing;
 
-        this.xRange = new double[2];
-        this.yRange = new double[2];
     }
 
     public void drawMargins(Graphics2D g2, int width, int height) {
@@ -101,8 +99,9 @@ public class CoordinateSystem {
 
     }
 
-    private void drawBigGrid(Graphics2D g2, int width, int height) {
+    void drawBigGrid(Graphics2D g2, int width, int height) {
         g2.setColor(new Color(181, 177, 177));
+        //vertical big grid
         double bigGridX = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier);
         int bigGridXPx = (int) ((bigGridX - xRange[0]) / (xRange[1] - xRange[0]) * width);
         while (bigGridXPx <= width) {
@@ -112,6 +111,7 @@ public class CoordinateSystem {
             bigGridXPx += bigGridSpacing;
         }
 
+        //horizontal Big Grid
         double bigGridY = Mathematics.roundUpToTheNearestMultiple(yRange[0], scaleUnitY * scaleMultiplier);
         int bigGridYPx = (int) ((bigGridY - yRange[0]) / (yRange[1] - yRange[0]) * height);
         while (bigGridYPx <= height) {
@@ -120,7 +120,7 @@ public class CoordinateSystem {
         }
     }
 
-    private void drawSmallGrid(Graphics2D g2, int width, int height) {
+    void drawSmallGrid(Graphics2D g2, int width, int height) {
         g2.setColor(new Color(216, 209, 209));
 
         double smallGridNum = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier / 5);
@@ -193,7 +193,8 @@ public class CoordinateSystem {
         bigGridSpacing = 5 * smallGridSpacing;
     }
 
-    private void scaleRanges(Point mousePosition, int width, int height) {
+    //
+    protected void scaleRanges(Point mousePosition, int width, int height) {
         double mouseX = mousePosition.getX() - margin;
         double mouseY = margin + height - mousePosition.getY();
 
