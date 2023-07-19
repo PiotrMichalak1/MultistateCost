@@ -1,11 +1,13 @@
 package tools.plotting.plottingmodels.coordsys;
 
+import settings.InitialSettings;
 import tools.functions.Mathematics;
 import tools.plotting.plottingmodels.PlotterModel;
 
 import java.awt.*;
 
 public class PercentBarCoordinateSystem extends CoordinateSystem {
+    private boolean areCoordinatesAdjusted = false;
     PlotterModel parentPlotterModel;
     public PercentBarCoordinateSystem(PlotterModel parentPlotterModel) {
         this.parentPlotterModel = parentPlotterModel;
@@ -38,8 +40,12 @@ public class PercentBarCoordinateSystem extends CoordinateSystem {
 
     @Override
     public void drawGrid(Graphics2D g2, int width, int height) {
-        adjustCoordinates(parentPlotterModel);
+        if (!areCoordinatesAdjusted) {
+            adjustCoordinates(parentPlotterModel);
+        }
+
         drawBigGrid(g2, width, height);
+        areCoordinatesAdjusted = true;
     }
 
     @Override
@@ -90,6 +96,27 @@ public class PercentBarCoordinateSystem extends CoordinateSystem {
         double scalingPivotY = yRange[0] + (yRange[1] - yRange[0]) * (mouseY / height);
 
         yRange[1] = scalingPivotY + (height - mouseY) * valueOfYPixel;
+    }
+
+    //draws labels on y axis
+    public void drawLabels(Graphics2D g2, int width, int height) {
+
+        FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
+
+        //yLabels
+        double labelNum = Mathematics.roundUpToTheNearestMultiple(yRange[0], scaleUnitY * scaleMultiplier);
+        int yLabelYCoord = (int) ((labelNum - yRange[0]) / (yRange[1] - yRange[0]) * height);
+        while (yLabelYCoord <= height) {
+
+            String format = "%." + decimalPlacesNeededInLabels(numOfGridZoomInScaling, 'y') + "f";
+            String label = String.format(format, labelNum);
+
+            g2.drawString(label, margin - 5 - fontMetrics.stringWidth(label), margin + height - yLabelYCoord + (int) fontMetrics.getStringBounds(label, g2).getHeight() / 2 - 2);
+            yLabelYCoord += bigGridSpacing;
+            labelNum += scaleUnitY * scaleMultiplier;
+        }
+
+
     }
 
 }

@@ -11,7 +11,7 @@ import tools.plotting.plottingmodels.plots.graphics.PlotColors;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class LayeredCostPlot extends Plot {
+public class LayeredCostPlot extends Plot implements IPlot{
     private ArrayList<double[]> segmentData = new ArrayList<>();//values of all costs without summing
 
     private ArrayList<String> legendStrings = new ArrayList<>();
@@ -21,7 +21,7 @@ public class LayeredCostPlot extends Plot {
     }
 
     //adds operational, repair, and inspection cost data to functionDomains and functionValues in plot
-    public void addLayeredFunctionData(Simulation sim) throws CloneNotSupportedException {
+    public void addData(Simulation sim) throws CloneNotSupportedException {
         double[] domain = sim.getSimulationDomain();
         LayeredCostValues lcv = (LayeredCostValues) sim.getLayeredCostValues().clone();
 
@@ -48,6 +48,7 @@ public class LayeredCostPlot extends Plot {
             legendStrings.add(label);
         }
 
+        updateFunctionValuesToStacked();
 
     }
 
@@ -135,7 +136,7 @@ public class LayeredCostPlot extends Plot {
     }
 
     @Override
-    public void drawAllFunctions(Graphics2D g2) {
+    public void draw(Graphics2D g2) {
         plotPOI.resetDistanceAndVisibility();
 
         if (functionsDomains.size() > 0) {

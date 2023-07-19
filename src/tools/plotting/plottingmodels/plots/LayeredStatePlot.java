@@ -10,14 +10,14 @@ import tools.plotting.plottingmodels.plots.graphics.PlotColors;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class LayeredStatePlot extends Plot {
+public class LayeredStatePlot extends Plot implements IPlot{
 
     public LayeredStatePlot(PlotterModel layeredStatePlotterModel) {
         super(layeredStatePlotterModel);
     }
 
     @Override
-    public void addLayeredFunctionData(Simulation sim) throws CloneNotSupportedException {
+    public void addData(Simulation sim) throws CloneNotSupportedException {
         double[] domain = sim.getSimulationDomain();
         LayeredStateValues lsv = (LayeredStateValues) sim.getLayeredStateValues().clone();
         ArrayList<double[]> statePercentages = lsv.getStatePercentages();
@@ -28,6 +28,7 @@ public class LayeredStatePlot extends Plot {
             functionsValues.add(values);
         }
 
+        updateFunctionValuesToStacked();
 
     }
 
@@ -111,7 +112,7 @@ public class LayeredStatePlot extends Plot {
     }
 
     @Override
-    public void drawAllFunctions(Graphics2D g2) {
+    public void draw(Graphics2D g2) {
         plotPOI.resetDistanceAndVisibility();
 
         if (functionsDomains.size() > 0) {

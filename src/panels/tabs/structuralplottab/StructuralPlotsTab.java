@@ -69,8 +69,8 @@ public class StructuralPlotsTab extends JPanel implements ITab {
 
     @Override
     public void addDataToPlots(Simulation sim) throws CloneNotSupportedException {
-        stateStructurePanel.plotterModel.getPlot().addFunctionData(sim.getSimulationDomain(), sim.getOverallCostValues());
-        costStructurePanel.plotterModel.getPlot().addFunctionData(sim.getSimulationDomain(), sim.getOverallCostValues());
+        stateStructurePanel.plotterModel.getPlot().addData(sim);
+        costStructurePanel.plotterModel.getPlot().addData(sim);
     }
 
     @Override
@@ -81,8 +81,4 @@ public class StructuralPlotsTab extends JPanel implements ITab {
         costStructurePanel.plotterModel.setDrawingHeight(Math.max(1, height));
     }
 
-    @Override
-    public void repaint() {
-
-    }
 }

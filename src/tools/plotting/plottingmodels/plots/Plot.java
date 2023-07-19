@@ -12,7 +12,7 @@ import tools.plotting.plottingmodels.plots.graphics.PlotColors;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Plot {
+public class Plot implements IPlot {
 
     public final PlotterModel parentPlotterModel;
     public ArrayList<double[]> functionsDomains = new ArrayList<>();
@@ -28,15 +28,18 @@ public class Plot {
         this.plotPOI = new PlotPointOfInterest();
     }
 
+    public void draw(Graphics2D g2) {
+        plotPOI.resetDistanceAndVisibility();
+        PlotColors.resetColor();
+        for (int i = 0; i < functionsDomains.size(); i++) {
+            drawFunction(g2, functionsDomains.get(i), functionsValues.get(i), false);
+        }
+
+    }
+
     public void onMouseMovement(Point mousePosition) {
         plotPOI.setMouseX(mousePosition.x);
         plotPOI.setMouseY(mousePosition.y);
-    }
-
-    public void addFunctionData(double[] domain, double[] codomain) {
-        functionsDomains.add(domain);
-        functionsValues.add(codomain);
-        adjustCameraToPlot();
     }
 
     public void clearFunctionData() {
@@ -114,13 +117,9 @@ public class Plot {
         g2.setStroke(new BasicStroke(1));
     }
 
-    public void drawAllFunctions(Graphics2D g2) {
-        plotPOI.resetDistanceAndVisibility();
-        PlotColors.resetColor();
-        for (int i = 0; i < functionsDomains.size(); i++) {
-            drawFunction(g2, functionsDomains.get(i), functionsValues.get(i), false);
-        }
-
+    @Override
+    public PlotPointOfInterest getPlotPOI() {
+        return plotPOI;
     }
 
     public void adjustCameraToPlot() {
@@ -230,7 +229,12 @@ public class Plot {
     }
 
 
-    public void addLayeredFunctionData(Simulation sim) throws CloneNotSupportedException {
+    public void addData(Simulation sim) throws CloneNotSupportedException {
+        double[] domain = sim.getSimulationDomain();
+        double[] values = sim.getOverallCostValues();
+        functionsDomains.add(domain);
+        functionsValues.add(values);
+        adjustCameraToPlot();
     }
 
 

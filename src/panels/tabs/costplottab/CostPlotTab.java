@@ -56,7 +56,7 @@ public class CostPlotTab extends JPanel implements ITab {
 
     @Override
     public void addDataToPlots(Simulation sim) throws CloneNotSupportedException {
-        plotPanel.plotterModel.getPlot().addFunctionData(sim.getSimulationDomain(), sim.getOverallCostValues());
+        plotPanel.plotterModel.getPlot().addData(sim);
     }
 
     @Override

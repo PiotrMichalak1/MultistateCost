@@ -221,7 +221,7 @@ public class CoordinateSystem {
 
     }
 
-    private int decimalPlacesNeededInLabels(int numOfGridZoomInScaling, char axis) {
+    int decimalPlacesNeededInLabels(int numOfGridZoomInScaling, char axis) {
         if (Character.toLowerCase(axis) == 'x') {
             return (int) Math.min(Math.ceil(numOfGridZoomInScaling / 3.0), 4);
         } else {

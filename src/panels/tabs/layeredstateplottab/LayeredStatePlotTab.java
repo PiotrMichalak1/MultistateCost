@@ -21,7 +21,6 @@ public class LayeredStatePlotTab extends CostPlotTab implements ITab {
 
     @Override
     public void addDataToPlots(Simulation sim) throws CloneNotSupportedException {
-        plotPanel.plotterModel.getPlot().addLayeredFunctionData(sim);
-        plotPanel.plotterModel.getPlot().updateFunctionValuesToStacked();
+        plotPanel.plotterModel.getPlot().addData(sim);
     }
 }

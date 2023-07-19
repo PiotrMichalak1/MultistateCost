@@ -1,5 +1,6 @@
 package tools.plotting.plottingmodels;
 
+import tools.plotting.plottingmodels.plots.IPlot;
 import tools.plotting.plottingmodels.plots.Plot;
 
 import java.awt.*;
@@ -24,5 +25,5 @@ public interface IPlotterModel {
 
     void setDrawingHeight(int max);
 
-    Plot getPlot();
+    IPlot getPlot();
 }

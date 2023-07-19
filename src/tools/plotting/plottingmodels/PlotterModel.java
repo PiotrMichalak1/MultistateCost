@@ -1,6 +1,7 @@
 package tools.plotting.plottingmodels;
 
 import tools.plotting.plottingmodels.coordsys.CoordinateSystem;
+import tools.plotting.plottingmodels.plots.IPlot;
 import tools.plotting.plottingmodels.plots.Plot;
 
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.*;
 
 public class PlotterModel implements IPlotterModel {
     public CoordinateSystem coordinateSystem;
-    protected Plot plot;
+    protected IPlot plot;
 
     public int drawingWidth;
     public int drawingHeight;
@@ -31,12 +32,12 @@ public class PlotterModel implements IPlotterModel {
     public void drawPlot(Graphics2D g2) {
         coordinateSystem.updateRanges(drawingWidth, drawingHeight);
         coordinateSystem.drawGrid(g2, drawingWidth, drawingHeight);
-        plot.drawAllFunctions(g2);
+        plot.draw(g2);
         coordinateSystem.drawMargins(g2, drawingWidth, drawingHeight);
         coordinateSystem.drawAxes(g2, drawingWidth, drawingHeight);
         coordinateSystem.drawLabels(g2, drawingWidth, drawingHeight);
-        plot.plotPOI.drawPOI(g2);
-        plot.plotPOI.drawPOIdata(g2);
+        plot.getPlotPOI().drawPOI(g2);
+        plot.getPlotPOI().drawPOIdata(g2);
     }
 
 
@@ -69,7 +70,7 @@ public class PlotterModel implements IPlotterModel {
     }
 
     @Override
-    public Plot getPlot() {
+    public IPlot getPlot() {
         return plot;
     }
 
