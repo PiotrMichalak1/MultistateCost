@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class RunSimulationPanel extends JPanel {
 
-    private Parameters parameters = Parameters.getInstance();
+    private final Parameters parameters = Parameters.getInstance();
 
     private final GridBagLabel bagLabel;
     private final GridBagButtonFactory bagButton;

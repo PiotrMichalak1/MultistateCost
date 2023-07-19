@@ -28,13 +28,13 @@ public class PlotPointOfInterest {
         if (mouseDistanceToClosest<GraphicSettings.POINT_OF_INTEREST_VISIBILITY_THRESHOLD) {
             setVisible(true);
             g2.setColor(GraphicSettings.POI_COLOR);
-            g2.fillOval((int) argumentPX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
-                    (int) functionValuePX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+            g2.fillOval(argumentPX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                    functionValuePX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                     GraphicSettings.PLOT_POINT_THICKNESS,
                     GraphicSettings.PLOT_POINT_THICKNESS);
             g2.setColor(Color.BLUE);
-            g2.drawOval((int) argumentPX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
-                    (int) functionValuePX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+            g2.drawOval(argumentPX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
+                    functionValuePX - GraphicSettings.PLOT_POINT_THICKNESS / 2,
                     GraphicSettings.PLOT_POINT_THICKNESS,
                     GraphicSettings.PLOT_POINT_THICKNESS);
         }
@@ -61,8 +61,8 @@ public class PlotPointOfInterest {
             g2.fillRect(mouseX, topLeftCornerY, width, height);
             g2.setColor(Color.black);
             g2.drawRect(mouseX, topLeftCornerY, width, height);
-            g2.drawString("x: " + argumentString, mouseX + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (int) (height - stringHeight) / 2);
-            g2.drawString("y: " + functionValueString, mouseX + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (int) (height + GraphicSettings.POINT_OF_INTEREST_STRING_SPACING) / 2 + stringHeight);
+            g2.drawString("x: " + argumentString, mouseX + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (height - stringHeight) / 2);
+            g2.drawString("y: " + functionValueString, mouseX + GraphicSettings.POINT_OF_INTEREST_MARGIN_X, topLeftCornerY + (height + GraphicSettings.POINT_OF_INTEREST_STRING_SPACING) / 2 + stringHeight);
 
         }
 

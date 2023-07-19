@@ -5,7 +5,7 @@ import settings.InitialSettings;
 import java.util.ArrayList;
 
 public class LayeredStateValues implements Cloneable{
-    private ArrayList<double[]> statePercentages = new ArrayList<>();
+    private final ArrayList<double[]> statePercentages = new ArrayList<>();
 
     public LayeredStateValues(int domainLength) {
         for (int state = 0; state < InitialSettings.DEFAULT_NUM_OF_STATES+1;state++){

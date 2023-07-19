@@ -29,7 +29,7 @@ public class Simulation {
 
     private LayeredStateValues layeredStateValues;
 
-    private static final RandomGenerator randomGenerator = RandomGeneratorFactory.createRandomGenerator(new Random());
+
 
     public Simulation() {
     }
@@ -56,6 +56,8 @@ public class Simulation {
     }
 
     private void createRandomData(boolean isShockDegradation) {
+
+        RandomGenerator randomGenerator = RandomGeneratorFactory.createRandomGenerator(new Random());
 
         //randomData =[state,cycle,layer]
         randomData = new double

@@ -11,7 +11,6 @@ public class PercentBarCoordinateSystem extends CoordinateSystem {
     PlotterModel parentPlotterModel;
     public PercentBarCoordinateSystem(PlotterModel parentPlotterModel) {
         this.parentPlotterModel = parentPlotterModel;
-        //adjustCoordinates(parentPlotterModel);
     }
 
     //modifies initial number of mouse scrolls to fit [0,100] percent values on the screen

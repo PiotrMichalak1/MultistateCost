@@ -13,7 +13,7 @@ public class GridBagSpinnerFactory implements IGridBagElement {
     Parameters parameters = Parameters.getInstance();
     JSpinner spinner;
 
-    private int type;
+    private final int type;
 
     Number lastValid;
 

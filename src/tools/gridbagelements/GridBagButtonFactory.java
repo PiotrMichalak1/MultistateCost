@@ -14,23 +14,21 @@ public class GridBagButtonFactory implements IGridBagElement {
     public GridBagButtonFactory(int type, TabsPanel parentTabbedPanel) {
         button = new JButton();
 
-        switch (type) {
-            case InitialSettings.SIMULATE_BUTTON ->
-                button.addActionListener(e -> {
-                    Simulation sim = Simulation.getInstance();
-                    sim.simulate();
+        if (type == InitialSettings.SIMULATE_BUTTON) {
+            button.addActionListener(e -> {
+                Simulation sim = Simulation.getInstance();
+                sim.simulate();
 
-                    parentTabbedPanel.clearFunctionData();
-                    try {
-                        parentTabbedPanel.addDataToPlots(sim);
-                    } catch (CloneNotSupportedException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                parentTabbedPanel.clearFunctionData();
+                try {
+                    parentTabbedPanel.addDataToPlots(sim);
+                } catch (CloneNotSupportedException ex) {
+                    throw new RuntimeException(ex);
+                }
 
-                    parentTabbedPanel.repaintAllPlots();
+                parentTabbedPanel.repaintAllPlots();
 
-                });
-
+            });
         }
     }
 

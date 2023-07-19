@@ -12,9 +12,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class LayeredCostPlot extends Plot implements IPlot{
-    private ArrayList<double[]> segmentData = new ArrayList<>();//values of all costs without summing
+    private final ArrayList<double[]> segmentData = new ArrayList<>();//values of all costs without summing
 
-    private ArrayList<String> legendStrings = new ArrayList<>();
+    private final ArrayList<String> legendStrings = new ArrayList<>();
 
     public LayeredCostPlot(PlotterModel layeredCostPlotterModel) {
         super(layeredCostPlotterModel);
