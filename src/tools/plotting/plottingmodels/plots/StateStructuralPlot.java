@@ -6,10 +6,10 @@ import tools.plotting.plottingmodels.PlotterModel;
 
 import java.awt.*;
 
-public class StateStructuralPlot implements IPlot{
+public class StateStructuralPlot implements IPlot {
+    public final static Color BAR_PLOT_COLOR = new Color(0, 114, 189);
     public final PlotterModel parentPlotterModel;
 
-    public final static Color BAR_PLOT_COLOR = new Color(0, 114, 189);
     public StateStructuralPlot(PlotterModel parentPlotterModel) {
         this.parentPlotterModel = parentPlotterModel;
     }

@@ -10,8 +10,8 @@ import java.awt.*;
 
 public class StructuralPlotsTab extends JPanel implements ITab {
     TabsPanel parentTabbedPanel;
-    private StructuralPlotsPanel stateStructurePanel;
-    private StructuralPlotsPanel costStructurePanel;
+    private StateStructPlotPanel stateStructurePanel;
+    private CostStructPlotPanel costStructurePanel;
 
 
     private RunSimulationPanel runSimulationPanel;
@@ -23,8 +23,8 @@ public class StructuralPlotsTab extends JPanel implements ITab {
     }
 
     private void initializeStructuralPanels(TabsPanel parentTabbedPanel) {
-        stateStructurePanel = new StructuralPlotsPanel(parentTabbedPanel);
-        costStructurePanel = new StructuralPlotsPanel(parentTabbedPanel);
+        stateStructurePanel = new StateStructPlotPanel(parentTabbedPanel);
+        costStructurePanel = new CostStructPlotPanel(parentTabbedPanel);
     }
 
     public void addWeightedPanes(){

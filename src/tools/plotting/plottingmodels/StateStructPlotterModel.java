@@ -6,7 +6,7 @@ import tools.plotting.plottingmodels.plots.StateStructuralPlot;
 
 import java.awt.*;
 
-public class StructuralPlotterModel extends PlotterModel implements IPlotterModel {
+public class StateStructPlotterModel extends PlotterModel implements IPlotterModel {
     @Override
     public void setPlot() {
         this.plot = new StateStructuralPlot(this);
