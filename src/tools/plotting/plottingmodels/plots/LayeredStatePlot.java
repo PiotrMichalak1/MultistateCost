@@ -97,7 +97,7 @@ public class LayeredStatePlot extends Plot implements IPlot{
 
     }
 
-    @Override
+
     public void updateFunctionValuesToStacked() {
         for (int stack = 1; stack < functionsValues.size(); stack++) {
             for (int index = 0; index < functionsValues.get(stack).length; index++) {

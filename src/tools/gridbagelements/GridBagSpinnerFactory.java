@@ -258,6 +258,7 @@ public class GridBagSpinnerFactory implements IGridBagElement {
                     ((JSpinner.DefaultEditor)spinner.getEditor()).getTextField().setToolTipText(
                             "Must be in range: [ " + model.getMinimum() + " , " + model.getMaximum() + " ]");
                 } else {
+                    System.out.println("Thats a valid entry, u can simulate now");
                     SpinnerNumberModel model = (SpinnerNumberModel) spinner.getModel();
                     ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setBackground(Color.WHITE);
                     ((JSpinner.DefaultEditor)spinner.getEditor()).getTextField().setToolTipText(

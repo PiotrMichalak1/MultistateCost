@@ -47,7 +47,6 @@ public class StateStructPlot implements IPlot {
         g2.setColor(Color.BLACK);
         g2.drawPolygon(xVertices,yVertices,4);
 
-        drawBarLabel(g2, label, (int) centerOfBase);
 
     }
 
@@ -75,13 +74,24 @@ public class StateStructPlot implements IPlot {
         return yVertices;
     }
 
-    private void drawBarLabel(Graphics2D g2, String label, int centerOfBase) {
+    public void drawLabels(Graphics2D g2) {
+
         int margin = parentPlotterModel.getMargin();
+        int drawingWidth = parentPlotterModel.drawingWidth;
         FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
         g2.setColor(Color.BLACK);
-        g2.drawString(label,
-                centerOfBase- fontMetrics.stringWidth(label) / 2,
-                parentPlotterModel.drawingHeight + margin + fontMetrics.getHeight());
+
+        int centerOfBase;
+        int numOfBars = bars.size();
+        int barNum = 1;
+        for (String label: bars.keySet()) {
+            centerOfBase = (int) (margin + (2 * barNum - 1) * (drawingWidth / (2.0 * numOfBars)));
+            g2.drawString(label,
+                    centerOfBase- fontMetrics.stringWidth(label) / 2,
+                    parentPlotterModel.drawingHeight + margin + fontMetrics.getHeight());
+
+            barNum++;
+        }
 
     }
 

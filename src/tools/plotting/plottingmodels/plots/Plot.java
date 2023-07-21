@@ -237,7 +237,11 @@ public class Plot implements IPlot {
         adjustCameraToPlot();
     }
 
+    @Override
+    public void drawLabels(Graphics2D g2) {
 
-    public void updateFunctionValuesToStacked() {
     }
+
+
+
 }

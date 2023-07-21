@@ -15,4 +15,6 @@ public interface IPlot {
     void clearFunctionData();
 
     void addData(Simulation sim) throws CloneNotSupportedException;
+
+    void drawLabels(Graphics2D g2);
 }
