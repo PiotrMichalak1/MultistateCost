@@ -33,6 +33,9 @@ public class Parameters {
     private int prodCycles;
     private int minInterval;
     private int maxInterval;
+
+    private int structuralInterval; //TODO: Initialize this as value between min and max. Pass this during simulation and
+                                    //later in adding data to structural plots.
     private int step;
 
 
