@@ -70,6 +70,14 @@ public class TabsPanel extends JTabbedPane {
         }
     }
 
+    public void addDataToStructuralPlots(Simulation sim) throws CloneNotSupportedException {
+        for (ITab plotTab: plotTabs){
+            if (plotTab instanceof StructuralPlotsTab){
+                plotTab.addDataToPlots(sim);
+            }
+        }
+    }
+
 
     public void setPlottersSizes(int width, int height) {
         for (ITab plotTab : plotTabs) {

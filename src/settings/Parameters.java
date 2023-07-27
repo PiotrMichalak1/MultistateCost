@@ -135,6 +135,7 @@ public class Parameters {
         this.runMultipleTimesNum = InitialSettings.DEFAULT_RUN_MULTIPLE_TIMES_NUM;
         this.shockDegradation = InitialSettings.DEFAULT_SHOCK_DEGRADATION;
         this.numOfStates = InitialSettings.DEFAULT_NUM_OF_STATES;
+        this.structuralInterval = (int)(InitialSettings.DEFAULT_MAX_INTERVAL - InitialSettings.DEFAULT_MIN_INTERVAL)/2;
     }
 
     public int getRepairCost(int fromState, int toState) {
@@ -307,6 +308,14 @@ public class Parameters {
         return numOfStates;
     }
 
+    public void setStructuralInterval(int structuralInterval) {
+        this.structuralInterval = structuralInterval;
+    }
+
+    public int getStructuralInterval() {
+        return structuralInterval;
+    }
+
     public int getValueFromParameters(int type, int fromState, int toState) {
         return switch (type) {
             case InitialSettings.REPAIR_COST -> getRepairCost(fromState, toState);
@@ -391,6 +400,7 @@ public class Parameters {
             case InitialSettings.MAX_INTERVAL -> getMaxInterval();
             case InitialSettings.STEP -> getStep();
             case InitialSettings.RUN_MULTIPLE_TIMES -> getRunMultipleTimesNum();
+            case InitialSettings.STRUCT_INSPECTION_INTERVAL -> getStructuralInterval();
             default -> throw new IllegalStateException(
                     "Data type mismatch");
         };

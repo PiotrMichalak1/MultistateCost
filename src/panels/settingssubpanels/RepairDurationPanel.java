@@ -2,7 +2,7 @@ package panels.settingssubpanels;
 
 import settings.InitialSettings;
 import tools.gridbagelements.GridBagLabel;
-import tools.gridbagelements.GridBagSpinnerFactory;
+import tools.gridbagelements.GridBagSpinner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +41,7 @@ public class RepairDurationPanel extends JPanel implements ISettingPanel {
     private void initializeRepairDurationSpinners() {
         for (int toState = 1; toState < InitialSettings.DEFAULT_NUM_OF_STATES; toState++) {
             for (int fromState = toState + 1; fromState <= InitialSettings.DEFAULT_NUM_OF_STATES; fromState++) {
-                GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.REPAIR_DURATION, fromState, toState);
+                GridBagSpinner spinner = new GridBagSpinner(InitialSettings.REPAIR_DURATION, fromState, toState);
                 spinner.putInGrid(this, "", fromState - 1, toState + 1);
             }
         }

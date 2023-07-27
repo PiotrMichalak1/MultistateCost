@@ -2,9 +2,9 @@ package panels.tabs.sharedpanels;
 
 import settings.InitialSettings;
 import settings.Parameters;
-import tools.gridbagelements.GridBagCheckboxFactory;
+import tools.gridbagelements.GridBagCheckbox;
 import tools.gridbagelements.GridBagLabel;
-import tools.gridbagelements.GridBagSpinnerFactory;
+import tools.gridbagelements.GridBagSpinner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +13,9 @@ public class RunMultipleTimesPanel extends JPanel {
     Parameters parameters = Parameters.getInstance();
     GridBagLabel bagLabel = new GridBagLabel();
 
-    GridBagCheckboxFactory runMultipleTimesCB = new GridBagCheckboxFactory(InitialSettings.RUN_MULTIPLE_TIMES);
+    GridBagCheckbox runMultipleTimesCB = new GridBagCheckbox(InitialSettings.RUN_MULTIPLE_TIMES);
 
-    GridBagSpinnerFactory runMultipleTimesSP = new GridBagSpinnerFactory(InitialSettings.RUN_MULTIPLE_TIMES);
+    GridBagSpinner runMultipleTimesSP = new GridBagSpinner(InitialSettings.RUN_MULTIPLE_TIMES);
     public RunMultipleTimesPanel(){
         initializeRunMultipleTimesLabels();
         initializeRunMultipleTimesSpinners();

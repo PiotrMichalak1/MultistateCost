@@ -1,10 +1,12 @@
 package tools.plotting.plottingmodels.plots;
 
+import settings.Parameters;
 import simulation.LayeredCostValues;
 import simulation.Simulation;
 import tools.plotting.plottingmodels.PlotterModel;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CostStructPlot extends StateStructPlot implements IPlot {
@@ -17,13 +19,12 @@ public class CostStructPlot extends StateStructPlot implements IPlot {
 
     @Override
     public void addData(Simulation sim) throws CloneNotSupportedException {
-        int testIndex =8; //TODO: change this to get value of index from Parameters
-        int chosenInterval = (int)sim.getSimulationDomain()[testIndex];
-        LayeredCostValues lcv = (LayeredCostValues) sim.getLayeredCostValues().clone();
+        HashMap<String,double[]> simResult = sim.simulateForGivenInterval(Parameters.getInstance().getStructuralInterval());
+        double[] costStructure = simResult.get("cost");
 
-        double operational = lcv.getOperationalCost()[chosenInterval];
-        double repair = lcv.getRepairCost()[chosenInterval];
-        double inspection = lcv.getInspectionsCost()[chosenInterval];
+        double operational = costStructure[0];
+        double repair = costStructure[1];
+        double inspection = costStructure[2];
 
         double sum = operational + repair + inspection;
 

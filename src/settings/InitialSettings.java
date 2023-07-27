@@ -58,6 +58,10 @@ public class InitialSettings {
     public static final int SIMULATE_BUTTON =20;
     public static final int SHOCK_DEGRADATION = 21;
 
+    public static final int STRUCT_INSPECTION_INTERVAL =22;
+
+    public static final int SIMULATE_STRUCT_BUTTON =23;
+
 
 
 

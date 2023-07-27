@@ -9,7 +9,7 @@ import javax.swing.text.NumberFormatter;
 import java.awt.*;
 
 
-public class GridBagSpinnerFactory implements IGridBagElement {
+public class GridBagSpinner implements IGridBagElement {
     Parameters parameters = Parameters.getInstance();
     JSpinner spinner;
 
@@ -17,7 +17,7 @@ public class GridBagSpinnerFactory implements IGridBagElement {
 
     Number lastValid;
 
-    public GridBagSpinnerFactory(int type, int fromState, int toState) {
+    public GridBagSpinner(int type, int fromState, int toState) {
         this.type = type;
         spinner = new JSpinner(new SpinnerNumberModel(parameters.getValueFromParameters(type, fromState, toState),
                 0,
@@ -40,7 +40,7 @@ public class GridBagSpinnerFactory implements IGridBagElement {
         });
     }
 
-    public GridBagSpinnerFactory(int type, int state) {
+    public GridBagSpinner(int type, int state) {
 
         this.type = type;
 
@@ -119,7 +119,7 @@ public class GridBagSpinnerFactory implements IGridBagElement {
 
     }
 
-    public GridBagSpinnerFactory(int type) {
+    public GridBagSpinner(int type) {
 
         this.type = type;
 
@@ -213,6 +213,17 @@ public class GridBagSpinnerFactory implements IGridBagElement {
                 spinner.setToolTipText("Must be an integer in range [ 1 , 100 ]");
                 spinner.addChangeListener(e -> {
                     parameters.setValueInParameters(type, (int) spinner.getValue());
+                    System.out.println(spinner.getValue());
+                });
+            }
+            case InitialSettings.STRUCT_INSPECTION_INTERVAL -> {
+                spinner = new JSpinner(new SpinnerNumberModel(parameters.getStructuralInterval(),
+                        1,
+                        1000,
+                        1));
+                spinner.setToolTipText("Must be an integer in range [ 1 , 1000 ]");
+                spinner.addChangeListener(e ->{
+                    parameters.setStructuralInterval((int) spinner.getValue());
                     System.out.println(spinner.getValue());
                 });
             }

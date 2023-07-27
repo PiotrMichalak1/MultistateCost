@@ -2,7 +2,7 @@ package panels.settingssubpanels;
 
 import settings.InitialSettings;
 import tools.gridbagelements.GridBagLabel;
-import tools.gridbagelements.GridBagSpinnerFactory;
+import tools.gridbagelements.GridBagSpinner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,11 +40,11 @@ public class RepairAndInspectionCost extends JPanel implements ISettingPanel {
     public void initializeRepairCostSpinners() {
         for (int toState = 1; toState < InitialSettings.DEFAULT_NUM_OF_STATES; toState++) {
             for (int fromState = toState + 1; fromState <= InitialSettings.DEFAULT_NUM_OF_STATES; fromState++) {
-                GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.REPAIR_COST, fromState, toState);
+                GridBagSpinner spinner = new GridBagSpinner(InitialSettings.REPAIR_COST, fromState, toState);
                 spinner.putInGrid(this, "", fromState - 1, toState + 1);
             }
         }
-        GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.INSPECTION_COST, InitialSettings.INSPECTION_COST);
+        GridBagSpinner spinner = new GridBagSpinner(InitialSettings.INSPECTION_COST, InitialSettings.INSPECTION_COST);
         spinner.putInGrid(this, "", 1, 5);
     }
 

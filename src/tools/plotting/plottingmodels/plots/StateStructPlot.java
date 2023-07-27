@@ -1,18 +1,20 @@
 package tools.plotting.plottingmodels.plots;
 
+import settings.Parameters;
 import simulation.Simulation;
 import tools.plotting.PlotPointOfInterest;
 import tools.plotting.plottingmodels.PlotterModel;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class StateStructPlot implements IPlot {
     public final static Color BAR_PLOT_COLOR = new Color(0, 114, 189);
     public final PlotterModel parentPlotterModel;
 
-    HashMap<String, Double> bars = new HashMap<>();
+    LinkedHashMap<String, Double> bars = new LinkedHashMap<>();
 
     public StateStructPlot(PlotterModel parentPlotterModel) {
         this.parentPlotterModel = parentPlotterModel;
@@ -112,6 +114,14 @@ public class StateStructPlot implements IPlot {
 
     @Override
     public void addData(Simulation sim) throws CloneNotSupportedException {
+        HashMap<String,double[]> simResult = sim.simulateForGivenInterval(Parameters.getInstance().getStructuralInterval());
+        double[] stateStructure = simResult.get("state");
+
+        for (int stateInd = 0; stateInd < stateStructure.length - 1; stateInd++) {
+            String label = "State "+ (stateInd+1);
+            bars.put(label, stateStructure[stateInd]);
+        }
+        bars.put("Repair", stateStructure[stateStructure.length-1]);
 
     }
 }

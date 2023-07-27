@@ -6,12 +6,12 @@ import simulation.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
-public class GridBagButtonFactory implements IGridBagElement {
+
+public class GridBagButton implements IGridBagElement {
     JButton button;
 
 
-
-    public GridBagButtonFactory(int type, TabsPanel parentTabbedPanel) {
+    public GridBagButton(int type, TabsPanel parentTabbedPanel) {
         button = new JButton();
 
         if (type == InitialSettings.SIMULATE_BUTTON) {
@@ -29,11 +29,23 @@ public class GridBagButtonFactory implements IGridBagElement {
                 parentTabbedPanel.repaintAllPlots();
 
             });
+        } else if (type == InitialSettings.SIMULATE_STRUCT_BUTTON) {
+
+            button.addActionListener(e -> {
+                Simulation sim = Simulation.getInstance();
+                sim.createRandomData();
+                try {
+                    parentTabbedPanel.addDataToStructuralPlots(sim);
+                } catch (CloneNotSupportedException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                parentTabbedPanel.repaintAllPlots();
+            });
+
+
         }
     }
-
-
-
 
 
     @Override

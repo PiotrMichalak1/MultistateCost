@@ -64,7 +64,7 @@ public class CoordinateSystem {
 
     public void drawLabels(Graphics2D g2, int width, int height) {
         //xLabels
-        g2.setColor(new Color(150, 145, 145));
+        g2.setColor(Color.BLACK);
         FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
         double labelNum = Mathematics.roundUpToTheNearestMultiple(xRange[0], scaleUnitX * scaleMultiplier);
         int xLabelXCoord = (int) ((labelNum - xRange[0]) / (xRange[1] - xRange[0]) * width);

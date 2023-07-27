@@ -2,9 +2,9 @@ package panels.settingssubpanels;
 
 import settings.InitialSettings;
 import settings.Parameters;
-import tools.gridbagelements.GridBagCheckboxFactory;
+import tools.gridbagelements.GridBagCheckbox;
 import tools.gridbagelements.GridBagLabel;
-import tools.gridbagelements.GridBagSpinnerFactory;
+import tools.gridbagelements.GridBagSpinner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +20,7 @@ public class EmergencyRepairPanel extends JPanel implements ISettingPanel {
         GridBagLabel bagLabel = new GridBagLabel();
         this.setLayout(new GridBagLayout());
 
-        GridBagCheckboxFactory emergencyRepairCheckBox = new GridBagCheckboxFactory(InitialSettings.EMERGENCY_REPAIR_CHK);
+        GridBagCheckbox emergencyRepairCheckBox = new GridBagCheckbox(InitialSettings.EMERGENCY_REPAIR_CHK);
         emergencyRepairCheckBox.putInGrid(this, "Emergency Repair", 1, 0);
 
         bagLabel.putInGrid(this, "State drops to", 0, 1);
@@ -34,12 +34,12 @@ public class EmergencyRepairPanel extends JPanel implements ISettingPanel {
     private void initializeEmergencyRepairSpinners() {
         Parameters parameters = Parameters.getInstance();
 
-        GridBagSpinnerFactory delaySpinner = new GridBagSpinnerFactory(InitialSettings.EMERGENCY_DELAY);
-        GridBagSpinnerFactory nextInspectionInSpinner = new GridBagSpinnerFactory(InitialSettings.NEXT_INSPECTION_IN);
+        GridBagSpinner delaySpinner = new GridBagSpinner(InitialSettings.EMERGENCY_DELAY);
+        GridBagSpinner nextInspectionInSpinner = new GridBagSpinner(InitialSettings.NEXT_INSPECTION_IN);
 
-        GridBagSpinnerFactory spinner = new GridBagSpinnerFactory(InitialSettings.STATE_DROPS_TO);
+        GridBagSpinner spinner = new GridBagSpinner(InitialSettings.STATE_DROPS_TO);
         spinner.putInGrid(this, "", 1, 1);
-        spinner = new GridBagSpinnerFactory(InitialSettings.EMERGENCY_COST);
+        spinner = new GridBagSpinner(InitialSettings.EMERGENCY_COST);
         spinner.putInGrid(this, "", 1, 3);
         delaySpinner.putInGrid(this, "", 1, 4);
         nextInspectionInSpinner.putInGrid(this, "", 1, 2);

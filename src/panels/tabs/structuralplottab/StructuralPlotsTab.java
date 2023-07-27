@@ -3,6 +3,7 @@ package panels.tabs.structuralplottab;
 import panels.mainpanels.TabsPanel;
 import panels.tabs.ITab;
 import panels.tabs.sharedpanels.RunSimulationPanel;
+import panels.tabs.sharedpanels.RunStructSimulationPanel;
 import simulation.Simulation;
 
 import javax.swing.*;
@@ -14,11 +15,11 @@ public class StructuralPlotsTab extends JPanel implements ITab {
     private CostStructPlotPanel costStructurePanel;
 
 
-    private RunSimulationPanel runSimulationPanel;
+    private RunStructSimulationPanel runStructSimulationPanel;
     public StructuralPlotsTab(TabsPanel parentTabbedPanel) {
         this.parentTabbedPanel = parentTabbedPanel;
         initializeStructuralPanels(parentTabbedPanel);
-        runSimulationPanel = new RunSimulationPanel(parentTabbedPanel);
+        runStructSimulationPanel = new RunStructSimulationPanel(parentTabbedPanel);
         addWeightedPanes();
     }
 
@@ -47,19 +48,18 @@ public class StructuralPlotsTab extends JPanel implements ITab {
         c.gridy = 0;
         this.add(costStructurePanel,c);
 
-        runSimulationPanel = new RunSimulationPanel(parentTabbedPanel);
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth=2;
         c.weightx = 2.0;
         c.weighty = 1.0;
         c.gridx = 0;
         c.gridy =1;
-        this.add(runSimulationPanel,c);
+        this.add(runStructSimulationPanel,c);
     }
 
     @Override
     public void updateSpinners() {
-
+        runStructSimulationPanel.updateSpinnersAndCheckboxes();
     }
 
     @Override

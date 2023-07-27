@@ -43,7 +43,7 @@ public class Simulation {
 
     public void simulate() {
         prepareDomainAndValues();
-        createRandomData(parameters.isShockDegradation());
+        createRandomData();
         simulateForDifferentTimeIntervals();
 
     }
@@ -55,7 +55,7 @@ public class Simulation {
         layeredStateValues = new LayeredStateValues(simulationDomain.length);
     }
 
-    private void createRandomData(boolean isShockDegradation) {
+    public void createRandomData() {
 
         RandomGenerator randomGenerator = RandomGeneratorFactory.createRandomGenerator(new Random());
 
@@ -65,7 +65,7 @@ public class Simulation {
                 [parameters.getProdCycles()]
                 [parameters.getNumOfStates()];
 
-        if (!isShockDegradation) {
+        if (!Parameters.getInstance().isShockDegradation()) {
 
             for (int state = 1; state <= parameters.getNumOfStates() - 1; state++) {
                 WeibullDistribution distribution = new WeibullDistribution(randomGenerator,
@@ -130,7 +130,7 @@ public class Simulation {
 
     //Returns HashMap containing {overallCost}, {Operational, Repair, Inspections}, {State Percentage Shares []}
 
-    private HashMap<String,double[]> simulateForGivenInterval(int currentInterval) {
+    public HashMap<String,double[]> simulateForGivenInterval(int currentInterval) {
         MatrixOperations.fillRow(randomData, currentInterval, parameters.getNumOfStates());
         double[][] lifeSpans = new double[parameters.getNumOfStates() + 1][parameters.getProdCycles()];
 
@@ -257,7 +257,7 @@ public class Simulation {
         if (lifeSpans == null) System.out.println("Life Spans matrix cannot be null");
 
         assert lifeSpans != null;
-        double[] statePercentages = new double[lifeSpans[0].length]; // 5 values in array representing percentage time that system is in state 1,...,n-th,repair
+        double[] statePercentages = new double[lifeSpans.length]; // 5 values in array representing percentage time that system is in state 1,...,n-th,repair
         for (int state = 1; state <= lifeSpans.length; state++) {
             statePercentages[state-1] = (MatrixOperations.sumRow(lifeSpans, state-1)/overallTime)*100;
         }
