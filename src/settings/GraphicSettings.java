@@ -7,7 +7,9 @@ public class GraphicSettings {
     //colors
     public static final Color INVALID_VALUE_COLOR = new Color(234, 116, 116);
     public static final Color POI_COLOR = new Color(233, 86, 86);
-    public static final Color MAIN_GRAPH_COLOR = new Color(35, 140, 167);
+    public static final Color MAIN_GRAPH_COLOR = new Color(19, 157, 253);
+
+    public static final Color TITLE_COLOR = new Color(21, 20, 20, 205);
 
     public static final Color MARGIN_COLOR = new Color(236, 236, 237);
 

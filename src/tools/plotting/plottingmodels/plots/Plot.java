@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Plot implements IPlot {
 
-    private PlotLabels plotLabels;
+    PlotLabels plotLabels;
     public final PlotterModel parentPlotterModel;
     public ArrayList<double[]> functionsDomains = new ArrayList<>();
     public ArrayList<double[]> functionsValues = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Plot implements IPlot {
         setPlotLabels();
     }
 
-    private void setPlotLabels() {
+    void setPlotLabels() {
         this.plotLabels = new PlotLabels("Main Plot", "Inspection Interval", "Cost per time unit");
     }
 
@@ -49,7 +49,7 @@ public class Plot implements IPlot {
 
     @Override
     public void drawLabels(Graphics2D g2) {
-        g2.setColor(Color.BLACK);
+        g2.setColor(GraphicSettings.TITLE_COLOR);
 
 
         //drawing title

@@ -1,11 +1,15 @@
 package tools.plotting.plottingmodels.plots;
 
+import settings.GraphicSettings;
 import settings.Parameters;
 import simulation.Simulation;
 import tools.plotting.PlotPointOfInterest;
 import tools.plotting.plottingmodels.PlotterModel;
+import tools.plotting.plottingmodels.plots.graphics.LabelSize;
+import tools.plotting.plottingmodels.plots.graphics.PlotLabels;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,13 +18,23 @@ public class StateStructPlot implements IPlot {
     public final static Color BAR_PLOT_COLOR = new Color(0, 114, 189);
     public final PlotterModel parentPlotterModel;
 
+
+    PlotLabels plotLabels;
+    private final int margin;
+
     LinkedHashMap<String, Double> bars = new LinkedHashMap<>();
+
+    public static final double BAR_THICKNESS = 0.9; //0 means bar having width = 0, 1 means no free distance between bars
 
     public StateStructPlot(PlotterModel parentPlotterModel) {
         this.parentPlotterModel = parentPlotterModel;
+        this.margin = parentPlotterModel.coordinateSystem.getMargin();
+        setPlotLabels();
     }
 
-    public static final double BAR_THICKNESS = 0.9; //0 means bar having width = 0, 1 means no free distance between bars
+    void setPlotLabels() {
+        this.plotLabels = new PlotLabels("State Structure", "State", "% of overall cost");
+    }
 
     @Override
     public void draw(Graphics2D g2) {
@@ -79,9 +93,7 @@ public class StateStructPlot implements IPlot {
     public void drawLabels(Graphics2D g2) {
         g2.setColor(Color.BLACK);
         drawBarLabels(g2);
-
-
-
+        drawTitleAndAxisLabels(g2);
     }
 
     private void drawBarLabels(Graphics2D g2) {
@@ -101,6 +113,39 @@ public class StateStructPlot implements IPlot {
 
             barNum++;
         }
+    }
+
+    private void drawTitleAndAxisLabels(Graphics2D g2) {
+        g2.setColor(GraphicSettings.TITLE_COLOR);
+
+
+        //drawing title
+        LabelSize.setFontSize(g2, LabelSize.PLOT_TITLE);
+        FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
+        int stringWidth = fontMetrics.stringWidth(plotLabels.title());
+        int x = margin + (parentPlotterModel.drawingWidth - stringWidth) / 2;
+        int y = margin - (int) (margin - LabelSize.PLOT_TITLE) / 2;
+        g2.drawString(plotLabels.title(), x, y);
+
+        //drawing xAxis label
+        LabelSize.setFontSize(g2, LabelSize.AXIS_LABEL);
+        fontMetrics = g2.getFontMetrics(g2.getFont());
+        stringWidth = fontMetrics.stringWidth(plotLabels.xAxisLabel());
+        x = margin + (parentPlotterModel.drawingWidth - stringWidth) / 2;
+        y = 2 * margin + parentPlotterModel.drawingHeight - (int) (margin - LabelSize.AXIS_LABEL) / 2;
+        ;
+        g2.drawString(plotLabels.xAxisLabel(), x, y);
+
+        //drawing yAxis label
+
+        stringWidth = fontMetrics.stringWidth(plotLabels.yAxisLabel());
+        x = (int) (margin / 4.0);
+        y = margin + (parentPlotterModel.drawingHeight + fontMetrics.stringWidth(plotLabels.yAxisLabel())) / 2;
+
+        AffineTransform originalTransform = g2.getTransform();
+        g2.rotate(-Math.PI / 2, x, y);
+        g2.drawString(plotLabels.yAxisLabel(), x, y);
+        g2.setTransform(originalTransform);
     }
 
     @Override

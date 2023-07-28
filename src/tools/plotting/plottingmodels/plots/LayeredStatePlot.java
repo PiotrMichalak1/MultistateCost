@@ -6,6 +6,7 @@ import tools.functions.Mathematics;
 import tools.functions.MatrixOperations;
 import tools.plotting.plottingmodels.PlotterModel;
 import tools.plotting.plottingmodels.plots.graphics.PlotColors;
+import tools.plotting.plottingmodels.plots.graphics.PlotLabels;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ public class LayeredStatePlot extends Plot implements IPlot{
 
     public LayeredStatePlot(PlotterModel layeredStatePlotterModel) {
         super(layeredStatePlotterModel);
+    }
+    @Override
+    void setPlotLabels() {
+        this.plotLabels = new PlotLabels("Layered State Plot", "Inspection Interval", "Cost per time unit");
     }
 
     @Override

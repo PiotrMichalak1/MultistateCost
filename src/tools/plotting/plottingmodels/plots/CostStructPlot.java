@@ -4,6 +4,7 @@ import settings.Parameters;
 import simulation.LayeredCostValues;
 import simulation.Simulation;
 import tools.plotting.plottingmodels.PlotterModel;
+import tools.plotting.plottingmodels.plots.graphics.PlotLabels;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -15,6 +16,10 @@ public class CostStructPlot extends StateStructPlot implements IPlot {
 
     public CostStructPlot(PlotterModel parentPlotterModel) {
         super(parentPlotterModel);
+    }
+
+    void setPlotLabels() {
+        this.plotLabels = new PlotLabels("Cost Structure", "Type of Cost", "% of overall cost");
     }
 
     @Override

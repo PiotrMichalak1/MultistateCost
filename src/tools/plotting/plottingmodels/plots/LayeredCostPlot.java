@@ -7,6 +7,7 @@ import tools.functions.Mathematics;
 import tools.functions.MatrixOperations;
 import tools.plotting.plottingmodels.PlotterModel;
 import tools.plotting.plottingmodels.plots.graphics.PlotColors;
+import tools.plotting.plottingmodels.plots.graphics.PlotLabels;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -18,6 +19,11 @@ public class LayeredCostPlot extends Plot implements IPlot{
 
     public LayeredCostPlot(PlotterModel layeredCostPlotterModel) {
         super(layeredCostPlotterModel);
+    }
+
+    @Override
+    void setPlotLabels() {
+        this.plotLabels = new PlotLabels("Layered Cost Plot", "Inspection Interval", "Cost per time unit");
     }
 
     //adds operational, repair, and inspection cost data to functionDomains and functionValues in plot
