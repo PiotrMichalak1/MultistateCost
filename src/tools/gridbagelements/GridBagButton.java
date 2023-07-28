@@ -40,6 +40,8 @@ public class GridBagButton implements IGridBagElement {
                     throw new RuntimeException(ex);
                 }
 
+
+
                 parentTabbedPanel.repaintAllPlots();
             });
 

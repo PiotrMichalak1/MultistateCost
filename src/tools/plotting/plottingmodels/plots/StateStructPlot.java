@@ -175,4 +175,5 @@ public class StateStructPlot implements IPlot {
         bars.put("Repair", stateStructure[stateStructure.length-1]);
 
     }
+
 }

@@ -18,4 +18,8 @@ public class GridBagTextField implements IGridBagElement{
         textField.setText(text);
         parent.add(textField, c);
     }
+
+    public void setText(String text) {
+        this.textField.setText(text);
+    }
 }

@@ -71,6 +71,7 @@ public class StructuralPlotsTab extends JPanel implements ITab {
     public void addDataToPlots(Simulation sim) throws CloneNotSupportedException {
         stateStructurePanel.plotterModel.getPlot().addData(sim);
         costStructurePanel.plotterModel.getPlot().addData(sim);
+        runStructSimulationPanel.updateCostPerTimeUnit(sim);
     }
 
     @Override

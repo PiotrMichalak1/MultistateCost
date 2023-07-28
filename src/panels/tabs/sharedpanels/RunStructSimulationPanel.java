@@ -3,6 +3,8 @@ package panels.tabs.sharedpanels;
 import panels.mainpanels.TabsPanel;
 import settings.InitialSettings;
 import settings.Parameters;
+import simulation.Simulation;
+import tools.functions.MatrixOperations;
 import tools.gridbagelements.*;
 
 import javax.swing.*;
@@ -65,6 +67,12 @@ public class RunStructSimulationPanel extends JPanel {
         for (GridBagSpinner GBspinner: gridBagSpinners) {
             GBspinner.getSpinner().setValue(parameters.getValueFromParameters(GBspinner.getType()));
         }
+    }
+
+    public void updateCostPerTimeUnit(Simulation sim){
+        double[] costs = sim.simulateForGivenInterval(Parameters.getInstance().getStructuralInterval()).get("cost");
+        double overallCost = MatrixOperations.sum(costs);
+        costPerTimeUnit.setText(Double.toString(overallCost));
 
     }
 }
