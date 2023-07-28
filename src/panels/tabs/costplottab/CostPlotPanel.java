@@ -34,7 +34,7 @@ public class CostPlotPanel extends JPanel implements IPlotPanel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             setPlottersSizes(width, height);
-            plotterModel.drawPlot(g2);
+            plotterModel.draw(g2);
         }
 
     }

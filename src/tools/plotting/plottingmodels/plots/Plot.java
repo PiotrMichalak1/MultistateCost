@@ -7,33 +7,79 @@ import tools.functions.Mathematics;
 import tools.plotting.DoublePoint;
 import tools.plotting.PlotPointOfInterest;
 import tools.plotting.plottingmodels.PlotterModel;
+import tools.plotting.plottingmodels.plots.graphics.LabelSize;
 import tools.plotting.plottingmodels.plots.graphics.PlotColors;
+import tools.plotting.plottingmodels.plots.graphics.PlotLabels;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 public class Plot implements IPlot {
 
+    private PlotLabels plotLabels;
     public final PlotterModel parentPlotterModel;
     public ArrayList<double[]> functionsDomains = new ArrayList<>();
     public ArrayList<double[]> functionsValues = new ArrayList<>();
 
     private final int margin;
-    public final PlotPointOfInterest plotPOI;
+    public final PlotPointOfInterest plotPOI = new PlotPointOfInterest();
+    ;
 
 
     public Plot(PlotterModel parentPlotterModel) {
         this.parentPlotterModel = parentPlotterModel;
         this.margin = parentPlotterModel.coordinateSystem.getMargin();
-        this.plotPOI = new PlotPointOfInterest();
+        setPlotLabels();
     }
 
+    private void setPlotLabels() {
+        this.plotLabels = new PlotLabels("Main Plot", "Inspection Interval", "Cost per time unit");
+    }
+
+    @Override
     public void draw(Graphics2D g2) {
         plotPOI.resetDistanceAndVisibility();
         PlotColors.resetColor();
         for (int i = 0; i < functionsDomains.size(); i++) {
             drawFunction(g2, functionsDomains.get(i), functionsValues.get(i), false);
         }
+
+    }
+
+    @Override
+    public void drawLabels(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+
+
+        //drawing title
+        LabelSize.setFontSize(g2, LabelSize.PLOT_TITLE);
+        FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
+        int stringWidth = fontMetrics.stringWidth(plotLabels.title());
+        int x = margin + (parentPlotterModel.drawingWidth - stringWidth) / 2;
+        int y = margin - (int) (margin - LabelSize.PLOT_TITLE) / 2;
+        g2.drawString(plotLabels.title(), x, y);
+
+        //drawing xAxis label
+        LabelSize.setFontSize(g2, LabelSize.AXIS_LABEL);
+        fontMetrics = g2.getFontMetrics(g2.getFont());
+        stringWidth = fontMetrics.stringWidth(plotLabels.xAxisLabel());
+        x = margin + (parentPlotterModel.drawingWidth - stringWidth) / 2;
+        y = 2 * margin + parentPlotterModel.drawingHeight - (int) (margin - LabelSize.AXIS_LABEL) / 2;
+        ;
+        g2.drawString(plotLabels.xAxisLabel(), x, y);
+
+        //drawing yAxis label
+
+        stringWidth = fontMetrics.stringWidth(plotLabels.yAxisLabel());
+        x = (int) (margin / 4.0);
+        y = margin + (parentPlotterModel.drawingHeight + fontMetrics.stringWidth(plotLabels.yAxisLabel())) / 2;
+
+        AffineTransform originalTransform = g2.getTransform();
+        g2.rotate(-Math.PI / 2, x, y);
+        g2.drawString(plotLabels.yAxisLabel(), x, y);
+        g2.setTransform(originalTransform);
+
 
     }
 
@@ -210,11 +256,11 @@ public class Plot implements IPlot {
         int yPx = margin + parentPlotterModel.drawingHeight - (int) Math.round(parentPlotterModel.drawingHeight * (point.getY() - parentPlotterModel.coordinateSystem.yRange[0]) / (parentPlotterModel.coordinateSystem.yRange[1] - parentPlotterModel.coordinateSystem.yRange[0]));
         return new Point(xPx, yPx);
     }
-
     //gets vector of double domain values and translates it to pixel coordinates in plotterModel
+
     public int[] domainVectorToPixels(double[] vector) {
         int[] vectorPx = new int[vector.length];
-        for (int index =0;index<vector.length;index++){
+        for (int index = 0; index < vector.length; index++) {
             vectorPx[index] = margin + (int) Math.round(parentPlotterModel.drawingWidth * (vector[index] - parentPlotterModel.coordinateSystem.xRange[0]) / (parentPlotterModel.coordinateSystem.xRange[1] - parentPlotterModel.coordinateSystem.xRange[0]));
         }
         return vectorPx;
@@ -222,7 +268,7 @@ public class Plot implements IPlot {
 
     public int[] valuesVectorToPixels(double[] vector) {
         int[] vectorPx = new int[vector.length];
-        for (int index =0;index<vector.length;index++){
+        for (int index = 0; index < vector.length; index++) {
             vectorPx[index] = margin + parentPlotterModel.drawingHeight - (int) Math.round(parentPlotterModel.drawingHeight * (vector[index] - parentPlotterModel.coordinateSystem.yRange[0]) / (parentPlotterModel.coordinateSystem.yRange[1] - parentPlotterModel.coordinateSystem.yRange[0]));
         }
         return vectorPx;
@@ -236,12 +282,6 @@ public class Plot implements IPlot {
         functionsValues.add(values);
         adjustCameraToPlot();
     }
-
-    @Override
-    public void drawLabels(Graphics2D g2) {
-
-    }
-
 
 
 }

@@ -62,7 +62,7 @@ public class CoordinateSystem {
         drawBigGrid(g2, width, height);
     }
 
-    public void drawLabels(Graphics2D g2, int width, int height) {
+    public void drawCoordinateSystemLabels(Graphics2D g2, int width, int height) {
         //xLabels
         g2.setColor(Color.BLACK);
         FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());

@@ -29,13 +29,14 @@ public class PlotterModel implements IPlotterModel {
         this.plot = new Plot(this);
     }
 
-    public void drawPlot(Graphics2D g2) {
+    public void draw(Graphics2D g2) {
         coordinateSystem.updateRanges(drawingWidth, drawingHeight);
         coordinateSystem.drawGrid(g2, drawingWidth, drawingHeight);
         plot.draw(g2);
         coordinateSystem.drawMargins(g2, drawingWidth, drawingHeight);
         coordinateSystem.drawAxes(g2, drawingWidth, drawingHeight);
-        coordinateSystem.drawLabels(g2, drawingWidth, drawingHeight);
+        coordinateSystem.drawCoordinateSystemLabels(g2, drawingWidth, drawingHeight);
+        plot.drawLabels(g2);
         plot.getPlotPOI().drawPOI(g2);
         plot.getPlotPOI().drawPOIdata(g2);
     }

@@ -2,6 +2,7 @@ package tools.plotting;
 
 import settings.GraphicSettings;
 import tools.functions.Mathematics;
+import tools.plotting.plottingmodels.plots.graphics.LabelSize;
 
 import java.awt.*;
 
@@ -25,6 +26,7 @@ public class PlotPointOfInterest {
     }
 
     public void drawPOI(Graphics2D g2) {
+        LabelSize.setFontSize(g2,LabelSize.STANDARD);
         if (mouseDistanceToClosest<GraphicSettings.POINT_OF_INTEREST_VISIBILITY_THRESHOLD) {
             setVisible(true);
             g2.setColor(GraphicSettings.POI_COLOR);

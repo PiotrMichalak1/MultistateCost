@@ -1,7 +1,6 @@
 package tools.plotting.plottingmodels;
 
 import tools.plotting.plottingmodels.plots.IPlot;
-import tools.plotting.plottingmodels.plots.Plot;
 
 import java.awt.*;
 
@@ -11,7 +10,7 @@ public interface IPlotterModel {
 
     int getMargin();
 
-    void drawPlot(Graphics2D g2);
+    void draw(Graphics2D g2);
 
     void onMouseScroll(Point mousePosition, int wheelRotation, int width, int height);
 

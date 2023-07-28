@@ -98,7 +98,7 @@ public class PercentBarCoordinateSystem extends CoordinateSystem {
     }
 
     //draws labels on y axis
-    public void drawLabels(Graphics2D g2, int width, int height) {
+    public void drawCoordinateSystemLabels(Graphics2D g2, int width, int height) {
 
         FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
 

@@ -77,11 +77,18 @@ public class StateStructPlot implements IPlot {
     }
 
     public void drawLabels(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+        drawBarLabels(g2);
 
+
+
+    }
+
+    private void drawBarLabels(Graphics2D g2) {
         int margin = parentPlotterModel.getMargin();
         int drawingWidth = parentPlotterModel.drawingWidth;
         FontMetrics fontMetrics = g2.getFontMetrics(g2.getFont());
-        g2.setColor(Color.BLACK);
+
 
         int centerOfBase;
         int numOfBars = bars.size();
@@ -94,7 +101,6 @@ public class StateStructPlot implements IPlot {
 
             barNum++;
         }
-
     }
 
     @Override
